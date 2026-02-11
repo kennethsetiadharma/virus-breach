@@ -1,4 +1,16 @@
-<diagram program="umletino" version="15.1"><zoom_level>6</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>732</x><y>390</y><w>186</w><h>114</h></coordinates><panel_attributes>Board
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text>Space for diagram notes</help_text>
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>833</x>
+      <y>315</y>
+      <w>238</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Board
 --
 /-width: int
 /-height: int
@@ -8,87 +20,392 @@
 +tick(): void
 +render(mouseX: double, mouseY: double): void
 +setTile(pos: Position, tile: Tile): void
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>318</x><y>390</y><w>126</w><h>114</h></coordinates><panel_attributes>Entity
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>315</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Entity
 --
 -id: int
 --
 +onCollideWith(other: Entity): void
 +onRemove(): void
 /+tick()/
-/+render()/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1398</x><y>390</y><w>126</w><h>114</h></coordinates><panel_attributes>Tile
+/+render()/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1701</x>
+      <y>322</y>
+      <w>301</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Tile
 --
 
 --
-+onStep(entity: Entity): void
-+isSolid(): bool
-+render(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>912</x><y>408</y><w>498</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
++canStep(Board: board, pos: Position, entity: Entity): boolean
++onStep(Board: board, pos: Position, entity: Entity): void
++render(Board: board, pos: Position): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1064</x>
+      <y>343</y>
+      <w>651</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m2=1..*
-m1=1</panel_attributes><additional_attributes>10;10;810;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>444</x><y>186</y><w>126</w><h>102</h></coordinates><panel_attributes>&lt;&lt;Comparable&gt;&gt;
+m1=1</panel_attributes>
+    <additional_attributes>10.0;10.0;910.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>497</x>
+      <y>63</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Comparable&gt;&gt;
 Position
 --
 -x: int
 -y: int
 --
 +relative(x: int, y: int): Position
++relative(direction: Direction): Position
 +up(): Position
 +down(): Position
 +left(): Position
-+right(): Position</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>438</x><y>438</y><w>306</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
++right(): Position</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>371</y>
+      <w>357</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>490;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>564</x><y>252</y><w>900</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>1480;230;1480;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>240</y><w>84</w><h>162</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;250;10;10;120;10</additional_attributes></element><element><id>UMLPackage</id><coordinates><x>414</x><y>144</y><w>228</w><h>162</h></coordinates><panel_attributes>ca.sfu.cmpt271.group15.math
+m2=0..*</panel_attributes>
+    <additional_attributes>490.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>413</x>
+      <y>112</y>
+      <w>98</w>
+      <h>217</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;290.0;10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>462</x>
+      <y>28</y>
+      <w>413</w>
+      <h>189</h>
+    </coordinates>
+    <panel_attributes>ca.sfu.cmpt271.group15.math
 --
-fg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>0</x><y>336</y><w>1776</w><h>600</h></coordinates><panel_attributes>ca.sfu.cmpt271.group15.board
+fg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>0</x>
+      <y>252</y>
+      <w>2219</w>
+      <h>700</h>
+    </coordinates>
+    <panel_attributes>ca.sfu.cmpt271.group15.board
 --
-fg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>42</x><y>360</y><w>654</w><h>552</h></coordinates><panel_attributes>ca.sfu.cmpt271.group15.board.entity
+fg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>28</x>
+      <y>280</y>
+      <w>763</w>
+      <h>644</h>
+    </coordinates>
+    <panel_attributes>ca.sfu.cmpt271.group15.board.entity
 --
-fg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>1356</x><y>366</y><w>378</w><h>390</h></coordinates><panel_attributes>ca.sfu.cmpt271.group15.board.tile
---
-fg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>318</x><y>606</y><w>126</w><h>114</h></coordinates><panel_attributes>Player
+fg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>329</x>
+      <y>525</y>
+      <w>175</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Player
 --
 -score: int
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>498</y><w>18</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>504</x><y>606</y><w>126</w><h>114</h></coordinates><panel_attributes>Enemy
++changeScore(difference: int): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>413</x>
+      <y>441</y>
+      <w>21</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>567</x>
+      <y>525</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Enemy
 --
 
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1584</x><y>600</y><w>126</w><h>114</h></coordinates><panel_attributes>Barrier
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1715</x>
+      <y>539</y>
+      <w>112</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Exit
 --
 
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1452</x><y>498</y><w>204</w><h>114</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90;320;90;320;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>114</x><y>606</y><w>126</w><h>114</h></coordinates><panel_attributes>Reward
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>112</x>
+      <y>525</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Reward
 --
 -amount: int
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>168</x><y>498</y><w>174</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>270;10;270;140;10;140;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>414</x><y>498</y><w>168</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;140;260;140;260;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>504</x><y>780</y><w>126</w><h>114</h></coordinates><panel_attributes>Punishment
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>175</x>
+      <y>441</y>
+      <w>203</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>270.0;10.0;270.0;80.0;10.0;80.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>462</x>
+      <y>441</y>
+      <w>196</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;260.0;80.0;260.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>567</x>
+      <y>728</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Tripwire
 --
 cost: int
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>354</x><y>780</y><w>126</w><h>114</h></coordinates><panel_attributes>MovingEnemy
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>728</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Cop
 --
 
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>564</x><y>714</y><w>18</w><h>78</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>402</x><y>714</y><w>144</w><h>78</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>220;10;220;70;10;70;10;110</additional_attributes></element><element><id>UMLPackage</id><coordinates><x>1884</x><y>378</y><w>588</w><h>486</h></coordinates><panel_attributes>ca.sfu.cmpt271.group15.screen
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>637</x>
+      <y>651</y>
+      <w>21</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>651</y>
+      <w>168</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;10.0;220.0;70.0;10.0;70.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3010</x>
+      <y>357</y>
+      <w>217</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Screen
 --
-fg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2094</x><y>420</y><w>186</w><h>114</h></coordinates><panel_attributes>Screen
---
-
+-parent: Screen
 --
 +onClick(x: double, y: double): boolean
 +onKeyPress(keyCode: int): boolean
 +render(mouseX: double, mouseY: double): void
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1932</x><y>600</y><w>156</w><h>114</h></coordinates><panel_attributes>TitleScreen
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2821</x>
+      <y>567</y>
+      <w>182</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>TitleScreen
 --
 
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1998</x><y>528</y><w>138</w><h>84</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>210;10;210;70;10;70;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2112</x><y>600</y><w>156</w><h>114</h></coordinates><panel_attributes>PauseScreen
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2898</x>
+      <y>483</y>
+      <w>161</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;210.0;70.0;10.0;70.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3031</x>
+      <y>567</y>
+      <w>182</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>PauseScreen
 --
 
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2292</x><y>600</y><w>156</w><h>114</h></coordinates><panel_attributes>OptionsScreen
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3241</x>
+      <y>567</y>
+      <w>182</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>OptionsScreen
 --
-
+-options: GameOptions
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2172</x><y>528</y><w>18</w><h>84</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>2214</x><y>528</y><w>168</w><h>84</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70;260;70;260;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1296</x><y>120</y><w>186</w><h>114</h></coordinates><panel_attributes>MazeGame
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3101</x>
+      <y>483</y>
+      <w>21</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3150</x>
+      <y>483</y>
+      <w>196</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;260.0;70.0;260.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1491</x>
+      <y>0</y>
+      <w>217</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>HeistGame
 --
 
 --
@@ -97,23 +414,528 @@ fg=red</panel_attributes><additional_attributes></additional_attributes></elemen
 +closeScreen(): void
 +loadBoard(board: Board): void
 +exit(): void
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1476</x><y>174</y><w>738</w><h>258</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=0..1</panel_attributes><additional_attributes>10;10;1190;10;1190;410</additional_attributes></element><element><id>Relation</id><coordinates><x>804</x><y>180</y><w>504</w><h>222</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=0..1</panel_attributes><additional_attributes>820;10;10;10;10;350</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1392</x><y>600</y><w>126</w><h>114</h></coordinates><panel_attributes>Floor
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1701</x>
+      <y>63</y>
+      <w>1449</w>
+      <h>308</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..1</panel_attributes>
+    <additional_attributes>10.0;10.0;2030.0;10.0;2030.0;420.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>917</x>
+      <y>70</y>
+      <w>588</w>
+      <h>259</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..1</panel_attributes>
+    <additional_attributes>820.0;10.0;10.0;10.0;10.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1596</x>
+      <y>539</y>
+      <w>105</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Entrance
 --
 
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1416</x><y>498</y><w>18</w><h>114</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>204</x><y>780</y><w>126</w><h>114</h></coordinates><panel_attributes>BonusReward
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1673</x>
+      <y>448</y>
+      <w>70</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;80.0;70.0;10.0;70.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>217</x>
+      <y>728</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Cash
 --
 ttl: int
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>66</x><y>780</y><w>126</w><h>114</h></coordinates><panel_attributes>RequiredReward
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>56</x>
+      <y>728</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Vault
 --
 
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>144</x><y>714</y><w>18</w><h>78</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>222</x><y>714</y><w>18</w><h>78</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1038</x><y>450</y><w>150</w><h>114</h></coordinates><panel_attributes>BoardFactory
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>147</x>
+      <y>651</y>
+      <w>21</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>238</x>
+      <y>651</y>
+      <w>21</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1092</x>
+      <y>504</y>
+      <w>133</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>BoardFactory
 --
 
 --
 +createBoard(): void
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>912</x><y>480</y><w>138</w><h>24</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;210;20</additional_attributes></element></diagram>
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1064</x>
+      <y>406</y>
+      <w>42</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;40.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>2247</x>
+      <y>266</y>
+      <w>1708</w>
+      <h>644</h>
+    </coordinates>
+    <panel_attributes>ca.sfu.cmpt271.group15.render
+--
+fg=red
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3451</x>
+      <y>567</y>
+      <w>182</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>WinScreen
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3661</x>
+      <y>567</y>
+      <w>182</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>GameOverScreen
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3220</x>
+      <y>462</y>
+      <w>336</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;460.0;10.0;460.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3220</x>
+      <y>462</y>
+      <w>553</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;770.0;10.0;770.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1806</x>
+      <y>84</y>
+      <w>217</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>GameOptions
+--
+
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1701</x>
+      <y>119</y>
+      <w>119</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>2779</x>
+      <y>322</y>
+      <w>1099</w>
+      <h>567</h>
+    </coordinates>
+    <panel_attributes>ca.sfu.cmpt271.group15.render.screen
+--
+fg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1253</x>
+      <y>504</y>
+      <w>308</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Room
+--
+
+--
++place(position: Position, direction: Direction, depth: int): boolean
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>812</x>
+      <y>483</y>
+      <w>756</w>
+      <h>455</h>
+    </coordinates>
+    <panel_attributes>ca.sfu.cmpt271.group15.board.gen
+--
+fg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1575</x>
+      <y>301</y>
+      <w>609</w>
+      <h>455</h>
+    </coordinates>
+    <panel_attributes>ca.sfu.cmpt271.group15.board.tile
+--
+fg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>560</y>
+      <w>49</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1400</x>
+      <y>770</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Entrance
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1239</x>
+      <y>770</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>VaultRoom
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>945</x>
+      <y>770</y>
+      <w>119</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Hallway
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>826</x>
+      <y>770</y>
+      <w>105</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Closet
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1085</x>
+      <y>770</y>
+      <w>133</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Office
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1309</x>
+      <y>630</y>
+      <w>175</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;230.0;100.0;230.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1309</x>
+      <y>630</y>
+      <w>21</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1141</x>
+      <y>630</y>
+      <w>189</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>250.0;10.0;250.0;100.0;10.0;100.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>987</x>
+      <y>630</y>
+      <w>343</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>470.0;10.0;470.0;100.0;10.0;100.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>868</x>
+      <y>630</y>
+      <w>462</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>640.0;10.0;640.0;100.0;10.0;100.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>56</y>
+      <w>140</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Direction
+--
+UP
+DOWN
+LEFT
+RIGHT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1932</x>
+      <y>539</y>
+      <w>98</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>SimpleTile
+--
+solid: boolean
+texture: Texture
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1764</x>
+      <y>448</y>
+      <w>21</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1946</x>
+      <y>448</y>
+      <w>21</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1841</x>
+      <y>539</y>
+      <w>84</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Door
+--
+open: boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1876</x>
+      <y>448</y>
+      <w>21</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>2051</x>
+      <y>602</y>
+      <w>98</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Tile with no
+special actions
+e.g. wall, floor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2023</x>
+      <y>616</y>
+      <w>42</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;40.0;20.0</additional_attributes>
+  </element>
+</diagram>
