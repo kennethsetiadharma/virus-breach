@@ -105,3 +105,11 @@ __MACOSX/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# UMLet temp files
+*.uxf~
+*.uxf.tmp
+
+# Windows OS stuff
+Thumbs.db
+ehthumbs.db
