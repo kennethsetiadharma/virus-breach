@@ -1,0 +1,21 @@
+package ca.sfu.cmpt201.group15.render.screen;
+
+public class TitleScreen extends Screen {
+    public TitleScreen(Screen parent) {
+        super(parent);
+    }
+
+    @Override
+    public boolean onClick(double mouseX, double mouseY) {
+        return super.onClick(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean onKeyPress(int keyCode) {
+        return super.onKeyPress(keyCode);
+    }
+
+    @Override
+    public void render(double mouseX, double mouseY) {
+    }
+}
