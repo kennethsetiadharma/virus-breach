@@ -1,9 +1,0 @@
-package ca.sfu.cmpt201.group15.board.entity;
-
-import ca.sfu.cmpt201.group15.board.Board;
-
-public abstract class Enemy extends Entity {
-    public Enemy(Board board) {
-        super(board);
-    }
-}
