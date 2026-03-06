@@ -10,11 +10,14 @@ public class Antivirus extends Enemy {
     @Override
     public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);
+        if (entity instanceof Player player) {
+            this.board.removeEntity(player);
+        }
     }
 
     @Override
     public void tick() {
-
+        super.tick();
     }
 
     @Override

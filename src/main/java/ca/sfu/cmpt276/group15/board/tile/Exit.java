@@ -16,6 +16,11 @@ public class Exit extends Tile {
     }
 
     @Override
+    public void onLeave(Board board, Position pos, Entity entity) {
+
+    }
+
+    @Override
     public void render(Board board, Position pos) {
 
     }

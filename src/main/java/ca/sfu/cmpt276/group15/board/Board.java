@@ -17,24 +17,43 @@ public class Board {
     }
 
     public void addEntity(Entity entity) {
-
+        this.entities.add(entity);
     }
 
-    public void removeEntity(int id) {
+    public void removeEntity(Entity entity) {
+        entity.onRemove();
+        this.entities.remove(entity);
     }
 
     public void tick() {
-
+        this.timePlayed++;
+        for (Entity entity : new ArrayList<>(this.entities)) {
+            if (!entity.isRemoved()) entity.tick();
+        }
     }
 
     public void render(double mouseX, double mouseY) {
     }
 
     public void setTile(Position pos, Tile tile) {
-
+        this.tiles[pos.y()][pos.x()] = tile;
     }
 
-    public void checkCollision(Entity entity) {
+    public Tile getTile(Position pos) {
+        return this.tiles[pos.y()][pos.x()];
+    }
 
+    public void entityMoved(Entity entity) {
+        this.getTile(entity.getPosition()).onStep(this, entity.getPosition(), entity);
+        this.getTile(entity.getPrevPosition()).onLeave(this, entity.getPrevPosition(), entity);
+
+        for (Entity e : this.entities) {
+            if (e != entity) {
+                if (e.getPosition().equals(entity.getPosition())) {
+                    e.onCollideWith(entity);
+                    entity.onCollideWith(e);
+                }
+            }
+        }
     }
 }

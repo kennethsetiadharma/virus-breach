@@ -13,9 +13,9 @@ public abstract class Reward extends Entity {
     @Override
     public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);
-    }
-
-    @Override
-    public void tick() {
+        if (entity instanceof Player player) {
+            player.adjustData(this.value);
+            this.board.removeEntity(this);
+        }
     }
 }

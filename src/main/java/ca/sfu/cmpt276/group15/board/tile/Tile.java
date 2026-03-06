@@ -11,6 +11,7 @@ public abstract class Tile {
     public abstract boolean canStep(Board board, Position pos, Entity entity);
 
     public abstract void onStep(Board board, Position pos, Entity entity);
+    public abstract void onLeave(Board board, Position pos, Entity entity);
 
     public abstract void render(Board board, Position pos);
 }

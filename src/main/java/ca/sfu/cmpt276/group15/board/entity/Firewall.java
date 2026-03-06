@@ -13,10 +13,9 @@ public class Firewall extends Enemy {
     @Override
     public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);
-    }
-
-    @Override
-    public void tick() {
+        if (entity instanceof Player) {
+            ((Player) entity).adjustData(-this.damage);
+        }
     }
 
     @Override
