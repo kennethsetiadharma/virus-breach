@@ -1,9 +1,9 @@
 package ca.sfu.cmpt276.group15;
 
-import ca.sfu.cmpt276.group15.render.fxgl.FxglApp;
+import com.almasb.fxgl.app.GameApplication;
 
 public class Main {
     public static void main(String[] args) {
-        FxglApp.launch(FxglApp.class, args);
+        GameApplication.launch(HackingGame.class, args);
     }
 }

@@ -1,28 +1,74 @@
 package ca.sfu.cmpt276.group15;
 
-import ca.sfu.cmpt276.group15.board.Board;
-import ca.sfu.cmpt276.group15.render.screen.Screen;
+import ca.sfu.cmpt276.group15.entity.*;
+import ca.sfu.cmpt276.group15.math.Position;
+import ca.sfu.cmpt276.group15.render.screen.HackingGameSceneFactory;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.SpawnData;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
-public class HackingGame {
-    private Board board;
-    private final Screen screen = null;
+import static com.almasb.fxgl.dsl.FXGL.*;
 
-    HackingGame() {
+public class HackingGame extends GameApplication {
+    public static final Duration UPDATE_INTERVAL = Duration.millis(600);
+
+    public HackingGame() {
     }
 
-    public void mainLoop() {
+    protected void update() {
+        getGameWorld().getSingletonOptional(EntityType.PLAYER).ifPresent(e -> e.getComponent(PlayerComponent.class).onUpdate());
+        getGameWorld().getEntitiesByType(EntityType.VIRUS).forEach(e -> e.getComponent(VirusComponent.class).onUpdate());
 
+        if (FXGLMath.random(1, 100) <= 5) {
+            SpawnData data = new SpawnData(Position.fromGrid(FXGLMath.random(0, 64)), Position.fromGrid(FXGLMath.random(0, 64)));
+            getGameWorld().spawn("sourcecode", data);
+        }
     }
 
-    public void openScreen(Screen screen) {
-
+    @Override
+    protected void initSettings(GameSettings settings) {
+        settings.setWidth(1280);
+        settings.setHeight(720);
+        settings.setTitle("Hacking Game");
+        settings.setSceneFactory(new HackingGameSceneFactory());
     }
 
-    public void loadBoard(Board board) {
-        this.board = board;
+    @Override
+    protected void initGame() {
+        getGameScene().getViewport().setBounds(0, 0, 1280, 720);
+        getGameScene().setBackgroundColor(Color.DARKGRAY);
+        getGameWorld().addEntityFactory(new HackingGameEntityFactory());
+        getGameScene().getGameWorld().spawn("player");
+        getGameScene().getGameWorld().spawn("virus", Position.fromGrid(24), Position.fromGrid(24));
+
+        getGameTimer().runAtInterval(this::update, UPDATE_INTERVAL);
+
+        for (int i = 0; i < 10; i++) {
+            getGameWorld().spawn("data", Position.fromGrid(FXGLMath.random(0, 64)), Position.fromGrid(FXGLMath.random(0, 64)));
+        }
+
+        for (int i = 0; i < 10; i++) {
+            getGameWorld().spawn("firewall", Position.fromGrid(FXGLMath.random(0, 64)), Position.fromGrid(FXGLMath.random(0, 64)));
+        }
     }
 
-    public void exit() {
+    @Override
+    protected void initPhysics() {
+        super.initPhysics();
 
+        FXGL.getPhysicsWorld().addCollisionHandler(new VirusCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.FIREWALL));
+        FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.DATA));
+        FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.SOURCE_CODE));
+    }
+
+    @Override
+    protected void initInput() {
+        super.initInput();
+        PlayerComponent.initInput();
     }
 }
