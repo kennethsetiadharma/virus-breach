@@ -1,4 +1,4 @@
-package ca.sfu.cmpt276.group15.render.screen;
+package ca.sfu.cmpt276.group15.ui;
 
 import com.almasb.fxgl.app.scene.*;
 import org.jetbrains.annotations.NotNull;
@@ -7,7 +7,7 @@ public class HackingGameSceneFactory extends SceneFactory {
     @NotNull
     @Override
     public FXGLMenu newGameMenu() {
-        return new MyMenu(MenuType.GAME_MENU);
+        return new PauseMenu();
     }
 
     @NotNull
@@ -25,7 +25,7 @@ public class HackingGameSceneFactory extends SceneFactory {
     @NotNull
     @Override
     public FXGLMenu newMainMenu() {
-        return new MyMenu(MenuType.MAIN_MENU);
+        return new TitleMenu();
     }
 
     @NotNull

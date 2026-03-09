@@ -19,7 +19,7 @@ import static ca.sfu.cmpt276.group15.math.Position.UNIT_SIZE;
 public class HackingGameEntityFactory implements EntityFactory {
     @Spawns("player")
     public Entity createPlayer(SpawnData data) {
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.PLAYER)
             .with(new PlayerComponent())
             .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
@@ -30,12 +30,10 @@ public class HackingGameEntityFactory implements EntityFactory {
 
     @Spawns("antivirus")
     public Entity createAntivirus(SpawnData data) {
-        Rectangle node = new Rectangle(UNIT_SIZE, UNIT_SIZE);
-        node.setFill(Color.RED);
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.ANTIVIRUS)
             .with(new AntivirusComponent())
-            .view(node)
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.RED))
             .zIndex(2)
             .collidable()
             .build();
@@ -43,13 +41,11 @@ public class HackingGameEntityFactory implements EntityFactory {
 
     @Spawns("firewall")
     public Entity createFirewall(SpawnData data) {
-        Rectangle node = new Rectangle(UNIT_SIZE, UNIT_SIZE);
-        node.setFill(Color.ORANGE);
         int damage = 10000;
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.FIREWALL)
             .with(new ScoreModifierComponent(-damage))
-            .view(node)
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.ORANGE))
             .zIndex(1)
             .collidable()
             .build();
@@ -57,31 +53,26 @@ public class HackingGameEntityFactory implements EntityFactory {
 
     @Spawns("data")
     public Entity createData(SpawnData data) {
-        Rectangle node = new Rectangle(UNIT_SIZE, UNIT_SIZE);
-        node.setFill(Color.SLATEGRAY);
         long value = FXGLMath.random(1073741824L, 3221225472L);
-        Entity entity = this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.DATA)
             .with(new ScoreModifierComponent(value))
-            .view(node)
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.SLATEGRAY))
             .zIndex(1)
             .collidable()
             .build();
-        return entity;
     }
 
     @Spawns("sourcecode")
     public Entity createSourceCode(SpawnData data) {
-        Rectangle node = new Rectangle(UNIT_SIZE, UNIT_SIZE);
-        node.setFill(Color.LIMEGREEN);
         long value = FXGLMath.random(134217728L, 536870912L);
         Duration ttl = Duration.seconds(FXGLMath.random(30, 80));
 
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.SOURCE_CODE)
             .with(new ExpireCleanComponent(ttl))
             .with(new ScoreModifierComponent(value))
-            .view(node)
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.LIMEGREEN))
             .zIndex(1)
             .collidable()
             .build();
@@ -89,25 +80,25 @@ public class HackingGameEntityFactory implements EntityFactory {
 
     @Spawns("basicwall")
     public Entity createBasicWall(SpawnData data) {
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.WALL)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.DARKGRAY))
             .collidable()
             .build();
     }
 
     @Spawns("basicwall")
     public Entity createDoor(SpawnData data) {
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.WALL)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.BLUE))
             .collidable()
             .build();
     }
 
     @Spawns("floor")
     public Entity createFloor(SpawnData data) {
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.FLOOR)
             .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
             .build();
@@ -115,22 +106,21 @@ public class HackingGameEntityFactory implements EntityFactory {
 
     @Spawns("entrance")
     public Entity createEntrance(SpawnData data) {
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.FLOOR)
             .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
             .build();
     }
-
 
     @Spawns("exit")
     public Entity createExit(SpawnData data) {
-        return this.entityBase(data)
+        return entityBase(data)
             .type(EntityType.FLOOR)
             .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
             .build();
     }
 
-    private EntityBuilder entityBase(SpawnData data) {
+    private static EntityBuilder entityBase(SpawnData data) {
         return FXGL.entityBuilder(data).bbox(new HitBox("square", BoundingShape.box(UNIT_SIZE - 1.0, UNIT_SIZE - 1.0)));
     }
 }

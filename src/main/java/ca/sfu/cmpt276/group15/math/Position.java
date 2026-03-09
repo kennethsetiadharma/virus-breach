@@ -1,5 +1,7 @@
 package ca.sfu.cmpt276.group15.math;
 
+import javafx.geometry.Point2D;
+
 public class Position {
     public static final int UNIT_SIZE = 16;
 
@@ -8,5 +10,9 @@ public class Position {
     }
     public static double fromGrid(int position) {
         return position * UNIT_SIZE;
+    }
+
+    public static Point2D fromGrid(int x, int y) {
+        return new Point2D(fromGrid(x), fromGrid(y));
     }
 }

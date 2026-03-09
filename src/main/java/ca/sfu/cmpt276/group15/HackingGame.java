@@ -2,7 +2,7 @@ package ca.sfu.cmpt276.group15;
 
 import ca.sfu.cmpt276.group15.entity.*;
 import ca.sfu.cmpt276.group15.math.Position;
-import ca.sfu.cmpt276.group15.render.screen.HackingGameSceneFactory;
+import ca.sfu.cmpt276.group15.ui.HackingGameSceneFactory;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.core.math.FXGLMath;
@@ -15,8 +15,13 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class HackingGame extends GameApplication {
     public static final Duration UPDATE_INTERVAL = Duration.millis(600);
+    private final GameOptions options = new GameOptions();
 
     public HackingGame() {
+    }
+
+    public GameOptions getOptions() {
+        return options;
     }
 
     protected void update() {
@@ -34,6 +39,9 @@ public class HackingGame extends GameApplication {
         settings.setWidth(1280);
         settings.setHeight(720);
         settings.setTitle("Hacking Game");
+
+        settings.setMainMenuEnabled(true);
+        settings.setGameMenuEnabled(true);
         settings.setSceneFactory(new HackingGameSceneFactory());
     }
 
