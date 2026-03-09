@@ -7,5 +7,7 @@ public enum EntityType {
     ANTIVIRUS,
     FIREWALL,
     DATA,
-    SOURCE_CODE
+    SOURCE_CODE,
+    ENTRANCE,
+    EXIT
 }

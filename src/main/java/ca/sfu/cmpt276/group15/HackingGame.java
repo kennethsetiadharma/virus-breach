@@ -50,18 +50,11 @@ public class HackingGame extends GameApplication {
         getGameScene().getViewport().setBounds(0, 0, 1280, 720);
         getGameScene().setBackgroundColor(Color.DARKGRAY);
         getGameWorld().addEntityFactory(new HackingGameEntityFactory());
-        getGameScene().getGameWorld().spawn("player");
-        getGameScene().getGameWorld().spawn("antivirus", Position.fromGrid(24), Position.fromGrid(24));
+
+        BoardGenerator.generateBoard(getGameWorld(), 32, 32);
+        getGameScene().getGameWorld().spawn("player", getGameWorld().getSingleton(EntityType.ENTRANCE).getPosition());
 
         getGameTimer().runAtInterval(this::update, UPDATE_INTERVAL);
-
-        for (int i = 0; i < 10; i++) {
-            getGameWorld().spawn("data", Position.fromGrid(FXGLMath.random(0, 64)), Position.fromGrid(FXGLMath.random(0, 64)));
-        }
-
-        for (int i = 0; i < 10; i++) {
-            getGameWorld().spawn("firewall", Position.fromGrid(FXGLMath.random(0, 64)), Position.fromGrid(FXGLMath.random(0, 64)));
-        }
     }
 
     @Override

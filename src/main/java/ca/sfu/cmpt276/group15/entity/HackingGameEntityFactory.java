@@ -17,6 +17,11 @@ import javafx.util.Duration;
 import static ca.sfu.cmpt276.group15.math.Position.UNIT_SIZE;
 
 public class HackingGameEntityFactory implements EntityFactory {
+    private static EntityBuilder entityBase(SpawnData data) {
+        return FXGL.entityBuilder(data)
+            .bbox(new HitBox("square", BoundingShape.box(UNIT_SIZE - 1.0, UNIT_SIZE - 1.0)));
+    }
+
     @Spawns("player")
     public Entity createPlayer(SpawnData data) {
         return entityBase(data)
@@ -78,16 +83,16 @@ public class HackingGameEntityFactory implements EntityFactory {
             .build();
     }
 
-    @Spawns("basicwall")
-    public Entity createBasicWall(SpawnData data) {
+    @Spawns("wall")
+    public Entity createWall(SpawnData data) {
         return entityBase(data)
             .type(EntityType.WALL)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.DARKGRAY))
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.DARKSLATEGRAY))
             .collidable()
             .build();
     }
 
-    @Spawns("basicwall")
+    @Spawns("door")
     public Entity createDoor(SpawnData data) {
         return entityBase(data)
             .type(EntityType.WALL)
@@ -107,20 +112,16 @@ public class HackingGameEntityFactory implements EntityFactory {
     @Spawns("entrance")
     public Entity createEntrance(SpawnData data) {
         return entityBase(data)
-            .type(EntityType.FLOOR)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
+            .type(EntityType.ENTRANCE)
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.LIGHTSEAGREEN))
             .build();
     }
 
     @Spawns("exit")
     public Entity createExit(SpawnData data) {
         return entityBase(data)
-            .type(EntityType.FLOOR)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
+            .type(EntityType.EXIT)
+            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.LIGHTCORAL))
             .build();
-    }
-
-    private static EntityBuilder entityBase(SpawnData data) {
-        return FXGL.entityBuilder(data).bbox(new HitBox("square", BoundingShape.box(UNIT_SIZE - 1.0, UNIT_SIZE - 1.0)));
     }
 }

@@ -8,6 +8,7 @@ public class Position {
     public static int asGrid(double position) {
         return Math.floorDiv((int) position, UNIT_SIZE);
     }
+
     public static double fromGrid(int position) {
         return position * UNIT_SIZE;
     }

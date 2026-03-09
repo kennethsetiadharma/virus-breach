@@ -23,7 +23,7 @@ public class TitleMenu extends FXGLMenu {
     }
 
     private void optionsClicked(ActionEvent event) {
-        FXGL.getSceneService().pushSubScene(new OptionsMenu(MenuType.MAIN_MENU, ((HackingGame)FXGL.getAppCast()).getOptions()));
+        FXGL.getSceneService().pushSubScene(new OptionsMenu(MenuType.MAIN_MENU, ((HackingGame) FXGL.getAppCast()).getOptions()));
     }
 
     private void startClicked(ActionEvent event) {
