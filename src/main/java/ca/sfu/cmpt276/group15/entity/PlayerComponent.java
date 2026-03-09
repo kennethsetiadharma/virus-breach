@@ -5,12 +5,15 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class PlayerComponent extends FixedFrequencyComponent {
     private final Set<Direction> movement = EnumSet.noneOf(Direction.class);
+    private final Deque<Direction> queuedMovement = new ArrayDeque<>();
     private long score = 0;
 
     public PlayerComponent() {}
@@ -40,10 +43,20 @@ public class PlayerComponent extends FixedFrequencyComponent {
 
     @Override
     public void onUpdate() {
+        Direction direction = this.queuedMovement.pollFirst();
+        if (direction != null) {
+            this.move(direction);
+            return;
+        }
+
         Iterator<Direction> iterator = this.movement.iterator();
         if (iterator.hasNext()) {
             this.move(iterator.next());
         }
+    }
+
+    private void queueMovement(Direction direction) {
+        this.queuedMovement.addLast(direction);
     }
 
     private static class MovementAction extends UserAction {
@@ -62,7 +75,11 @@ public class PlayerComponent extends FixedFrequencyComponent {
         @Override
         protected void onActionBegin() {
             super.onActionBegin();
-            FXGL.getGameWorld().getSingletonOptional(EntityType.PLAYER).ifPresent(e -> e.getComponent(PlayerComponent.class).movement.add(this.direction));
+            FXGL.getGameWorld().getSingletonOptional(EntityType.PLAYER).ifPresent(e -> {
+                PlayerComponent player = e.getComponent(PlayerComponent.class);
+                player.movement.add(this.direction);
+                player.queueMovement(this.direction);
+            });
         }
 
         @Override

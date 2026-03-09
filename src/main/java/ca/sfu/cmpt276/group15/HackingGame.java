@@ -14,7 +14,9 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class HackingGame extends GameApplication {
-    public static final Duration UPDATE_INTERVAL = Duration.millis(600);
+    public static final Duration UPDATE_INTERVAL = Duration.millis(100);
+    public static final int BOARD_WIDTH = 64;
+    public static final int BOARD_HEIGHT = 64;
     private final GameOptions options = new GameOptions();
 
     public HackingGame() {
@@ -29,7 +31,7 @@ public class HackingGame extends GameApplication {
         getGameWorld().getEntitiesByType(EntityType.ANTIVIRUS).forEach(e -> e.getComponent(AntivirusComponent.class).onUpdate());
 
         if (FXGLMath.random(1, 100) <= 5) {
-            SpawnData data = new SpawnData(Position.fromGrid(FXGLMath.random(0, 64)), Position.fromGrid(FXGLMath.random(0, 64)));
+            SpawnData data = new SpawnData(Position.fromGrid(FXGLMath.random(0, BOARD_WIDTH - 1)),Position.fromGrid(FXGLMath.random(0, BOARD_HEIGHT - 1)));
             getGameWorld().spawn("sourcecode", data);
         }
     }
@@ -47,12 +49,21 @@ public class HackingGame extends GameApplication {
 
     @Override
     protected void initGame() {
-        getGameScene().getViewport().setBounds(0, 0, 1280, 720);
+        int viewportBoundWidth = Math.max((int)Position.fromGrid(BOARD_WIDTH), getAppWidth());
+        int viewportBoundHeight = Math.max((int)Position.fromGrid(BOARD_HEIGHT), getAppHeight());
+
+        getGameScene().getViewport().setBounds(0, 0, viewportBoundWidth, viewportBoundHeight);
+        getGameScene().getViewport().setLazy(true);
         getGameScene().setBackgroundColor(Color.DARKGRAY);
         getGameWorld().addEntityFactory(new HackingGameEntityFactory());
 
-        BoardGenerator.generateBoard(getGameWorld(), 32, 32);
-        getGameScene().getGameWorld().spawn("player", getGameWorld().getSingleton(EntityType.ENTRANCE).getPosition());
+        BoardGenerator.generateBoard(getGameWorld(), BOARD_WIDTH, BOARD_HEIGHT);
+        var player = getGameScene().getGameWorld().spawn("player", getGameWorld().getSingleton(EntityType.ENTRANCE).getPosition());
+        getGameScene().getViewport().bindToEntity(
+            player,
+            (getAppWidth() - Position.UNIT_SIZE) / 2.0,
+            (getAppHeight() - Position.UNIT_SIZE) / 2.0
+        );
 
         getGameTimer().runAtInterval(this::update, UPDATE_INTERVAL);
     }
