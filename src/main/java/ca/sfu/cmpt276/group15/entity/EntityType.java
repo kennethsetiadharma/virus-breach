@@ -4,7 +4,7 @@ public enum EntityType {
     FLOOR,
     WALL,
     PLAYER,
-    VIRUS,
+    ANTIVIRUS,
     FIREWALL,
     DATA,
     SOURCE_CODE

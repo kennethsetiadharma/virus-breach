@@ -21,7 +21,7 @@ public class HackingGame extends GameApplication {
 
     protected void update() {
         getGameWorld().getSingletonOptional(EntityType.PLAYER).ifPresent(e -> e.getComponent(PlayerComponent.class).onUpdate());
-        getGameWorld().getEntitiesByType(EntityType.VIRUS).forEach(e -> e.getComponent(VirusComponent.class).onUpdate());
+        getGameWorld().getEntitiesByType(EntityType.ANTIVIRUS).forEach(e -> e.getComponent(AntivirusComponent.class).onUpdate());
 
         if (FXGLMath.random(1, 100) <= 5) {
             SpawnData data = new SpawnData(Position.fromGrid(FXGLMath.random(0, 64)), Position.fromGrid(FXGLMath.random(0, 64)));
@@ -43,7 +43,7 @@ public class HackingGame extends GameApplication {
         getGameScene().setBackgroundColor(Color.DARKGRAY);
         getGameWorld().addEntityFactory(new HackingGameEntityFactory());
         getGameScene().getGameWorld().spawn("player");
-        getGameScene().getGameWorld().spawn("virus", Position.fromGrid(24), Position.fromGrid(24));
+        getGameScene().getGameWorld().spawn("antivirus", Position.fromGrid(24), Position.fromGrid(24));
 
         getGameTimer().runAtInterval(this::update, UPDATE_INTERVAL);
 
@@ -60,7 +60,7 @@ public class HackingGame extends GameApplication {
     protected void initPhysics() {
         super.initPhysics();
 
-        FXGL.getPhysicsWorld().addCollisionHandler(new VirusCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new AntivirusCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.FIREWALL));
         FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.DATA));
         FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.SOURCE_CODE));

@@ -28,13 +28,13 @@ public class HackingGameEntityFactory implements EntityFactory {
             .build();
     }
 
-    @Spawns("virus")
-    public Entity createVirus(SpawnData data) {
+    @Spawns("antivirus")
+    public Entity createAntivirus(SpawnData data) {
         Rectangle node = new Rectangle(UNIT_SIZE, UNIT_SIZE);
         node.setFill(Color.RED);
         return this.entityBase(data)
-            .type(EntityType.VIRUS)
-            .with(new VirusComponent())
+            .type(EntityType.ANTIVIRUS)
+            .with(new AntivirusComponent())
             .view(node)
             .zIndex(2)
             .collidable()

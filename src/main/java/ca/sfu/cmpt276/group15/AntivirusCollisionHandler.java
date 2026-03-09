@@ -4,9 +4,9 @@ import ca.sfu.cmpt276.group15.entity.EntityType;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 
-public class VirusCollisionHandler extends CollisionHandler {
-    public VirusCollisionHandler() {
-        super(EntityType.PLAYER, EntityType.VIRUS);
+public class AntivirusCollisionHandler extends CollisionHandler {
+    public AntivirusCollisionHandler() {
+        super(EntityType.PLAYER, EntityType.ANTIVIRUS);
     }
 
     @Override

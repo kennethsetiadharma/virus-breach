@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class VirusComponent extends FixedFrequencyComponent {
+public class AntivirusComponent extends FixedFrequencyComponent {
     private Iterator<Direction> path = null;
     private AStarGrid grid;
     private AStarPathfinder<AStarCell> pathfinder;
     private Point2D prevPlayerPos = null;
 
-    public VirusComponent() {
+    public AntivirusComponent() {
     }
 
     @Override
