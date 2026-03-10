@@ -23,6 +23,9 @@ public class BoardGenerator {
             world.spawn("wall", Position.fromGrid(height - 1), Position.fromGrid(y));
         }
 
+
+        generateWalls(world, width, height);
+
         Entity wall = world.getRandom(EntityType.WALL).get();
         wall.removeFromWorld();
         world.spawn("entrance", wall.getPosition());
@@ -60,5 +63,38 @@ public class BoardGenerator {
 
         world.spawn(entity, Position.fromGrid(x), Position.fromGrid(y));
         return true;
+    }
+    
+    /**
+     * Generates a room-based maze layout
+     */
+    private static void generateWalls(GameWorld world, int width, int height) {
+        int roomWidth = 12;
+        int roomHeight = 12;
+        
+        // Create walls
+        for (int rx = 0; rx < width / roomWidth; rx++) {
+            for (int ry = 0; ry < height / roomHeight; ry++) {
+                int roomX = rx * roomWidth + 2;
+                int roomY = ry * roomHeight + 2;
+                
+                // Create room walls 
+                // Top and bottom walls
+                for (int x = 0; x < roomWidth - 4; x++) {
+                    if (x > 2 && x < roomWidth - 6) { 
+                        trySpawn(world, "wall", roomX + x, roomY);
+                        trySpawn(world, "wall", roomX + x, roomY + roomHeight - 4);
+                    }
+                }
+                
+                // Left and right walls
+                for (int y = 0; y < roomHeight - 4; y++) {
+                    if (y > 2 && y < roomHeight - 6) {
+                        trySpawn(world, "wall", roomX, roomY + y);
+                        trySpawn(world, "wall", roomX + roomWidth - 4, roomY + y);
+                    }
+                }
+            }
+        }
     }
 }
