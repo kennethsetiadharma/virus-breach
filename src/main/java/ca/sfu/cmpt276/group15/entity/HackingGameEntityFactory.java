@@ -10,16 +10,39 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.io.InputStream;
+
 import static ca.sfu.cmpt276.group15.math.Position.UNIT_SIZE;
 
 public class HackingGameEntityFactory implements EntityFactory {
+    private static final String SPRITE_DIR = "/sprites/";
+
     private static EntityBuilder entityBase(SpawnData data) {
         return FXGL.entityBuilder(data)
             .bbox(new HitBox("square", BoundingShape.box(UNIT_SIZE - 1.0, UNIT_SIZE - 1.0)));
+    }
+
+    private static Node sprite(String filename, Color fallbackColor) {
+        try (InputStream stream = HackingGameEntityFactory.class.getResourceAsStream(SPRITE_DIR + filename)) {
+            if (stream == null) {
+                return new Rectangle(UNIT_SIZE, UNIT_SIZE, fallbackColor);
+            }
+
+            ImageView view = new ImageView(new Image(stream));
+            view.setFitWidth(UNIT_SIZE);
+            view.setFitHeight(UNIT_SIZE);
+            view.setPreserveRatio(false);
+            return view;
+        } catch (Exception e) {
+            return new Rectangle(UNIT_SIZE, UNIT_SIZE, fallbackColor);
+        }
     }
 
     @Spawns("player")
@@ -27,7 +50,7 @@ public class HackingGameEntityFactory implements EntityFactory {
         return entityBase(data)
             .type(EntityType.PLAYER)
             .with(new PlayerComponent())
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
+            .view(sprite("player.png", Color.WHITE))
             .zIndex(2)
             .collidable()
             .build();
@@ -38,7 +61,7 @@ public class HackingGameEntityFactory implements EntityFactory {
         return entityBase(data)
             .type(EntityType.ANTIVIRUS)
             .with(new AntivirusComponent())
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.RED))
+            .view(sprite("antivirus.png", Color.RED))
             .zIndex(2)
             .collidable()
             .build();
@@ -50,7 +73,7 @@ public class HackingGameEntityFactory implements EntityFactory {
         return entityBase(data)
             .type(EntityType.FIREWALL)
             .with(new ScoreModifierComponent(-damage))
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.ORANGE))
+            .view(sprite("firewall.png", Color.ORANGE))
             .zIndex(1)
             .collidable()
             .build();
@@ -62,7 +85,7 @@ public class HackingGameEntityFactory implements EntityFactory {
         return entityBase(data)
             .type(EntityType.DATA)
             .with(new ScoreModifierComponent(value))
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.SLATEGRAY))
+            .view(sprite("data.png", Color.SLATEGRAY))
             .zIndex(1)
             .collidable()
             .build();
@@ -77,7 +100,7 @@ public class HackingGameEntityFactory implements EntityFactory {
             .type(EntityType.SOURCE_CODE)
             .with(new ExpireCleanComponent(ttl))
             .with(new ScoreModifierComponent(value))
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.LIMEGREEN))
+            .view(sprite("sourcecode.png", Color.LIMEGREEN))
             .zIndex(1)
             .collidable()
             .build();
@@ -87,7 +110,7 @@ public class HackingGameEntityFactory implements EntityFactory {
     public Entity createWall(SpawnData data) {
         return entityBase(data)
             .type(EntityType.WALL)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.DARKSLATEGRAY))
+            .view(sprite("wall.png", Color.DARKSLATEGRAY))
             .collidable()
             .build();
     }
@@ -96,7 +119,7 @@ public class HackingGameEntityFactory implements EntityFactory {
     public Entity createDoor(SpawnData data) {
         return entityBase(data)
             .type(EntityType.WALL)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.BLUE))
+            .view(sprite("door.png", Color.BLUE))
             .collidable()
             .build();
     }
@@ -105,7 +128,7 @@ public class HackingGameEntityFactory implements EntityFactory {
     public Entity createFloor(SpawnData data) {
         return entityBase(data)
             .type(EntityType.FLOOR)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE))
+            .view(sprite("floor.png", Color.LIGHTGRAY))
             .build();
     }
 
@@ -113,7 +136,7 @@ public class HackingGameEntityFactory implements EntityFactory {
     public Entity createEntrance(SpawnData data) {
         return entityBase(data)
             .type(EntityType.ENTRANCE)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.LIGHTSEAGREEN))
+            .view(sprite("entrance.png", Color.LIGHTSEAGREEN))
             .build();
     }
 
@@ -121,7 +144,7 @@ public class HackingGameEntityFactory implements EntityFactory {
     public Entity createExit(SpawnData data) {
         return entityBase(data)
             .type(EntityType.EXIT)
-            .view(new Rectangle(UNIT_SIZE, UNIT_SIZE, Color.LIGHTCORAL))
+            .view(sprite("exit.png", Color.LIGHTCORAL))
             .build();
     }
 }

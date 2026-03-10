@@ -15,8 +15,9 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class HackingGame extends GameApplication {
     public static final Duration UPDATE_INTERVAL = Duration.millis(100);
-    public static final int BOARD_WIDTH = 64;
-    public static final int BOARD_HEIGHT = 64;
+    public static final int BOARD_WIDTH = 32;
+    public static final int BOARD_HEIGHT = 32;
+    public static final double CAMERA_ZOOM = 4.0;
     private final GameOptions options = new GameOptions();
 
     public HackingGame() {
@@ -53,7 +54,8 @@ public class HackingGame extends GameApplication {
         int viewportBoundHeight = Math.max((int)Position.fromGrid(BOARD_HEIGHT), getAppHeight());
 
         getGameScene().getViewport().setBounds(0, 0, viewportBoundWidth, viewportBoundHeight);
-        getGameScene().getViewport().setLazy(true);
+        // getGameScene().getViewport().setLazy(true);
+        getGameScene().getViewport().setZoom(CAMERA_ZOOM);
         getGameScene().setBackgroundColor(Color.DARKGRAY);
         getGameWorld().addEntityFactory(new HackingGameEntityFactory());
 

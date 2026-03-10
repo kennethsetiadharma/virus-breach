@@ -14,10 +14,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AntivirusComponent extends FixedFrequencyComponent {
+    private static final int MOVE_EVERY_N_TICKS = 2;
     private Iterator<Direction> path = null;
     private AStarGrid grid;
     private AStarPathfinder<AStarCell> pathfinder;
     private Point2D prevPlayerPos = null;
+    private int ticksSinceMove = 0;
 
     public AntivirusComponent() {
     }
@@ -68,6 +70,12 @@ public class AntivirusComponent extends FixedFrequencyComponent {
         } else {
             this.path = null;
         }
+
+        this.ticksSinceMove++;
+        if (this.ticksSinceMove < MOVE_EVERY_N_TICKS) {
+            return;
+        }
+        this.ticksSinceMove = 0;
 
         if (this.path != null && this.path.hasNext()) {
             this.move(this.path.next());
