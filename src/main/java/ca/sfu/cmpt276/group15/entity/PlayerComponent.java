@@ -34,11 +34,11 @@ public class PlayerComponent extends FixedFrequencyComponent {
         }
     }
 
-    public static void initInput() {
-        FXGL.getInput().addAction(MovementAction.RIGHT, KeyCode.RIGHT);
-        FXGL.getInput().addAction(MovementAction.LEFT, KeyCode.LEFT);
-        FXGL.getInput().addAction(MovementAction.UP, KeyCode.UP);
-        FXGL.getInput().addAction(MovementAction.DOWN, KeyCode.DOWN);
+    public static void initInput() {        
+        FXGL.getInput().addAction(MovementAction.RIGHT, KeyCode.D);
+        FXGL.getInput().addAction(MovementAction.LEFT, KeyCode.A);
+        FXGL.getInput().addAction(MovementAction.UP, KeyCode.W);
+        FXGL.getInput().addAction(MovementAction.DOWN, KeyCode.S);
     }
 
     @Override
