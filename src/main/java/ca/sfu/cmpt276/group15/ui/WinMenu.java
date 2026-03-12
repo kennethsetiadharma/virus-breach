@@ -1,46 +1,52 @@
 package ca.sfu.cmpt276.group15.ui;
 
-import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.MenuType;
-import com.almasb.fxgl.dsl.FXGL;
+import ca.sfu.cmpt276.group15.HackingGame;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 
-public class WinMenu extends FXGLMenu {
-    public WinMenu(long score) {
-        super(MenuType.GAME_MENU);
+public class WinMenu extends Menu {
+    public WinMenu(HackingGame game, long score) {
+        super(game);
 
         // Background
-        Rectangle bg = new Rectangle(FXGL.getAppWidth(), FXGL.getAppHeight());
+        Rectangle bg = new Rectangle();
+        bg.widthProperty().bind(this.widthProperty());
+        bg.heightProperty().bind(this.heightProperty());
         bg.setFill(Color.rgb(0, 0, 0, 0.7));
 
         // Title text
-        Text title = FXGL.getUIFactoryService().newText("MISSION SUCCESS", Color.GREEN, 48);
-        title.setTranslateX(FXGL.getAppWidth() / 2.0 - 200);
+        Label title = new Label("MISSION SUCCESS");
+        title.setTextFill(Color.GREEN);
+        title.setFont(new Font(48));
+        title.setTranslateX(1280 / 2.0 - 200);
         title.setTranslateY(200);
 
         // Subtitle text
-        Text subtitle = FXGL.getUIFactoryService().newText("Escaped with data: " + score, Color.WHITE, 24);
-        subtitle.setTranslateX(FXGL.getAppWidth() / 2.0 - 150);
+        Label subtitle = new Label("Escaped with data: " + score);
+        subtitle.setTextFill(Color.WHITE);
+        subtitle.setFont(new Font(24));
+        subtitle.setTranslateX(1280 / 2.0 - 150);
         subtitle.setTranslateY(260);
 
         // Retry button
-        var btnRetry = FXGL.getUIFactoryService().newButton("Play Again");
+        var btnRetry = new Button("Retry");
         btnRetry.setOnAction(e -> {
-            FXGL.getGameController().startNewGame();
+            game.startNewGame();
         });
-        btnRetry.setTranslateX(FXGL.getAppWidth() / 2.0 - 100);
+        btnRetry.setTranslateX(1280 / 2.0 - 100);
         btnRetry.setTranslateY(350);
 
         // Main menu button
-        var btnMainMenu = FXGL.getUIFactoryService().newButton("Main Menu");
+        var btnMainMenu = new Button("Main Menu");
         btnMainMenu.setOnAction(e -> {
-            FXGL.getGameController().gotoMainMenu();
+            this.getScene().setRoot(new TitleMenu(game));
         });
-        btnMainMenu.setTranslateX(FXGL.getAppWidth() / 2.0 - 100);
+        btnMainMenu.setTranslateX(1280 / 2.0 - 100);
         btnMainMenu.setTranslateY(410);
 
-        getContentRoot().getChildren().addAll(bg, title, subtitle, btnRetry, btnMainMenu);
+        this.getChildren().addAll(bg, title, subtitle, btnRetry, btnMainMenu);
     }
 }
