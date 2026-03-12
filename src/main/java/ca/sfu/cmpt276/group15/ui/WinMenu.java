@@ -1,47 +1,52 @@
 package ca.sfu.cmpt276.group15.ui;
 
-import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.MenuType;
-import com.almasb.fxgl.dsl.FXGL;
+import ca.sfu.cmpt276.group15.HackingGame;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 
-public class WinMenu extends FXGLMenu {
-    public WinMenu(long finalScore) {
-        super(MenuType.GAME_MENU);
+public class WinMenu extends Menu {
+    public WinMenu(HackingGame game, long score) {
+        super(game);
 
-        // Semi-transparent dark overlay over the game world
-        Rectangle bg = new Rectangle(FXGL.getAppWidth(), FXGL.getAppHeight());
-        bg.setFill(Color.rgb(0, 0, 0, 0.75));
+        // Background
+        Rectangle bg = new Rectangle();
+        bg.widthProperty().bind(this.widthProperty());
+        bg.heightProperty().bind(this.heightProperty());
+        bg.setFill(Color.rgb(0, 0, 0, 0.7));
 
-        // Main title
-        Text title = FXGL.getUIFactoryService().newText("MISSION COMPLETE", Color.LIME, 48);
-        title.setTranslateX(FXGL.getAppWidth() / 2.0 - 230);
+        // Title text
+        Label title = new Label("MISSION SUCCESS");
+        title.setTextFill(Color.GREEN);
+        title.setFont(new Font(48));
+        title.setTranslateX(1280 / 2.0 - 200);
         title.setTranslateY(200);
 
-        // Subtitle
-        Text subtitle = FXGL.getUIFactoryService().newText("Data extracted successfully", Color.WHITE, 24);
-        subtitle.setTranslateX(FXGL.getAppWidth() / 2.0 - 190);
+        // Subtitle text
+        Label subtitle = new Label("Escaped with data: " + score);
+        subtitle.setTextFill(Color.WHITE);
+        subtitle.setFont(new Font(24));
+        subtitle.setTranslateX(1280 / 2.0 - 150);
         subtitle.setTranslateY(260);
 
-        // Final score display
-        Text scoreText = FXGL.getUIFactoryService().newText("Final Score: " + finalScore, Color.CYAN, 28);
-        scoreText.setTranslateX(FXGL.getAppWidth() / 2.0 - 130);
-        scoreText.setTranslateY(320);
-
-        // Play again button
-        var btnRetry = FXGL.getUIFactoryService().newButton("Play Again");
-        btnRetry.setOnAction(e -> FXGL.getGameController().startNewGame());
-        btnRetry.setTranslateX(FXGL.getAppWidth() / 2.0 - 100);
-        btnRetry.setTranslateY(390);
+        // Retry button
+        var btnRetry = new Button("Retry");
+        btnRetry.setOnAction(e -> {
+            game.startNewGame();
+        });
+        btnRetry.setTranslateX(1280 / 2.0 - 100);
+        btnRetry.setTranslateY(350);
 
         // Main menu button
-        var btnMainMenu = FXGL.getUIFactoryService().newButton("Main Menu");
-        btnMainMenu.setOnAction(e -> FXGL.getGameController().gotoMainMenu());
-        btnMainMenu.setTranslateX(FXGL.getAppWidth() / 2.0 - 100);
-        btnMainMenu.setTranslateY(450);
+        var btnMainMenu = new Button("Main Menu");
+        btnMainMenu.setOnAction(e -> {
+            this.getScene().setRoot(new TitleMenu(game));
+        });
+        btnMainMenu.setTranslateX(1280 / 2.0 - 100);
+        btnMainMenu.setTranslateY(410);
 
-        getContentRoot().getChildren().addAll(bg, title, subtitle, scoreText, btnRetry, btnMainMenu);
+        this.getChildren().addAll(bg, title, subtitle, btnRetry, btnMainMenu);
     }
 }

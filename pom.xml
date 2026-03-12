@@ -26,7 +26,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>ca.sfu.cmpt276.group15.Main</mainClass>
+              <mainClass>ca.sfu.cmpt276.group15.HackingGame</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -36,7 +36,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>ca.sfu.cmpt276.group15.Main</mainClass>
+          <mainClass>ca.sfu.cmpt276.group15.HackingGame</mainClass>
         </configuration>
       </plugin>
     </plugins>
@@ -64,18 +64,6 @@
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>21.0.10</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>21.0.10</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.almasb</groupId>
-      <artifactId>fxgl</artifactId>
-      <version>21.1</version>
     </dependency>
   </dependencies>
 
