@@ -47,7 +47,11 @@ public class GamePane extends Pane {
                     if (entity instanceof Player player) player.move(Direction.UP);
                 }
             }
-            case A -> {}
+            case A -> {
+                for (Entity entity : board.getEntities()) {
+                    if (entity instanceof Player player) player.move(Direction.LEFT);
+                }
+            }
             case S -> {
                 for (Entity entity : board.getEntities()) {
                     if (entity instanceof Player player) {
@@ -55,7 +59,11 @@ public class GamePane extends Pane {
                         System.out.println("DOWN");
                     }
                 }}
-            case D -> {}
+            case D -> {
+                for (Entity entity : board.getEntities()) {
+                    if (entity instanceof Player player) player.move(Direction.RIGHT);
+                }
+            }
         }
     }
 
