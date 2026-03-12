@@ -1,6 +1,8 @@
 package ca.sfu.cmpt276.group15;
 
 import ca.sfu.cmpt276.group15.entity.*;
+import ca.sfu.cmpt276.group15.entity.collision.AntivirusCollisionHandler;
+import ca.sfu.cmpt276.group15.entity.collision.ExitCollisionHandler;
 import ca.sfu.cmpt276.group15.math.Position;
 import ca.sfu.cmpt276.group15.ui.HackingGameSceneFactory;
 import com.almasb.fxgl.app.GameApplication;
@@ -75,6 +77,7 @@ public class HackingGame extends GameApplication {
         super.initPhysics();
 
         FXGL.getPhysicsWorld().addCollisionHandler(new AntivirusCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new ExitCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.FIREWALL));
         FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.DATA));
         FXGL.getPhysicsWorld().addCollisionHandler(new ScoreModifierComponent.ScoreModifierCollisionHandler(EntityType.SOURCE_CODE));

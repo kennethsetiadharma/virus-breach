@@ -23,9 +23,6 @@ public class BoardGenerator {
             world.spawn("wall", Position.fromGrid(height - 1), Position.fromGrid(y));
         }
 
-
-        generateWalls(world, width, height);
-
         Entity wall = world.getRandom(EntityType.WALL).get();
         wall.removeFromWorld();
         world.spawn("entrance", wall.getPosition());
@@ -33,6 +30,8 @@ public class BoardGenerator {
         wall = world.getRandom(EntityType.WALL).get();
         wall.removeFromWorld();
         world.spawn("exit", wall.getPosition());
+
+        generateWalls(world, width, height);
 
         world.spawn("wall", Position.fromGrid(0), Position.fromGrid(0));
         world.spawn("wall", Position.fromGrid(0), Position.fromGrid(height - 1));

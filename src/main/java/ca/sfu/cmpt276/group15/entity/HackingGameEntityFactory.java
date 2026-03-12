@@ -26,7 +26,7 @@ public class HackingGameEntityFactory implements EntityFactory {
 
     private static EntityBuilder entityBase(SpawnData data) {
         return FXGL.entityBuilder(data)
-            .bbox(new HitBox("square", BoundingShape.box(UNIT_SIZE - 1.0, UNIT_SIZE - 1.0)));
+            .bbox(new HitBox("square", BoundingShape.box(UNIT_SIZE - 0.5, UNIT_SIZE - 0.5)));
     }
 
     private static Node sprite(String filename, Color fallbackColor) {
@@ -145,6 +145,7 @@ public class HackingGameEntityFactory implements EntityFactory {
         return entityBase(data)
             .type(EntityType.EXIT)
             .view(sprite("exit.png", Color.LIGHTCORAL))
+            .collidable()
             .build();
     }
 }

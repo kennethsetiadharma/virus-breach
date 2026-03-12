@@ -1,6 +1,8 @@
 package ca.sfu.cmpt276.group15.entity;
 
 import ca.sfu.cmpt276.group15.math.Direction;
+import ca.sfu.cmpt276.group15.ui.GameOverMenu;
+import ca.sfu.cmpt276.group15.ui.WinMenu;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
@@ -14,7 +16,7 @@ import java.util.Set;
 public class PlayerComponent extends FixedFrequencyComponent {
     private final Set<Direction> movement = EnumSet.noneOf(Direction.class);
     private final Deque<Direction> queuedMovement = new ArrayDeque<>();
-    private long score = 0;
+    private long score = 1;
 
     public PlayerComponent() {}
 
@@ -29,12 +31,13 @@ public class PlayerComponent extends FixedFrequencyComponent {
 
     public void updateScore(long score) {
         this.score += score;
-        if (score < 0) {
+        if (score <= 0) {
             this.entity.removeFromWorld();
+            FXGL.getSceneService().pushSubScene(new GameOverMenu());
         }
     }
 
-    public static void initInput() {        
+    public static void initInput() {
         FXGL.getInput().addAction(MovementAction.RIGHT, KeyCode.D);
         FXGL.getInput().addAction(MovementAction.LEFT, KeyCode.A);
         FXGL.getInput().addAction(MovementAction.UP, KeyCode.W);

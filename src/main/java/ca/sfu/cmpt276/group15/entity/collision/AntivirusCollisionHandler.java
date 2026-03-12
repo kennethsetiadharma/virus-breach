@@ -1,9 +1,8 @@
-package ca.sfu.cmpt276.group15;
+package ca.sfu.cmpt276.group15.entity.collision;
 
 import ca.sfu.cmpt276.group15.entity.EntityType;
-import ca.sfu.cmpt276.group15.ui.GameOverMenu;
 
-import com.almasb.fxgl.dsl.FXGL;
+import ca.sfu.cmpt276.group15.entity.PlayerComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 
@@ -15,7 +14,7 @@ public class AntivirusCollisionHandler extends CollisionHandler {
     @Override
     protected void onCollision(Entity a, Entity b) {
         super.onCollision(a, b);
-        a.removeFromWorld();
-        FXGL.getSceneService().pushSubScene(new GameOverMenu());
+        PlayerComponent component = a.getComponent(PlayerComponent.class);
+        component.updateScore(-component.getScore());
     }
 }
