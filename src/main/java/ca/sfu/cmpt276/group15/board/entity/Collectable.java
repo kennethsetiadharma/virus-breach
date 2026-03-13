@@ -2,10 +2,10 @@ package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
 
-public abstract class Reward extends Entity {
+public abstract class Collectable extends Entity {
     private final int value;
 
-    public Reward(Board board, int x, int y, int value) {
+    public Collectable(Board board, int x, int y, int value) {
         super(board, x, y);
         this.value = value;
     }

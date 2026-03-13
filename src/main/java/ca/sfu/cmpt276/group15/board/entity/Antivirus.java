@@ -9,8 +9,6 @@ import ca.sfu.cmpt276.group15.math.Position;
 import java.util.*;
 
 public class Antivirus extends AnimatedEntity implements BoardObserver {
-    // antivirus doesn't extend Enemy anymore, to make sure this is ok after movement logic
-
     private static final int MOVEMENT_TICKS = 2;
     private static final String[] MOVING_SPRITES = {
         "antivirus_moving1.png",

@@ -5,7 +5,7 @@ import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
-public class Data extends Reward {
+public class Data extends Collectable {
     public Data(Board board, int x, int y) {
         super(board, x, y, 100);
     }

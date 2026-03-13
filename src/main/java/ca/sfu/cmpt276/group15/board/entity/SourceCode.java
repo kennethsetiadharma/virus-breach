@@ -5,11 +5,11 @@ import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
-public class SourceCode extends Reward {
+public class SourceCode extends Collectable {
     private int ttl;
 
     public SourceCode(Board board, int x, int y, int ttl) {
-        super(board, x, y,250);
+        super(board, x, y, 250);
         this.ttl = ttl;
     }
 
