@@ -20,4 +20,8 @@ public record Position(int x, int y) {
     public Position relative(Direction direction) {
         return new Position(this.x + direction.getX(), this.y + direction.getY());
     }
+
+    public int manhattanDistance(Position b) {
+        return Math.abs(this.x - b.x) + Math.abs(this.y - b.y);
+    }
 }

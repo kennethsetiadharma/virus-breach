@@ -56,11 +56,9 @@ public class Board implements Closeable {
         this.entitiesPendingRemoval.add(entity);
     }
 
-    public void setTile(Position pos, TileType tile) {
-        this.tiles[pos.y()][pos.x()] = tile;
-    }
     public void setTile(int x, int y, TileType tile) {
         this.tiles[y][x] = tile;
+        this.observers.forEach(o -> o.onTileChanged(x, y, tile));
     }
 
     public TileType getTile(Position pos) {
@@ -68,11 +66,10 @@ public class Board implements Closeable {
     }
 
     public boolean contains(Position pos) {
-        boolean valid = pos.x() >= 0 && 
-                        pos.x() < this.width && 
-                        pos.y() >= 0 && 
-                        pos.y() < this.height;
-        return valid;
+        return pos.x() >= 0
+            && pos.x() < this.width
+            && pos.y() >= 0
+            && pos.y() < this.height;
     }
 
     public void start() {
@@ -175,6 +172,10 @@ public class Board implements Closeable {
 
     public void attach(BoardObserver observer) {
         this.observers.add(observer);
+    }
+
+    public void detach(BoardObserver observer) {
+        this.observers.remove(observer);
     }
 
     public boolean allDataCollected() {
