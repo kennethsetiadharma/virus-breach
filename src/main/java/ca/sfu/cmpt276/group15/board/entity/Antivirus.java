@@ -2,11 +2,15 @@ package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.math.Position;
-import ca.sfu.cmpt276.group15.ui.ResourceManager;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
 
-public class Antivirus extends Enemy {
+public class Antivirus extends AnimatedEntity {
+    // antivirus doesn't extend Enemy anymore, to make sure this is ok after movement logic
+
+    private static final String[] MOVING_SPRITES = {
+        "antivirus_moving1.png",
+        "antivirus_moving2.png"
+    };
+
     public Antivirus(Board board, int x, int y) {
         super(board, x, y);
     }
@@ -30,7 +34,12 @@ public class Antivirus extends Enemy {
     }
 
     @Override
-    public Node createRenderNode() {
-        return ResourceManager.sprite("antivirus.png", Color.RED);
+    protected String getIdleSpriteAsset() {
+        return "antivirus.png";
+    }
+
+    @Override
+    protected String[] getMovingSpriteAssets() {
+        return MOVING_SPRITES;
     }
 }

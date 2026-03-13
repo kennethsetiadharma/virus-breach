@@ -87,6 +87,7 @@ public class Board implements Closeable {
             }
 
             // random source code (bonus) reward spawning
+            // TODO: source code not spawing inside walls
             if (this.random.nextInt(0, 100) <= 3) {
                 this.addEntity(new SourceCode(this, this.random.nextInt(0, this.width), this.random.nextInt(0, this.height), this.random.nextInt(40, 100)));
             }
