@@ -96,9 +96,11 @@ public class GameMenu extends Menu implements BoardObserver {
             pauseOverlay.prefWidthProperty().bind(this.widthProperty());
             pauseOverlay.prefHeightProperty().bind(this.heightProperty());
             this.getChildren().add(pauseOverlay);
+            this.board.setPaused(true);
         } else {
             this.getChildren().remove(pauseOverlay);
             pauseOverlay = null;
+            this.board.setPaused(false);
         }
     }
 
