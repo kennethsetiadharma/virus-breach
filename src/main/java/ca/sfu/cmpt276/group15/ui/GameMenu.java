@@ -79,7 +79,7 @@ public class GameMenu extends Menu implements BoardObserver {
             return;
         }
         if (pauseOverlay != null) return; // block movement while paused
-        Entity<?> entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
+        Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
         if (entity instanceof Player player) {
             switch (event.getCode()) {
                 case W -> player.startMoving(Direction.UP);
@@ -106,7 +106,7 @@ public class GameMenu extends Menu implements BoardObserver {
 
     @Override
     public void onKeyReleased(KeyEvent event) {
-        Entity<?> entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
+        Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
         if (entity instanceof Player player) {
             switch (event.getCode()) {
                 case W -> player.stopMoving(Direction.UP);
@@ -118,7 +118,7 @@ public class GameMenu extends Menu implements BoardObserver {
     }
 
     @Override
-    public void onEntityAdded(Entity<?> entity) {
+    public void onEntityAdded(Entity entity) {
         Platform.runLater(() -> {
             this.entities.getChildren().add(entity.getRenderNode());
             this.updateCamera();
@@ -126,7 +126,7 @@ public class GameMenu extends Menu implements BoardObserver {
     }
 
     @Override
-    public void onEntityRemoved(Entity<?> entity) {
+    public void onEntityRemoved(Entity entity) {
         Platform.runLater(() -> {
             this.entities.getChildren().remove(entity.getRenderNode());
             this.updateCamera();
@@ -144,7 +144,7 @@ public class GameMenu extends Menu implements BoardObserver {
     }
 
     private void updateCamera() {
-        Entity<?> entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
+        Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
         if (!(entity instanceof Player player)) {
             return;
         }

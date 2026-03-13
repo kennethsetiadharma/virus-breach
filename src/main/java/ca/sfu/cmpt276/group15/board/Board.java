@@ -22,9 +22,9 @@ public class Board implements Closeable {
     private final int width;
     private final int height;
 
-    private final List<Entity<?>> pendingEntities = new ArrayList<>();
-    private final List<Entity<?>> entitiesPendingRemoval = new ArrayList<>();
-    private final List<Entity<?>> entities = new ArrayList<>();
+    private final List<Entity> pendingEntities = new ArrayList<>();
+    private final List<Entity> entitiesPendingRemoval = new ArrayList<>();
+    private final List<Entity> entities = new ArrayList<>();
     private final List<BoardObserver> observers = new ArrayList<>();
     private int timePlayed;
     private volatile boolean paused = false;
@@ -35,12 +35,12 @@ public class Board implements Closeable {
         this.height = tiles.length;
     }
 
-    public List<Entity<?>> getEntities() {
+    public List<Entity> getEntities() {
         return entities;
     }
 
-    public Entity<?> getFirstEntityMatching(Predicate<Entity<?>> predicate) {
-        for (Entity<?> entity : this.entities) {
+    public Entity getFirstEntityMatching(Predicate<Entity> predicate) {
+        for (Entity entity : this.entities) {
             if (predicate.test(entity)) {
                 return entity;
             }
@@ -48,11 +48,11 @@ public class Board implements Closeable {
         return null;
     }
 
-    public void addEntity(Entity<?> entity) {
+    public void addEntity(Entity entity) {
         this.pendingEntities.add(entity);
     }
 
-    public void removeEntity(Entity<?> entity) {
+    public void removeEntity(Entity entity) {
         entity.onRemove();
         this.entitiesPendingRemoval.add(entity);
     }
@@ -85,7 +85,7 @@ public class Board implements Closeable {
         if (this.paused) return;
         try {
             this.timePlayed++;
-            for (Entity<?> entity : this.entities) {
+            for (Entity entity : this.entities) {
                 if (!entity.isRemoved()) entity.tick();
             }
 
@@ -95,15 +95,15 @@ public class Board implements Closeable {
                 this.addEntity(new SourceCode(this, this.random.nextInt(0, this.width), this.random.nextInt(0, this.height), this.random.nextInt(40, 100)));
             }
 
-            for (Iterator<Entity<?>> iterator = this.entitiesPendingRemoval.reversed().iterator(); iterator.hasNext(); ) {
-                Entity<?> entity = iterator.next();
+            for (Iterator<Entity> iterator = this.entitiesPendingRemoval.reversed().iterator(); iterator.hasNext(); ) {
+                Entity entity = iterator.next();
                 this.entities.remove(entity);
                 this.observers.forEach(observer -> observer.onEntityRemoved(entity));
                 iterator.remove();
             }
 
-            for (Iterator<Entity<?>> iterator = this.pendingEntities.reversed().iterator(); iterator.hasNext(); ) {
-                Entity<?> entity = iterator.next();
+            for (Iterator<Entity> iterator = this.pendingEntities.reversed().iterator(); iterator.hasNext(); ) {
+                Entity entity = iterator.next();
                 this.entities.add(entity);
                 this.observers.forEach(observer -> observer.onEntityAdded(entity));
                 iterator.remove();
@@ -118,16 +118,16 @@ public class Board implements Closeable {
     }
 
     private void syncToView() {
-        for (Entity<?> entity : this.entities) {
+        for (Entity entity : this.entities) {
             entity.syncToView();
         }
     }
 
-    public void entityMoved(Entity<?> entity) {
+    public void entityMoved(Entity entity) {
         this.getTile(entity.getPosition()).onStep(this, entity.getPosition(), entity);
         this.getTile(entity.getPrevPosition()).onLeave(this, entity.getPrevPosition(), entity);
 
-        for (Entity<?> e : this.entities) {
+        for (Entity e : this.entities) {
             if (e != entity) {
                 if (e.getPosition().equals(entity.getPosition())) {
                     e.onCollideWith(entity);
@@ -137,13 +137,13 @@ public class Board implements Closeable {
         }
     }
 
-    public Collection<Entity<?>> getEntitiesAt(Position pos) {
+    public Collection<Entity> getEntitiesAt(Position pos) {
         return getEntitiesAt(pos.x(), pos.y());
     }
 
-    public Collection<Entity<?>> getEntitiesAt(int x, int y) {
-        List<Entity<?>> entities = new ArrayList<>();
-        for (Entity<?> entity : this.entities) {
+    public Collection<Entity> getEntitiesAt(int x, int y) {
+        List<Entity> entities = new ArrayList<>();
+        for (Entity entity : this.entities) {
             if (entity.getPosition().x() == x && entity.getPosition().y() == y) {
                 entities.add(entity);
             }
@@ -185,7 +185,7 @@ public class Board implements Closeable {
     }
 
     public boolean allDataCollected() {
-        for (Entity<?> entity : this.entities) {
+        for (Entity entity : this.entities) {
             if (entity instanceof Data && !entity.isRemoved()) return false;
         }
         return true;

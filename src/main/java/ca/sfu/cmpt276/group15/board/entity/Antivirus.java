@@ -5,14 +5,10 @@ import ca.sfu.cmpt276.group15.board.BoardObserver;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
-import ca.sfu.cmpt276.group15.ui.AnimatedNode;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
-public class Antivirus extends Enemy<AnimatedNode> implements BoardObserver {
+public class Antivirus extends AnimatedEntity implements BoardObserver {
     // antivirus doesn't extend Enemy anymore, to make sure this is ok after movement logic
 
     private static final int MOVEMENT_TICKS = 2;
@@ -37,18 +33,12 @@ public class Antivirus extends Enemy<AnimatedNode> implements BoardObserver {
     }
 
     @Override
-    public void onCollideWith(Entity<?> entity) {
+    public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);
         if (entity instanceof Player player) {
             this.board.removeEntity(player);
             this.board.lose();
         }
-    }
-
-    @Override
-    public void syncToView() {
-        super.syncToView();
-        this.renderNode.animate(this.getPosition(), this.getPrevPosition(), this.board.getTimePlayed());
     }
 
     @Override
@@ -58,7 +48,7 @@ public class Antivirus extends Enemy<AnimatedNode> implements BoardObserver {
         if (--this.movementCounter == 0) {
             this.movementCounter = MOVEMENT_TICKS;
 
-            Entity<?> player = this.board.getFirstEntityMatching(e -> e instanceof Player);
+            Entity player = this.board.getFirstEntityMatching(e -> e instanceof Player);
             if (player != null) {
                 Position target = player.getPosition();
 
@@ -104,11 +94,6 @@ public class Antivirus extends Enemy<AnimatedNode> implements BoardObserver {
     }
 
     @Override
-    protected AnimatedNode createRenderNode() {
-        return new AnimatedNode("antivirus.png", MOVING_SPRITES);
-    }
-
-    @Override
     public void onTileChanged(int x, int y, TileType tile) {
         if (this.solidState[y][x] != this.board.getTile(x, y).isSolid()) {
             this.solidState[y][x] = !this.solidState[y][x];
@@ -119,5 +104,15 @@ public class Antivirus extends Enemy<AnimatedNode> implements BoardObserver {
     public void onRemove() {
         super.onRemove();
         this.board.detach(this);
+    }
+
+    @Override
+    protected String getIdleSpriteAsset() {
+        return "antivirus.png";
+    }
+
+    @Override
+    protected String[] getMovingSpriteAssets() {
+        return MOVING_SPRITES;
     }
 }

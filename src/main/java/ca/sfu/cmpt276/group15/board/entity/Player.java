@@ -2,12 +2,11 @@ package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.math.Direction;
-import ca.sfu.cmpt276.group15.ui.AnimatedNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player extends Entity<AnimatedNode> {
+public class Player extends AnimatedEntity {
     private static final String[] MOVING_SPRITES = {
         "player_moving1.png",
         "player_moving2.png"
@@ -44,22 +43,21 @@ public class Player extends Entity<AnimatedNode> {
         }
     }
 
-    @Override
-    protected AnimatedNode createRenderNode() {
-        return new AnimatedNode("player.png", MOVING_SPRITES);
-    }
-
-    @Override
-    public void syncToView() {
-        super.syncToView();
-        this.renderNode.animate(this.getPosition(), this.getPrevPosition(), this.board.getTimePlayed());
-    }
-
     public void startMoving(Direction direction) {
         if (!this.pendingMovement.contains(direction)) this.pendingMovement.add(direction);
     }
 
     public void stopMoving(Direction direction) {
         this.pendingMovement.remove(direction);
+    }
+
+    @Override
+    protected String getIdleSpriteAsset() {
+        return "player.png";
+    }
+
+    @Override
+    protected String[] getMovingSpriteAssets() {
+        return MOVING_SPRITES;
     }
 }
