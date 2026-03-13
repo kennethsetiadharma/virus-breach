@@ -5,12 +5,12 @@ import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
 import javafx.scene.Node;
 
-public abstract class Entity {
+public abstract class Entity<N extends Node> {
     protected final Board board;
     private Position prevPosition;
     private Position position;
     private boolean removed = false;
-    protected Node renderNode;
+    protected N renderNode;
 
     public Entity(Board board, int x, int y) {
         this(board, new Position(x, y));
@@ -26,9 +26,9 @@ public abstract class Entity {
         this.prevPosition = this.position;
     }
 
-    protected abstract Node createRenderNode();
+    protected abstract N createRenderNode();
 
-    public void onCollideWith(Entity entity) {
+    public void onCollideWith(Entity<?> entity) {
     }
 
     public void onRemove() {
@@ -65,7 +65,7 @@ public abstract class Entity {
         this.board.removeEntity(this);
     }
 
-    public final Node getRenderNode() {
+    public final N getRenderNode() {
         if (this.renderNode == null) this.renderNode = this.createRenderNode();
         return this.renderNode;
     }

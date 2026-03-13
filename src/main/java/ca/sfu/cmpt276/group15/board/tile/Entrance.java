@@ -16,7 +16,7 @@ public class Entrance extends TileType {
     }
 
     @Override
-    public void onStep(Board board, Position position, Entity entity) {
+    public void onStep(Board board, Position position, Entity<?> entity) {
         super.onStep(board, position, entity);
     }
 

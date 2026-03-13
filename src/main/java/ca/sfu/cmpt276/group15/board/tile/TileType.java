@@ -12,8 +12,8 @@ public abstract class TileType {
         this.solid = solid;
     }
 
-    public void onStep(Board board, Position position, Entity entity) {}
-    public void onLeave(Board board, Position position, Entity entity) {}
+    public void onStep(Board board, Position position, Entity<?> entity) {}
+    public void onLeave(Board board, Position position, Entity<?> entity) {}
 
     public boolean isSolid() {
         return solid;

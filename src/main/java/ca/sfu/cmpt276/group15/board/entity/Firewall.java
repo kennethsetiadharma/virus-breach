@@ -5,7 +5,7 @@ import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
-public class Firewall extends Enemy {
+public class Firewall extends Enemy<Node> {
     private final int damage;
 
     public Firewall(Board board, int x, int y) {
@@ -14,7 +14,7 @@ public class Firewall extends Enemy {
     }
 
     @Override
-    public void onCollideWith(Entity entity) {
+    public void onCollideWith(Entity<?> entity) {
         super.onCollideWith(entity);
         if (entity instanceof Player player) {
             player.adjustData(-this.damage);
