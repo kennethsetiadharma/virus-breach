@@ -2,7 +2,7 @@ package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.math.Position;
-import ca.sfu.cmpt276.group15.ui.EntityNode;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
@@ -20,6 +20,7 @@ public class Antivirus extends Enemy {
         super.onCollideWith(entity);
         if (entity instanceof Player player) {
             this.board.removeEntity(player);
+            this.board.lose();
         }
     }
 
@@ -29,7 +30,7 @@ public class Antivirus extends Enemy {
     }
 
     @Override
-    public Node renderNode() {
-        return new EntityNode<>(this, "antivirus.png", Color.RED);
+    public Node createRenderNode() {
+        return ResourceManager.sprite("antivirus.png", Color.RED);
     }
 }

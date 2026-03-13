@@ -1,7 +1,7 @@
 package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
-import ca.sfu.cmpt276.group15.ui.EntityNode;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
@@ -11,7 +11,7 @@ public class Data extends Reward {
     }
 
     @Override
-    public Node renderNode() {
-        return new EntityNode<>(this, "firewall.png", Color.GRAY);
+    public Node createRenderNode() {
+        return ResourceManager.sprite("firewall.png", Color.GRAY);
     }
 }

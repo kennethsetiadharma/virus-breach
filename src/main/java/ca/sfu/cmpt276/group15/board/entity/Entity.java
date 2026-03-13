@@ -3,7 +3,6 @@ package ca.sfu.cmpt276.group15.board.entity;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
-import javafx.application.Platform;
 import javafx.scene.Node;
 
 public abstract class Entity {
@@ -27,7 +26,7 @@ public abstract class Entity {
         this.prevPosition = this.position;
     }
 
-    protected abstract Node renderNode();
+    protected abstract Node createRenderNode();
 
     public void onCollideWith(Entity entity) {
     }
@@ -66,8 +65,8 @@ public abstract class Entity {
         this.board.removeEntity(this);
     }
 
-    public final Node initRender() {
-        this.renderNode = this.renderNode();
+    public final Node getRenderNode() {
+        if (this.renderNode == null) this.renderNode = this.createRenderNode();
         return this.renderNode;
     }
 }

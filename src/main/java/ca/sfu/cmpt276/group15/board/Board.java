@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.group15.board;
 
 import ca.sfu.cmpt276.group15.HackingGame;
+import ca.sfu.cmpt276.group15.board.entity.Data;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.SourceCode;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
@@ -8,22 +9,24 @@ import ca.sfu.cmpt276.group15.math.Position;
 import javafx.application.Platform;
 
 import java.io.Closeable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 public class Board implements Closeable {
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private final Random random = new Random();
     private final TileType[][] tiles;
-    private final List<Entity> entities = new ArrayList<>();
-    private int timePlayed;
     private final int width;
     private final int height;
+
+    private final List<Entity> pendingEntities = new ArrayList<>();
+    private final List<Entity> entitiesPendingRemoval = new ArrayList<>();
+    private final List<Entity> entities = new ArrayList<>();
+    private final List<BoardObserver> observers = new ArrayList<>();
+    private int timePlayed;
 
     public Board(TileType[][] tiles) {
         this.tiles = tiles;
@@ -35,13 +38,22 @@ public class Board implements Closeable {
         return entities;
     }
 
+    public Entity getFirstEntityMatching(Predicate<Entity> predicate) {
+        for (Entity entity : this.entities) {
+            if (predicate.test(entity)) {
+                return entity;
+            }
+        }
+        return null;
+    }
+
     public void addEntity(Entity entity) {
-        this.entities.add(entity);
+        this.pendingEntities.add(entity);
     }
 
     public void removeEntity(Entity entity) {
         entity.onRemove();
-        this.entities.remove(entity);
+        this.entitiesPendingRemoval.add(entity);
     }
 
     public void setTile(Position pos, TileType tile) {
@@ -60,17 +72,37 @@ public class Board implements Closeable {
     }
 
     public void tick() {
-        this.timePlayed++;
-        for (Entity entity : new ArrayList<>(this.entities)) {
-            if (!entity.isRemoved()) entity.tick();
-        }
+        try {
+            this.timePlayed++;
+            for (Entity entity : this.entities) {
+                if (!entity.isRemoved()) entity.tick();
+            }
 
-        // random source code (bonus) reward spawning
-        if (this.random.nextInt(0, 100) <= 3) {
-            this.addEntity(new SourceCode(this, this.random.nextInt(40, this.width), this.random.nextInt(40, this.height), this.random.nextInt(40, 100)));
-        }
+            // random source code (bonus) reward spawning
+            if (this.random.nextInt(0, 100) <= 3) {
+                this.addEntity(new SourceCode(this, this.random.nextInt(0, this.width), this.random.nextInt(0, this.height), this.random.nextInt(40, 100)));
+            }
 
-        Platform.runLater(this::syncToView);
+            for (Iterator<Entity> iterator = this.entitiesPendingRemoval.reversed().iterator(); iterator.hasNext(); ) {
+                Entity entity = iterator.next();
+                this.entities.remove(entity);
+                this.observers.forEach(observer -> observer.onEntityRemoved(entity));
+                iterator.remove();
+            }
+
+            for (Iterator<Entity> iterator = this.pendingEntities.reversed().iterator(); iterator.hasNext(); ) {
+                Entity entity = iterator.next();
+                this.entities.add(entity);
+                this.observers.forEach(observer -> observer.onEntityAdded(entity));
+                iterator.remove();
+            }
+
+            Platform.runLater(this::syncToView);
+        } catch (Throwable throwable) {
+            //TODO: remove try/catch and report handle exceptions properly
+            throwable.printStackTrace();
+            throw new RuntimeException(throwable);
+        }
     }
 
     private void syncToView() {
@@ -130,5 +162,28 @@ public class Board implements Closeable {
     @Override
     public void close() {
         this.executor.close();
+    }
+
+    public void attach(BoardObserver observer) {
+        this.observers.add(observer);
+    }
+
+    public boolean allDataCollected() {
+        for (Entity entity : this.entities) {
+            if (entity instanceof Data && !entity.isRemoved()) return false;
+        }
+        return true;
+    }
+
+    public void win(int dataCollected) {
+        for (BoardObserver observer : this.observers) {
+            observer.onWin(dataCollected);
+        }
+    }
+
+    public void lose() {
+        for (BoardObserver observer : this.observers) {
+            observer.onLose();
+        }
     }
 }

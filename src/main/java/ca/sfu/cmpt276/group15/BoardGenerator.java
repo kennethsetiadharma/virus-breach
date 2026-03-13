@@ -54,7 +54,7 @@ public class BoardGenerator {
             int x = board.getRandom().nextInt(minX, width);
             int y = board.getRandom().nextInt(minY, height);
 
-            if (board.getEntitiesAt(x, y).isEmpty()) {
+            if (!board.getTile(x, y).isSolid() && board.getEntitiesAt(x, y).isEmpty()) {
                 board.addEntity(supplier.create(board, x, y));
                 break;
             }
@@ -78,16 +78,16 @@ public class BoardGenerator {
                 // Top and bottom walls
                 for (int x = 0; x < roomWidth - 4; x++) {
                     if (x > 2 && x < roomWidth - 6) { 
-//                        trySpawn(board, "wall", roomX + x, roomY);
-//                        trySpawn(board, "wall", roomX + x, roomY + roomHeight - 4);
+                        board.setTile(roomX + x, roomY, Wall.INSTANCE);
+                        board.setTile(roomX + x, roomY + roomHeight - 4, Wall.INSTANCE);
                     }
                 }
                 
                 // Left and right walls
                 for (int y = 0; y < roomHeight - 4; y++) {
                     if (y > 2 && y < roomHeight - 6) {
-//                        trySpawn(board, "wall", roomX, roomY + y);
-//                        trySpawn(board, "wall", roomX + roomWidth - 4, roomY + y);
+                        board.setTile(roomX, roomY + y, Wall.INSTANCE);
+                        board.setTile(roomX + roomWidth - 4, roomY + y, Wall.INSTANCE);
                     }
                 }
             }

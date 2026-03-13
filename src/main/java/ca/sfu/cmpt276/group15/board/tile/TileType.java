@@ -15,5 +15,9 @@ public abstract class TileType {
     public void onStep(Board board, Position position, Entity entity) {}
     public void onLeave(Board board, Position position, Entity entity) {}
 
-    public abstract Node render(Board board, Position position);
+    public boolean isSolid() {
+        return solid;
+    }
+
+    public abstract Node createNode(Board board, Position position);
 }
