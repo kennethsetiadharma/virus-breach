@@ -27,6 +27,7 @@ public class Board implements Closeable {
     private final List<Entity<?>> entities = new ArrayList<>();
     private final List<BoardObserver> observers = new ArrayList<>();
     private int timePlayed;
+    private volatile boolean paused = false;
 
     public Board(TileType[][] tiles) {
         this.tiles = tiles;
@@ -76,7 +77,12 @@ public class Board implements Closeable {
         this.executor.scheduleAtFixedRate(this::tick, HackingGame.UPDATE_INTERVAL, HackingGame.UPDATE_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
     public void tick() {
+        if (this.paused) return;
         try {
             this.timePlayed++;
             for (Entity<?> entity : this.entities) {
