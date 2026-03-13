@@ -17,6 +17,7 @@ import javafx.scene.transform.Scale;
 
 public class GameMenu extends Menu implements BoardObserver {
     private final Board board;
+    private PauseMenu pauseOverlay = null;
 
     private final Group camera = new Group();
     private final Group entities = new Group();
@@ -73,6 +74,11 @@ public class GameMenu extends Menu implements BoardObserver {
 
     @Override
     public void onKeyPressed(KeyEvent event) {
+        if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+            togglePause();
+            return;
+        }
+        if (pauseOverlay != null) return; // block movement while paused
         Entity<?> entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
         if (entity instanceof Player player) {
             switch (event.getCode()) {
@@ -81,6 +87,18 @@ public class GameMenu extends Menu implements BoardObserver {
                 case S -> player.startMoving(Direction.DOWN);
                 case D -> player.startMoving(Direction.RIGHT);
             }
+        }
+    }
+
+    private void togglePause() {
+        if (pauseOverlay == null) {
+            pauseOverlay = new PauseMenu(game, this::togglePause);
+            pauseOverlay.prefWidthProperty().bind(this.widthProperty());
+            pauseOverlay.prefHeightProperty().bind(this.heightProperty());
+            this.getChildren().add(pauseOverlay);
+        } else {
+            this.getChildren().remove(pauseOverlay);
+            pauseOverlay = null;
         }
     }
 
