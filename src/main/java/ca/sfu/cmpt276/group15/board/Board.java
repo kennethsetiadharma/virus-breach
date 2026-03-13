@@ -67,6 +67,14 @@ public class Board implements Closeable {
         return this.tiles[pos.y()][pos.x()];
     }
 
+    public boolean contains(Position pos) {
+        boolean valid = pos.x() >= 0 && 
+                        pos.x() < this.width && 
+                        pos.y() >= 0 && 
+                        pos.y() < this.height;
+        return valid;
+    }
+
     public void start() {
         this.executor.scheduleAtFixedRate(this::tick, HackingGame.UPDATE_INTERVAL, HackingGame.UPDATE_INTERVAL, TimeUnit.MILLISECONDS);
     }

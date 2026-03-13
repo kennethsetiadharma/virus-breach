@@ -33,7 +33,8 @@ public class Player extends Entity {
         super.tick();
 
         for (Direction direction : this.pendingMovement.reversed()) {
-            if (!this.board.getTile(this.getPosition().relative(direction)).isSolid()) {
+            var nextPosition = this.getPosition().relative(direction);
+            if (this.board.contains(nextPosition) && !this.board.getTile(nextPosition).isSolid()) {
                 this.move(direction);
                 break;
             }

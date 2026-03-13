@@ -25,6 +25,7 @@ public class HackingGame extends Application {
         this.stage = stage;
         this.stage.setWidth(1280);
         this.stage.setHeight(720);
+        this.stage.setResizable(false);
         this.stage.setTitle("Hacking Game");
 
         this.activeMenu = new TitleMenu(this);

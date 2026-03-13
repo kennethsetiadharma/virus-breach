@@ -12,6 +12,6 @@ public class Data extends Reward {
 
     @Override
     public Node createRenderNode() {
-        return ResourceManager.sprite("firewall.png", Color.GRAY);
+        return ResourceManager.sprite("data.png", Color.GRAY);
     }
 }
