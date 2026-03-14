@@ -27,6 +27,22 @@ public class Exit extends TileType {
 
     @Override
     public Node createNode(Board board, Position position) {
-        return ResourceManager.sprite("exit.png", Color.RED);
+        return ResourceManager.sprite(getRespectiveAsset(board, position), Color.RED);
+    }
+
+    private String getRespectiveAsset(Board board, Position position) {
+        if (position.x() == 0) {
+            return "exit_left.png";
+        }
+        if (position.x() == board.getWidth() - 1) {
+            return "exit_right.png";
+        }
+        if (position.y() == 0) {
+            return "exit_up.png";
+        }
+        if (position.y() == board.getHeight() - 1) {
+            return "exit_down.png";
+        }
+        return "exit_left.png";
     }
 }

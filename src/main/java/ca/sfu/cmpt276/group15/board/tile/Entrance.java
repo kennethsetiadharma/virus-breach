@@ -22,6 +22,24 @@ public class Entrance extends TileType {
 
     @Override
     public Node createNode(Board board, Position position) {
-        return ResourceManager.sprite("entrance.png", Color.LIGHTGREEN);
+        Node node = ResourceManager.sprite("entrance.png", Color.LIGHTGREEN);
+        node.setRotate(getRotation(board, position));
+        return node;
+    }
+
+    private double getRotation(Board board, Position position) {
+        if (position.x() == 0) {
+            return 0.0;
+        }
+        if (position.x() == board.getWidth() - 1) {
+            return 180.0;
+        }
+        if (position.y() == 0) {
+            return 90.0;
+        }
+        if (position.y() == board.getHeight() - 1) {
+            return -90.0;
+        }
+        return 0.0;
     }
 }
