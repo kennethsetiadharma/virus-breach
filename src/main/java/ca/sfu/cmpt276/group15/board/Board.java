@@ -90,9 +90,12 @@ public class Board implements Closeable {
             }
 
             // random source code (bonus) reward spawning
-            // TODO: source code not spawing inside walls
             if (this.random.nextInt(0, 100) <= 3) {
-                this.addEntity(new SourceCode(this, this.random.nextInt(0, this.width), this.random.nextInt(0, this.height), this.random.nextInt(40, 100)));
+                int sx = this.random.nextInt(1, this.width - 1);
+                int sy = this.random.nextInt(1, this.height - 1);
+                if (!this.getTile(sx, sy).isSolid() && this.getEntitiesAt(sx, sy).isEmpty()) {
+                    this.addEntity(new SourceCode(this, sx, sy, this.random.nextInt(40, 100)));
+                }
             }
 
             for (Iterator<Entity> iterator = this.entitiesPendingRemoval.reversed().iterator(); iterator.hasNext(); ) {
@@ -144,6 +147,11 @@ public class Board implements Closeable {
     public Collection<Entity> getEntitiesAt(int x, int y) {
         List<Entity> entities = new ArrayList<>();
         for (Entity entity : this.entities) {
+            if (entity.getPosition().x() == x && entity.getPosition().y() == y) {
+                entities.add(entity);
+            }
+        }
+        for (Entity entity : this.pendingEntities) {
             if (entity.getPosition().x() == x && entity.getPosition().y() == y) {
                 entities.add(entity);
             }
