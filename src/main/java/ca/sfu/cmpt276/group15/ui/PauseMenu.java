@@ -1,11 +1,12 @@
 package ca.sfu.cmpt276.group15.ui;
 
 import ca.sfu.cmpt276.group15.HackingGame;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 
 public class PauseMenu extends Menu {
     public PauseMenu(HackingGame game, Runnable onResume) {
@@ -19,20 +20,27 @@ public class PauseMenu extends Menu {
 
         Label title = new Label("PAUSED");
         title.setTextFill(Color.WHITE);
-        title.setFont(new Font(48));
-        title.setTranslateX(1280 / 2.0 - 90);
-        title.setTranslateY(200);
+        title.setFont(Menu.loadFont(48));
 
-        Button btnResume = new Button("Resume");
+        Button btnResume = new Button("RESUME");
+        btnResume.setGraphic(Menu.iconView("resume.png"));
+        btnResume.setFont(Menu.loadFont(22));
+        btnResume.setStyle(BUTTON_STYLE);
+        btnResume.setGraphicTextGap(14);
         btnResume.setOnAction(e -> onResume.run());
-        btnResume.setTranslateX(1280 / 2.0 - 50);
-        btnResume.setTranslateY(320);
 
-        Button btnMainMenu = new Button("Main Menu");
+        Button btnMainMenu = new Button("EXIT");
+        btnMainMenu.setGraphic(Menu.iconView("exit.png"));
+        btnMainMenu.setFont(Menu.loadFont(22));
+        btnMainMenu.setStyle(BUTTON_STYLE);
+        btnMainMenu.setGraphicTextGap(14);
         btnMainMenu.setOnAction(e -> game.openMenu(new TitleMenu(game)));
-        btnMainMenu.setTranslateX(1280 / 2.0 - 50);
-        btnMainMenu.setTranslateY(380);
 
-        this.getChildren().addAll(bg, title, btnResume, btnMainMenu);
+        VBox layout = new VBox(24, title, btnResume, btnMainMenu);
+        layout.setAlignment(Pos.CENTER);
+        layout.prefWidthProperty().bind(this.widthProperty());
+        layout.prefHeightProperty().bind(this.heightProperty());
+
+        this.getChildren().addAll(bg, layout);
     }
 }

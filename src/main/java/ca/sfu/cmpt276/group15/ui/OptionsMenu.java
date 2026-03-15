@@ -11,7 +11,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 public class OptionsMenu extends Menu {
     private final GameOptions options;
@@ -20,20 +19,22 @@ public class OptionsMenu extends Menu {
         super(game);
         this.options = options;
 
-        Font font = Menu.loadFont(16);
-        Font fontLarge = Menu.loadFont(22);
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-        Button back = new Button("back");
+        Button back = new Button("BACK");
+        back.setGraphic(Menu.iconView("exit.png"));
+        back.setFont(Menu.loadFont(22));
+        back.setStyle(BUTTON_STYLE);
+        back.setGraphicTextGap(10);
         back.setOnAction(this::backPressed);
 
         Label title = new Label("OPTIONS");
         title.setTextFill(Color.WHITE);
-        title.setFont(fontLarge);
+        title.setFont(Menu.loadFont(40));
 
         Label volumeLabel = new Label();
         volumeLabel.setTextFill(Color.WHITE);
-        volumeLabel.setFont(font);
+        volumeLabel.setFont(Menu.loadFont(22));
 
         Slider volumeSlider = new Slider(0, 100, this.options.getVolume() * 100.0);
         volumeSlider.setShowTickLabels(true);
@@ -47,7 +48,11 @@ public class OptionsMenu extends Menu {
         });
         volumeLabel.setText("Volume: " + Math.round(volumeSlider.getValue()) + "%");
 
-        VBox layout = new VBox(20, title, volumeLabel, volumeSlider, back);
+        Label soundCredits = new Label("Audio credits: Minecraft, Valorant, Among Us");
+        soundCredits.setTextFill(Color.WHITE);
+        soundCredits.setFont(Menu.loadFont(14));
+
+        VBox layout = new VBox(20, title, volumeLabel, volumeSlider, soundCredits, back);
         layout.setAlignment(Pos.CENTER);
         layout.setPrefWidth(420);
         layout.setTranslateX(430);

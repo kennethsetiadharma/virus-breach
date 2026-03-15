@@ -14,6 +14,16 @@ import javafx.scene.text.Font;
 public class Menu extends Pane {
     protected final HackingGame game;
 
+    public static final String BUTTON_STYLE = """
+        -fx-background-color: transparent;
+        -fx-text-fill: white;
+        -fx-border-color: white;
+        -fx-border-width: 3;
+        -fx-border-radius: 14;
+        -fx-background-radius: 14;
+        -fx-padding: 14 24 14 24;
+        """;
+
     public Menu(HackingGame game) {
         this.game = game;
     }
