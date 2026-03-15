@@ -14,7 +14,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Scale;
 
 public class GameMenu extends Menu implements BoardObserver {
     private final Board board;
@@ -24,6 +23,7 @@ public class GameMenu extends Menu implements BoardObserver {
 
     private final Group camera = new Group();
     private final Group entities = new Group();
+    private final javafx.scene.transform.Scale cameraScale = new javafx.scene.transform.Scale(1, 1, 0, 0);
 
     private final Rectangle viewportClip = new Rectangle();
 
@@ -39,7 +39,7 @@ public class GameMenu extends Menu implements BoardObserver {
     public GameMenu(HackingGame game, Board board) {
         super(game);
         this.board = board;
-        this.entities.getTransforms().add(new Scale(HackingGame.CAMERA_ZOOM, HackingGame.CAMERA_ZOOM, 0, 0));
+        this.entities.getTransforms().add(this.cameraScale);
 
         this.viewportClip.widthProperty().bind(this.widthProperty());
         this.viewportClip.heightProperty().bind(this.heightProperty());
@@ -157,36 +157,16 @@ public class GameMenu extends Menu implements BoardObserver {
     }
 
     private void updateCamera() {
-        Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
-        if (!(entity instanceof Player player)) {
-            return;
-        }
+        double boardPixelWidth = Position.fromGrid(this.board.width());
+        double boardPixelHeight = Position.fromGrid(this.board.height());
 
-        double boardWidth = Position.fromGrid(this.board.width());
-        double boardHeight = Position.fromGrid(this.board.height());
+        // Scale to fit the entire board within the window, preserving aspect ratio
+        double zoom = Math.min(this.getWidth() / boardPixelWidth, this.getHeight() / boardPixelHeight);
+        this.cameraScale.setX(zoom);
+        this.cameraScale.setY(zoom);
 
-        double zoomedBoardWidth = boardWidth * HackingGame.CAMERA_ZOOM;
-        double zoomedBoardHeight = boardHeight * HackingGame.CAMERA_ZOOM;
-
-        double playerCentreX = Position.fromGrid(player.getPosition().x()) + Position.UNIT_SIZE / 2.0;
-        double playerCentreY = Position.fromGrid(player.getPosition().y()) + Position.UNIT_SIZE / 2.0;
-
-        double translateX = this.getWidth() / 2.0 - playerCentreX * HackingGame.CAMERA_ZOOM;
-        double translateY = this.getHeight() / 2.0 - playerCentreY * HackingGame.CAMERA_ZOOM;
-
-        translateX = restrictToViewport(translateX, zoomedBoardWidth, this.getWidth());
-        translateY = restrictToViewport(translateY, zoomedBoardHeight, this.getHeight());
-
-        this.camera.setTranslateX(translateX);
-        this.camera.setTranslateY(translateY);
-    }
-
-    private static double restrictToViewport(double translate, double contentSize, double viewportSize) {
-        if (contentSize <= viewportSize) {
-            return (viewportSize - contentSize) / 2.0;
-        }
-
-        double minTranslate = viewportSize - contentSize;
-        return Math.max(minTranslate, Math.min(0.0, translate));
+        // Center the board in the window
+        this.camera.setTranslateX((this.getWidth() - boardPixelWidth * zoom) / 2.0);
+        this.camera.setTranslateY((this.getHeight() - boardPixelHeight * zoom) / 2.0);
     }
 }
