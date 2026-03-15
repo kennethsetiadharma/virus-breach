@@ -19,10 +19,24 @@ public class AudioManager {
 
     private static final Map<String, AudioClip> clips = new HashMap<>();
     private static GameOptions options;
+    private static boolean initialized = false;
 
-    public static void setOptions(GameOptions options) {
+    public static void init(GameOptions options) {
         AudioManager.options = options;
+        if (initialized) {
+            return;
+        }
         preload();
+        
+        // play silent clip (reduces lag on first real clip play)
+        AudioClip clip = clips.get(PRELOADED_ASSETS[0]);
+        if (clip == null) {
+            return;
+        }
+
+        clip.play(0.0001);
+
+        initialized = true;
     }
 
     public static void play(String asset) {

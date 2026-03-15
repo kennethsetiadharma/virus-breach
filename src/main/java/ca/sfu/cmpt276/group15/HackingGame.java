@@ -30,7 +30,7 @@ public class HackingGame extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-        AudioManager.setOptions(this.options);
+        AudioManager.init(this.options);
         this.stage.setWidth(1280);
         this.stage.setHeight(720);
         this.stage.setResizable(false);
