@@ -6,7 +6,16 @@ import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
+/**
+ * A bonus reward that is spawned in at random during the game.
+ * After a certain amount of time passes it will be removed from the game, even if the player has not collected it.
+ */
 public class SourceCode extends Collectable {
+    /**
+     * The entity will be removed from the board when this reaches zero.
+     *
+     * @see #tick()
+     */
     private int ttl;
 
     public SourceCode(Board board, int x, int y, int ttl) {

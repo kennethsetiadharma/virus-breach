@@ -7,8 +7,14 @@ import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
 
+/**
+ * "Moving enemy" character that chases the player and instantly kills them on collision.
+ */
 public class Antivirus extends AnimatedEntity implements BoardObserver {
     private static final int MOVEMENT_TICKS = 2;
     private static final String[] MOVING_SPRITES = {
@@ -22,7 +28,7 @@ public class Antivirus extends AnimatedEntity implements BoardObserver {
     public Antivirus(Board board, int x, int y) {
         super(board, x, y);
 
-        this.solidState = new boolean[this.board.getHeight()][this.board.getWidth()];
+        this.solidState = new boolean[this.board.height()][this.board.width()];
         for (int yi = 0; yi < this.solidState.length; yi++) {
             for (int xi = 0; xi < this.solidState[yi].length; xi++) {
                 this.solidState[yi][xi] = this.board.getTile(xi, yi).isSolid();
@@ -41,6 +47,11 @@ public class Antivirus extends AnimatedEntity implements BoardObserver {
         }
     }
 
+    /**
+     * Called every game update cycle.
+     * If there is a player on the board, the entity will move 1 step towards the player every {@link #MOVEMENT_TICKS} ticks.
+     * Internally, it uses the {@link <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* search algorithm</a>} to navigate to the player.
+     */
     @Override
     public void tick() {
         super.tick();

@@ -24,7 +24,7 @@ public class GameMenu extends Menu implements BoardObserver {
 
     private final Group camera = new Group();
     private final Group entities = new Group();
-    
+
     private final Rectangle viewportClip = new Rectangle();
 
     // use animationtimer so it updates every fps
@@ -47,8 +47,8 @@ public class GameMenu extends Menu implements BoardObserver {
         this.camera.getChildren().add(this.entities);
         this.getChildren().add(this.camera);
 
-        for (int x = 0; x < board.getWidth(); x++) {
-            for (int y = 0; y < board.getHeight(); y++) {
+        for (int x = 0; x < board.width(); x++) {
+            for (int y = 0; y < board.height(); y++) {
                 Node node = board.getTile(x, y).createNode(board, new Position(x, y));
                 node.setTranslateX(Position.fromGrid(x));
                 node.setTranslateY(Position.fromGrid(y));
@@ -162,8 +162,8 @@ public class GameMenu extends Menu implements BoardObserver {
             return;
         }
 
-        double boardWidth = Position.fromGrid(this.board.getWidth());
-        double boardHeight = Position.fromGrid(this.board.getHeight());
+        double boardWidth = Position.fromGrid(this.board.width());
+        double boardHeight = Position.fromGrid(this.board.height());
 
         double zoomedBoardWidth = boardWidth * HackingGame.CAMERA_ZOOM;
         double zoomedBoardHeight = boardHeight * HackingGame.CAMERA_ZOOM;

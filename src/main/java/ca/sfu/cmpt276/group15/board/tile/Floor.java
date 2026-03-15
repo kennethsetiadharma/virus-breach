@@ -6,6 +6,10 @@ import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
+/**
+ * Most tiles in the game will be floor.
+ * Has no special properties.
+ */
 public class Floor extends TileType {
     public static final TileType INSTANCE = new Floor();
 

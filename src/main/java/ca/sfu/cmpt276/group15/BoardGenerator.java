@@ -9,8 +9,8 @@ import ca.sfu.cmpt276.group15.board.tile.Wall;
 
 public class BoardGenerator {
     public static void generateBoard(Board board) {
-        int width = board.getWidth();
-        int height = board.getHeight();
+        int width = board.width();
+        int height = board.height();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 board.setTile(x, y, Floor.INSTANCE);
@@ -28,9 +28,9 @@ public class BoardGenerator {
         }
 
         int x = board.getRandom().nextInt(1, width - 2);
-        board.setTile(x, height-1, Entrance.INSTANCE);
-        board.addEntity(new Player(board, x, height-1));
-        board.setTile(board.getRandom().nextInt(1, width-2), 0, Exit.INSTANCE);
+        board.setTile(x, height - 1, Entrance.INSTANCE);
+        board.addEntity(new Player(board, x, height - 1));
+        board.setTile(board.getRandom().nextInt(1, width - 2), 0, Exit.INSTANCE);
 
         generateWalls(board, width, height);
 
@@ -40,13 +40,13 @@ public class BoardGenerator {
         board.setTile(width - 1, 0, Wall.INSTANCE);
 
         for (int i = 0; i < 6; i++) {
-            spawnAnywhere(board, 1, 1, width-1, height-1, Data::new);
+            spawnAnywhere(board, 1, 1, width - 1, height - 1, Data::new);
         }
         for (int i = 0; i < 10; i++) {
-            spawnAnywhere(board, 1, 1, width-1, height-1, Firewall::new);
+            spawnAnywhere(board, 1, 1, width - 1, height - 1, Firewall::new);
         }
 
-        spawnAnywhere(board, 1, 1, width-1, height-1, Antivirus::new);
+        spawnAnywhere(board, 1, 1, width - 1, height - 1, Antivirus::new);
     }
 
     public static void spawnAnywhere(Board board, int minX, int minY, int width, int height, EntitySupplier supplier) {
@@ -60,29 +60,29 @@ public class BoardGenerator {
             }
         }
     }
-    
+
     /**
      * Generates a room-based maze layout
      */
     private static void generateWalls(Board board, int width, int height) {
         int roomWidth = 12;
         int roomHeight = 12;
-        
+
         // Create walls
         for (int rx = 0; rx < width / roomWidth; rx++) {
             for (int ry = 0; ry < height / roomHeight; ry++) {
                 int roomX = rx * roomWidth + 2;
                 int roomY = ry * roomHeight + 2;
-                
+
                 // Create room walls 
                 // Top and bottom walls
                 for (int x = 0; x < roomWidth - 4; x++) {
-                    if (x > 2 && x < roomWidth - 6) { 
+                    if (x > 2 && x < roomWidth - 6) {
                         board.setTile(roomX + x, roomY, Wall.INSTANCE);
                         board.setTile(roomX + x, roomY + roomHeight - 4, Wall.INSTANCE);
                     }
                 }
-                
+
                 // Left and right walls
                 for (int y = 0; y < roomHeight - 4; y++) {
                     if (y > 2 && y < roomHeight - 6) {
@@ -92,5 +92,10 @@ public class BoardGenerator {
                 }
             }
         }
+    }
+
+    @FunctionalInterface
+    public static interface EntitySupplier {
+        Entity create(Board board, int x, int y);
     }
 }

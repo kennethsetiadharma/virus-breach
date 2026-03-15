@@ -6,6 +6,9 @@ import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
+/**
+ * Represents the "normal reward", providing score to the player when collected.
+ */
 public class Data extends Collectable {
     public Data(Board board, int x, int y) {
         super(board, x, y, 100);

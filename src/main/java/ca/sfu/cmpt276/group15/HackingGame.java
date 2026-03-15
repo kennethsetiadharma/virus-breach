@@ -17,7 +17,14 @@ public class HackingGame extends Application {
     public static final double CAMERA_ZOOM = 4.0;
 
     private final GameOptions options = new GameOptions();
+    /**
+     * The root window used for display and input.
+     */
     private Stage stage;
+    /**
+     * The currently opened menu.
+     * Should never be {@code null} once the game starts.
+     */
     private Menu activeMenu;
 
     @Override
@@ -47,38 +54,29 @@ public class HackingGame extends Application {
         return options;
     }
 
-//    @Override
-//    protected void initGame() {
-//        int viewportBoundWidth = Math.max((int)Position.fromGrid(BOARD_WIDTH), getAppWidth());
-//        int viewportBoundHeight = Math.max((int)Position.fromGrid(BOARD_HEIGHT), getAppHeight());
-//
-//        getGameScene().getViewport().setBounds(0, 0, viewportBoundWidth, viewportBoundHeight);
-//        // getGameScene().getViewport().setLazy(true);
-//        getGameScene().getViewport().setZoom(CAMERA_ZOOM);
-//        getGameScene().setBackgroundColor(Color.DARKGRAY);
-//        getGameWorld().addEntityFactory(new HackingGameEntityFactory());
-//
-//        BoardGenerator.generateBoard(getGameWorld(), BOARD_WIDTH, BOARD_HEIGHT);
-//        var player = getGameScene().getGameWorld().spawn("player", getGameWorld().getSingleton(EntityType.ENTRANCE).getPosition());
-//        getGameScene().getViewport().bindToEntity(
-//            player,
-//            (getAppWidth() - Position.UNIT_SIZE) / 2.0,
-//            (getAppHeight() - Position.UNIT_SIZE) / 2.0
-//        );
-//
-//        getGameTimer().runAtInterval(this::update, UPDATE_INTERVAL);
-//    }
-
+    /**
+     * Called when the game window is being closed (shutdown).
+     *
+     * @param event the associated event data
+     */
     private void close(WindowEvent event) {
         this.activeMenu.onClose();
     }
 
+    /**
+     * Starts a new game, generating a board and opening the main game screen.
+     */
     public void startNewGame() {
         Board board = new Board(new TileType[BOARD_HEIGHT][BOARD_WIDTH]);
         BoardGenerator.generateBoard(board);
         this.openMenu(new GameMenu(this, board));
     }
 
+    /**
+     * Opens the specified menu for display, after closing the presently active one.
+     *
+     * @param menu the menu to be opened
+     */
     public void openMenu(Menu menu) {
         this.activeMenu.onClose();
         this.activeMenu = menu;

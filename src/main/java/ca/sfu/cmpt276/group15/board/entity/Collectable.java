@@ -2,7 +2,14 @@ package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
 
+/**
+ * Represents an entity that can be collected by a player to gain or lose data.
+ */
 public abstract class Collectable extends Entity {
+    /**
+     * Represents the amount of data that this collectable stores.
+     * If negative, the player will lose data upon collection.
+     */
     private final int value;
 
     public Collectable(Board board, int x, int y, int value) {

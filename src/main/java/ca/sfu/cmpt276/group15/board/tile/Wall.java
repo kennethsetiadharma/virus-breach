@@ -6,6 +6,10 @@ import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
+/**
+ * A tile type that prevents movement.
+ * Divides rooms and encloses the board.
+ */
 public class Wall extends TileType {
     public static final TileType INSTANCE = new Wall();
 
