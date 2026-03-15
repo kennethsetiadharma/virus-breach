@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 
 public class Firewall extends Collectable {
     public Firewall(Board board, int x, int y) {
-        super(board, x, y, -1000);
+        super(board, x, y, -200);
     }
 
     @Override
