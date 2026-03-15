@@ -30,8 +30,8 @@ public class TutorialOverlay extends Pane {
             makeRow("data.png",       false, "Collect all 6 data packets to unlock the exit"),
             makeRow("exit_up.png",    true,  "Reach the exit to escape and win"),
             makeRow("sourcecode.png", true,  "Grab source code for bonus points"),
-            makeRow("firewall.png",   true,  "Avoid firewalls — they drain your data"),
-            makeRow("antivirus.png",  true,  "Don't get caught by the antivirus")
+            makeRow("firewall.png",   true,  "Avoid firewalls! They drain your data"),
+            makeRow("antivirus.png",  true,  "Don't get caught by the antivirus!")
         );
         rows.setAlignment(Pos.CENTER_LEFT);
 
