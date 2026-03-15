@@ -18,7 +18,7 @@ public class Hud extends AnchorPane {
 
     // Must match how many Data entities BoardGenerator spawns
     private static final int TOTAL_DATA = 6;
-    private static final int ICON_SIZE = 22;
+    private static final int ICON_SIZE = 28;
 
     private final Text timerLabel;
     private final Text scoreLabel;
@@ -28,8 +28,8 @@ public class Hud extends AnchorPane {
     private final Image dataFullImage;
 
     public Hud(Runnable onPause) {
-        Font font = loadFont(14);
-        Font fontLarge = loadFont(18);
+        Font font = loadFont(16);
+        Font fontLarge = loadFont(22);
 
         this.dataEmptyImage = loadIcon("data.png");
         this.dataFullImage = loadIcon("data_completed.png");
