@@ -90,8 +90,9 @@ public abstract class Entity {
      * Synchronizes this entity's current state to its associated render node.
      */
     public void syncToView() {
-        this.renderNode.setTranslateX(Position.fromGrid(this.getPosition().x()));
-        this.renderNode.setTranslateY(Position.fromGrid(this.getPosition().y()));
+        Node renderNode = this.getRenderNode();
+        renderNode.setTranslateX(Position.fromGrid(this.getPosition().x()));
+        renderNode.setTranslateY(Position.fromGrid(this.getPosition().y()));
     }
 
     public Position getPosition() {

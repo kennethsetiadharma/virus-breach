@@ -13,6 +13,9 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class GameMenu extends Menu implements BoardObserver {
@@ -39,6 +42,7 @@ public class GameMenu extends Menu implements BoardObserver {
     public GameMenu(HackingGame game, Board board) {
         super(game);
         this.board = board;
+        this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
         this.entities.getTransforms().add(this.cameraScale);
 
         this.viewportClip.widthProperty().bind(this.widthProperty());
