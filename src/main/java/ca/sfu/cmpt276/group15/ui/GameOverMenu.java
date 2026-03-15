@@ -29,7 +29,7 @@ public class GameOverMenu extends Menu {
 
         // Title
         Label title = new Label("QUARANTINED");
-        title.setTextFill(Color.WHITE);
+        title.setTextFill(Color.RED);
         title.setFont(Menu.loadFont(42));
 
         // Subtitle

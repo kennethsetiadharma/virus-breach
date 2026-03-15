@@ -29,7 +29,7 @@ public class WinMenu extends Menu {
 
         // Title
         Label title = new Label("INFILTRATED");
-        title.setTextFill(Color.WHITE);
+        title.setTextFill(Color.LIME);
         title.setFont(Menu.loadFont(42));
 
         // Subtitle
