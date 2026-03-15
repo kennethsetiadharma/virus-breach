@@ -75,7 +75,22 @@ public class GameMenu extends Menu implements BoardObserver {
         super.onOpen();
         this.cameraTimer.start();
         this.board.start();
-        Platform.runLater(this::updateCamera);
+        this.board.setPaused(true);
+        Platform.runLater(() -> {
+            updateCamera();
+            showTutorial();
+        });
+    }
+
+    private void showTutorial() {
+        TutorialOverlay[] ref = new TutorialOverlay[1];
+        ref[0] = new TutorialOverlay(() -> {
+            this.getChildren().remove(ref[0]);
+            this.board.setPaused(false);
+        });
+        ref[0].prefWidthProperty().bind(this.widthProperty());
+        ref[0].prefHeightProperty().bind(this.heightProperty());
+        this.getChildren().add(ref[0]);
     }
 
     @Override
