@@ -3,6 +3,9 @@ package ca.sfu.cmpt276.group15.ui;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,14 +13,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class Hud extends AnchorPane {
 
     // Must match how many Data entities BoardGenerator spawns
     private static final int TOTAL_DATA = 6;
-    private static final int ICON_SIZE = 28;
+    private static final int ICON_SIZE = 34;
 
     private final Text timerLabel;
     private final Text scoreLabel;
@@ -26,9 +29,16 @@ public class Hud extends AnchorPane {
     private final Image dataEmptyImage;
     private final Image dataFullImage;
 
+    // Track score to detect changes for popup
+    private int lastScore = 0;
+
+    // Fixed pixel position of the data box for anchoring popups
+    private static final double DATA_BOX_LEFT = 16.0;
+    private static final double DATA_BOX_BOTTOM = 50.0;
+
     public Hud(Runnable onPause) {
-        Font font = Menu.loadFont(16);
-        Font fontLarge = Menu.loadFont(22);
+        var font = Menu.loadFont(20);
+        var fontLarge = Menu.loadFont(28);
 
         this.dataEmptyImage = Menu.loadIcon("data.png");
         this.dataFullImage = Menu.loadIcon("data_completed.png");
@@ -83,8 +93,8 @@ public class Hud extends AnchorPane {
             "-fx-padding: 6 12 6 12;" +
             "-fx-background-radius: 4;"
         );
-        AnchorPane.setBottomAnchor(dataBox, 16.0);
-        AnchorPane.setLeftAnchor(dataBox, 16.0);
+        AnchorPane.setBottomAnchor(dataBox, DATA_BOX_BOTTOM);
+        AnchorPane.setLeftAnchor(dataBox, DATA_BOX_LEFT);
 
         this.getChildren().addAll(timerBox, dataBox);
         this.setPickOnBounds(false);
@@ -100,15 +110,50 @@ public class Hud extends AnchorPane {
         int totalSeconds = board.getTimePlayed() / 10;
         this.timerLabel.setText(String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60));
 
-        // Score: raw dataCollected value from the player
+        // Score
         Entity playerEntity = board.getFirstEntityMatching(e -> e instanceof Player);
         if (playerEntity instanceof Player player) {
-            this.scoreLabel.setText(String.valueOf(player.getDataCollected()));
+            int currentScore = player.getDataCollected();
+
+            // Show popup if score changed
+            if (currentScore != lastScore) {
+                int delta = currentScore - lastScore;
+                showScorePopup(delta);
+                lastScore = currentScore;
+            }
+
+            this.scoreLabel.setText(String.valueOf(currentScore));
         }
 
         // Data icons: first `dataCollected` slots show collected icon
         for (int i = 0; i < TOTAL_DATA; i++) {
             this.dataIcons[i].setImage(i < dataCollected ? this.dataFullImage : this.dataEmptyImage);
         }
+    }
+
+    private void showScorePopup(int delta) {
+        String text = delta > 0 ? "+" + delta : String.valueOf(delta);
+        Color color = delta > 0 ? Color.LIME : Color.RED;
+
+        Text popup = new Text(text);
+        popup.setFont(Menu.loadFont(22));
+        popup.setFill(color);
+        popup.setOpacity(1.0);
+
+        // Position near the score label — above the data box
+        AnchorPane.setBottomAnchor(popup, DATA_BOX_BOTTOM + 80);
+        AnchorPane.setLeftAnchor(popup, DATA_BOX_LEFT + 60);
+        this.getChildren().add(popup);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(1200), popup);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+
+        TranslateTransition rise = new TranslateTransition(Duration.millis(1200), popup);
+        rise.setByY(-40);
+
+        ParallelTransition anim = new ParallelTransition(fade, rise);
+        anim.setOnFinished(e -> this.getChildren().remove(popup));
+        anim.play();
     }
 }
