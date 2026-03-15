@@ -2,6 +2,7 @@ package ca.sfu.cmpt276.group15;
 
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
+import ca.sfu.cmpt276.group15.ui.AudioManager;
 import ca.sfu.cmpt276.group15.ui.GameMenu;
 import ca.sfu.cmpt276.group15.ui.Menu;
 import ca.sfu.cmpt276.group15.ui.TitleMenu;
@@ -29,6 +30,7 @@ public class HackingGame extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
+        AudioManager.setOptions(this.options);
         this.stage.setWidth(1280);
         this.stage.setHeight(720);
         this.stage.setResizable(false);

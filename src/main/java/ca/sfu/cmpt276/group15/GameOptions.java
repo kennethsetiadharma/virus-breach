@@ -6,6 +6,8 @@ public class GameOptions {
     private double volume;
 
     public GameOptions() {
+        // default volume 0.5
+        this.volume = 0.5;
     }
 
     public void save(File file) {
@@ -21,6 +23,6 @@ public class GameOptions {
     }
 
     public void setVolume(double volume) {
-        this.volume = volume;
+        this.volume = Math.max(0.0, Math.min(1.0, volume));
     }
 }
