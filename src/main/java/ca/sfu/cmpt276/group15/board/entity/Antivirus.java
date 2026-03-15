@@ -9,8 +9,10 @@ import ca.sfu.cmpt276.group15.ui.AudioManager;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  * "Moving enemy" character that chases the player and instantly kills them on collision.
@@ -69,6 +71,7 @@ public class Antivirus extends AnimatedEntity implements BoardObserver {
                 Map<Position, Integer> cost = new HashMap<>();
                 Map<Position, Integer> bestTo = new HashMap<>();
                 PriorityQueue<Position> pending = new PriorityQueue<>(Comparator.comparing(p -> bestTo.getOrDefault(p, Integer.MAX_VALUE)));
+                Set<Position> visited = new HashSet<>();
 
                 pending.add(this.getPosition());
                 cost.put(this.getPosition(), 0);
@@ -77,19 +80,22 @@ public class Antivirus extends AnimatedEntity implements BoardObserver {
                 Position current = null;
                 while (!pending.isEmpty()) {
                     current = pending.poll();
+                    if (visited.contains(current)) continue;
+                    visited.add(current);
+
                     if (current.equals(target)) {
                         break;
                     }
 
                     for (Direction direction : Direction.values()) {
                         Position adj = current.relative(direction);
-                        if (!this.board.contains(adj) || this.solidState[adj.y()][adj.x()]) continue;
+                        if (!this.board.contains(adj) || this.solidState[adj.y()][adj.x()] || visited.contains(adj)) continue;
                         int n = cost.get(current) + 1;
                         if (n < cost.getOrDefault(adj, Integer.MAX_VALUE)) {
                             cost.put(adj, n);
                             bestTo.put(adj, n + adj.manhattanDistance(target));
                             sources.put(adj, current);
-                            if (!pending.contains(adj)) pending.add(adj);
+                            pending.add(adj);
                         }
                     }
                 }
