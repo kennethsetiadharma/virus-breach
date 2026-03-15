@@ -152,7 +152,8 @@ public class GameMenu extends Menu implements BoardObserver {
     @Override
     public void onWin(int dataCollected) {
         AudioManager.play("success.wav");
-        Platform.runLater(() -> this.game.openMenu(new WinMenu(game, dataCollected)));
+        int timePlayed = board.getTimePlayed();
+        Platform.runLater(() -> this.game.openMenu(new WinMenu(game, dataCollected, timePlayed)));
     }
 
     @Override
