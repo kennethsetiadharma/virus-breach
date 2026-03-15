@@ -46,8 +46,9 @@ public class WinMenu extends Menu {
         var timerIcon = Menu.iconView("timer.png");
         timerIcon.setFitWidth(22);
         timerIcon.setFitHeight(22);
-        int minutes = timePlayed / 60;
-        int seconds = timePlayed % 60;
+        int totalSeconds = timePlayed / 10;
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
         Label timerLabel = new Label(String.format("%02d:%02d", minutes, seconds));
         timerLabel.setTextFill(Color.WHITE);
         timerLabel.setFont(Menu.loadFont(22));
