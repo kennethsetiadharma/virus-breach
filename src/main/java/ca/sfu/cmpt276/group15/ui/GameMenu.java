@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.group15.ui;
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.BoardObserver;
+import ca.sfu.cmpt276.group15.board.entity.Data;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.math.Direction;
@@ -18,6 +19,8 @@ import javafx.scene.transform.Scale;
 public class GameMenu extends Menu implements BoardObserver {
     private final Board board;
     private PauseMenu pauseOverlay = null;
+    private final Hud hud;
+    private int dataCollectedCount = 0;
 
     private final Group camera = new Group();
     private final Group entities = new Group();
@@ -29,6 +32,7 @@ public class GameMenu extends Menu implements BoardObserver {
         @Override
         public void handle(long now) {
             updateCamera();
+            hud.update(board, dataCollectedCount);
         }
     };
 
@@ -55,6 +59,11 @@ public class GameMenu extends Menu implements BoardObserver {
 
         board.getEntities().forEach(this::onEntityAdded);
         board.attach(this);
+
+        this.hud = new Hud(this::togglePause);
+        this.hud.prefWidthProperty().bind(this.widthProperty());
+        this.hud.prefHeightProperty().bind(this.heightProperty());
+        this.getChildren().add(this.hud);
     }
 
     @Override
@@ -127,6 +136,9 @@ public class GameMenu extends Menu implements BoardObserver {
 
     @Override
     public void onEntityRemoved(Entity entity) {
+        if (entity instanceof Data) {
+            this.dataCollectedCount++;
+        }
         Platform.runLater(() -> {
             this.entities.getChildren().remove(entity.getRenderNode());
             this.updateCamera();
