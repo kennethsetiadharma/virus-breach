@@ -1,6 +1,5 @@
 package ca.sfu.cmpt276.group15.ui;
 
-import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
@@ -28,20 +27,20 @@ public class Hud extends AnchorPane {
     private final Image dataFullImage;
 
     public Hud(Runnable onPause) {
-        Font font = loadFont(16);
-        Font fontLarge = loadFont(22);
+        Font font = Menu.loadFont(16);
+        Font fontLarge = Menu.loadFont(22);
 
-        this.dataEmptyImage = loadIcon("data.png");
-        this.dataFullImage = loadIcon("data_completed.png");
+        this.dataEmptyImage = Menu.loadIcon("data.png");
+        this.dataFullImage = Menu.loadIcon("data_completed.png");
 
         // --- Top-right: [timer icon] [MM:SS] [pause button] ---
-        ImageView timerIcon = iconView("timer.png");
+        ImageView timerIcon = Menu.iconView("timer.png");
 
         this.timerLabel = new Text("00:00");
         this.timerLabel.setFont(fontLarge);
         this.timerLabel.setFill(Color.WHITE);
 
-        Button pauseBtn = new Button("", iconView("pause.png"));
+        Button pauseBtn = new Button("", Menu.iconView("pause.png"));
         pauseBtn.setOnAction(e -> onPause.run());
         pauseBtn.setStyle("-fx-background-color: transparent; -fx-padding: 2; -fx-cursor: hand;");
 
@@ -111,27 +110,5 @@ public class Hud extends AnchorPane {
         for (int i = 0; i < TOTAL_DATA; i++) {
             this.dataIcons[i].setImage(i < dataCollected ? this.dataFullImage : this.dataEmptyImage);
         }
-    }
-
-    private static ImageView iconView(String asset) {
-        ImageView iv = new ImageView(loadIcon(asset));
-        iv.setFitWidth(ICON_SIZE);
-        iv.setFitHeight(ICON_SIZE);
-        iv.setPreserveRatio(true);
-        return iv;
-    }
-
-    private static Image loadIcon(String asset) {
-        try (var stream = HackingGame.class.getResourceAsStream("/icons/" + asset)) {
-            if (stream != null) return new Image(stream);
-        } catch (Exception ignored) {}
-        return null;
-    }
-
-    private static Font loadFont(double size) {
-        try (var stream = HackingGame.class.getResourceAsStream("/fonts/VCR_OSD_MONO_1.001.ttf")) {
-            if (stream != null) return Font.loadFont(stream, size);
-        } catch (Exception ignored) {}
-        return Font.font("Courier New", size);
     }
 }
