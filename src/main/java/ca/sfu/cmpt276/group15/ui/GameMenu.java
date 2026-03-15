@@ -158,7 +158,8 @@ public class GameMenu extends Menu implements BoardObserver {
 
     @Override
     public void onLose() {
-        Platform.runLater(() -> this.game.openMenu(new GameOverMenu(game)));
+        int timePlayed = board.getTimePlayed();
+        Platform.runLater(() -> this.game.openMenu(new GameOverMenu(game, timePlayed)));
     }
 
     private void updateCamera() {
