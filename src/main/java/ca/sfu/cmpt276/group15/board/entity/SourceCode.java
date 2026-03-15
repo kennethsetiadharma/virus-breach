@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
+import ca.sfu.cmpt276.group15.ui.AudioManager;
 import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -11,6 +12,14 @@ public class SourceCode extends Collectable {
     public SourceCode(Board board, int x, int y, int ttl) {
         super(board, x, y, 250);
         this.ttl = ttl;
+    }
+
+    @Override
+    public void onCollideWith(Entity entity) {
+        if (entity instanceof Player) {
+            AudioManager.play("bonus.wav");
+        }
+        super.onCollideWith(entity);
     }
 
     @Override

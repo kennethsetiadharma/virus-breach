@@ -5,6 +5,7 @@ import ca.sfu.cmpt276.group15.board.BoardObserver;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
+import ca.sfu.cmpt276.group15.ui.AudioManager;
 
 import java.util.*;
 
@@ -34,6 +35,7 @@ public class Antivirus extends AnimatedEntity implements BoardObserver {
     public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);
         if (entity instanceof Player player) {
+            AudioManager.play("caught.wav");
             this.board.removeEntity(player);
             this.board.lose();
         }
