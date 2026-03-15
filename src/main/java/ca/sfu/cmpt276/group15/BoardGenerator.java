@@ -120,38 +120,74 @@ public class BoardGenerator {
     /**
      * Generates internal maze walls across the whole board, skipping the server room interior.
      */
+    /**
+     * Scatters random wall shapes across the board interior.
+     * Each shape is one of: a single tile, a 2-tile path (horizontal or vertical),
+     * or a 2×2 square.
+     */
     private static void generateWalls(Board board, int width, int height) {
-        int roomWidth  = 12;
-        int roomHeight = 12;
+        int numShapes = 45;
 
-        for (int rx = 0; rx < width / roomWidth; rx++) {
-            for (int ry = 0; ry < height / roomHeight; ry++) {
-                int roomX = rx * roomWidth + 2;
-                int roomY = ry * roomHeight + 2;
+        for (int i = 0; i < numShapes; i++) {
+            int x = board.getRandom().nextInt(2, width - 3);
+            int y = board.getRandom().nextInt(2, height - 3);
 
-                // Skip sub-rooms that fall entirely inside the server room interior (top-left)
-                if (roomX + roomWidth <= SERVER_ROOM_WIDTH && roomY + roomHeight <= SERVER_ROOM_HEIGHT) continue;
-
-                // Skip sub-rooms that fall entirely inside the storage room interior (bottom-right)
-                if (roomX >= width - 1 - STORAGE_FROM_RIGHT && roomY >= height - 1 - STORAGE_FROM_BOTTOM) continue;
-
-                // Top and bottom walls of this sub-room
-                for (int x = 0; x < roomWidth - 4; x++) {
-                    if (x > 2 && x < roomWidth - 6) {
-                        board.setTile(roomX + x, roomY, Wall.INSTANCE);
-                        board.setTile(roomX + x, roomY + roomHeight - 4, Wall.INSTANCE);
+            switch (board.getRandom().nextInt(3)) {
+                case 0 -> // single tile
+                    placeWall(board, x, y);
+                case 1 -> { // 2-tile path 
+                    if (board.getRandom().nextBoolean()) {
+                        placeWall(board, x,     y);
+                        placeWall(board, x + 1, y);
+                    } else {
+                        placeWall(board, x, y);
+                        placeWall(board, x, y + 1);
                     }
                 }
-
-                // Left and right walls of this sub-room
-                for (int y = 0; y < roomHeight - 4; y++) {
-                    if (y > 2 && y < roomHeight - 6) {
-                        board.setTile(roomX, roomY + y, Wall.INSTANCE);
-                        board.setTile(roomX + roomWidth - 4, roomY + y, Wall.INSTANCE);
-                    }
+                case 2 -> { // 2×2 square
+                    placeWall(board, x,     y);
+                    placeWall(board, x + 1, y);
+                    placeWall(board, x,     y + 1);
+                    placeWall(board, x + 1, y + 1);
                 }
             }
         }
+    }
+
+    /**
+     * Places a wall at (x, y) if the tile is inside the playable area,
+     * not inside a special room, not within 1 tile of a room boundary wall,
+     * not a room doorway, and not already solid.
+     */
+    private static void placeWall(Board board, int x, int y) {
+        int width  = board.width();
+        int height = board.height();
+
+        if (x <= 0 || x >= width - 1 || y <= 0 || y >= height - 1) return;
+
+        // Skip server room interior and its doorway
+        if (x > 0 && x < SERVER_ROOM_WIDTH && y > 0 && y < SERVER_ROOM_HEIGHT) return;
+        if (x == SERVER_ROOM_WIDTH && y == SERVER_ROOM_HEIGHT / 2) return;
+
+        // 1-tile buffer outside the server room's right wall (x = SERVER_ROOM_WIDTH)
+        if (x == SERVER_ROOM_WIDTH + 1 && y >= 1 && y <= SERVER_ROOM_HEIGHT) return;
+        // 1-tile buffer outside the server room's bottom wall (y = SERVER_ROOM_HEIGHT)
+        if (y == SERVER_ROOM_HEIGHT + 1 && x >= 1 && x <= SERVER_ROOM_WIDTH) return;
+
+        // Skip storage room interior and its doorway
+        int storageLeftX = width  - 1 - STORAGE_FROM_RIGHT;
+        int storageTopY  = height - 1 - STORAGE_FROM_BOTTOM;
+        int storageDoorY = storageTopY + STORAGE_FROM_BOTTOM / 2;
+        if (x > storageLeftX && x < width - 1 && y > storageTopY && y < height - 1) return;
+        if (x == storageLeftX && y == storageDoorY) return;
+
+        // 1-tile buffer outside the storage room's left wall (x = storageLeftX)
+        if (x == storageLeftX - 1 && y >= storageTopY && y <= height - 2) return;
+        // 1-tile buffer outside the storage room's top wall (y = storageTopY)
+        if (y == storageTopY - 1 && x >= storageLeftX && x <= width - 2) return;
+
+        if (!board.getTile(x, y).isSolid())
+            board.setTile(x, y, Wall.INSTANCE);
     }
 
     @FunctionalInterface
