@@ -12,7 +12,7 @@ import javafx.stage.WindowEvent;
 
 public class HackingGame extends Application {
     public static final long UPDATE_INTERVAL = 100; //milliseconds
-    public static final int BOARD_WIDTH = 46; // 20 (server room) + 26 (main room)
+    public static final int BOARD_WIDTH = 46;
     public static final int BOARD_HEIGHT = 26;
 
     private final GameOptions options = new GameOptions();

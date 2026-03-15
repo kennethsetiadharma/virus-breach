@@ -1,14 +1,53 @@
 package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
+import ca.sfu.cmpt276.group15.math.Direction;
+import ca.sfu.cmpt276.group15.math.Position;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
 import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Firewall extends Collectable {
+    // Spread interval range in ticks (100ms each): 200–400 ticks = ~20–40 seconds
+    private static final int MIN_SPREAD_TICKS = 200;
+    private static final int MAX_SPREAD_TICKS = 400;
+
+    private int spreadTimer;
+
     public Firewall(Board board, int x, int y) {
         super(board, x, y, -200);
+        this.spreadTimer = board.getRandom().nextInt(MIN_SPREAD_TICKS, MAX_SPREAD_TICKS);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (--this.spreadTimer <= 0) {
+            this.spreadTimer = board.getRandom().nextInt(MIN_SPREAD_TICKS, MAX_SPREAD_TICKS);
+            trySpread();
+        }
+    }
+
+    /**
+     * Attempts to spread to a random free adjacent tile.
+     * Does nothing if all neighbours are occupied or solid.
+     */
+    private void trySpread() {
+        List<Direction> dirs = new ArrayList<>(List.of(Direction.values()));
+        Collections.shuffle(dirs, board.getRandom());
+
+        for (Direction dir : dirs) {
+            Position adj = this.getPosition().relative(dir);
+            if (board.contains(adj) && !board.getTile(adj).isSolid() && board.getEntitiesAt(adj.x(), adj.y()).isEmpty()) {
+                board.addEntity(new Firewall(board, adj.x(), adj.y()));
+                return;
+            }
+        }
     }
 
     @Override
