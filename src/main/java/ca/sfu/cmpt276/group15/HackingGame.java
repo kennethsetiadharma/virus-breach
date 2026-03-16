@@ -19,6 +19,7 @@ public class HackingGame extends Application {
     public static final long UPDATE_INTERVAL = 100; //milliseconds
     public static final int BOARD_WIDTH = 46;
     public static final int BOARD_HEIGHT = 26;
+    public static final double CAMERA_ZOOM = 4.0;
 
     private final GameOptions options = new GameOptions();
     /**
