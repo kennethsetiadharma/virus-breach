@@ -16,6 +16,7 @@ public class AudioManager {
     private static final String[] PRELOADED_ASSETS = {
         "bonus.wav",
         "caught.wav",
+        "click.wav",
         "damage.wav",
         "reward.wav",
         "success.wav"

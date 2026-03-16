@@ -55,6 +55,7 @@ public class TitleMenu extends Menu {
      * @param event the action event
      */
     private void optionsClicked(ActionEvent event) {
+        AudioManager.play("click.wav");
         this.getScene().setRoot(new OptionsMenu(game, game.getOptions()));
     }
 
@@ -64,6 +65,7 @@ public class TitleMenu extends Menu {
      * @param event the action event
      */
     private void startClicked(ActionEvent event) {
+        AudioManager.play("click.wav");
         this.game.startNewGame();
     }
 

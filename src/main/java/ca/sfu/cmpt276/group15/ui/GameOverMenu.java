@@ -70,14 +70,14 @@ public class GameOverMenu extends Menu {
         btnQuit.setFont(Menu.loadFont(18));
         btnQuit.setStyle(BUTTON_STYLE);
         btnQuit.setGraphicTextGap(8);
-        btnQuit.setOnAction(e -> game.openMenu(new TitleMenu(game)));
+        btnQuit.setOnAction(e -> { AudioManager.play("click.wav"); game.openMenu(new TitleMenu(game)); });
 
         Button btnRetry = new Button("RETRY");
         btnRetry.setGraphic(Menu.iconView("retry.png"));
         btnRetry.setFont(Menu.loadFont(18));
         btnRetry.setStyle(BUTTON_STYLE);
         btnRetry.setGraphicTextGap(8);
-        btnRetry.setOnAction(e -> game.startNewGame());
+        btnRetry.setOnAction(e -> { AudioManager.play("click.wav"); game.startNewGame(); });
 
         HBox buttons = new HBox(24, btnQuit, btnRetry);
         buttons.setAlignment(Pos.CENTER);

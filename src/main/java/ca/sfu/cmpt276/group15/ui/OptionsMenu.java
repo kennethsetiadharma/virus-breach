@@ -76,6 +76,7 @@ public class OptionsMenu extends Menu {
      * @param action the action event
      */
     private void backPressed(ActionEvent action) {
+        AudioManager.play("click.wav");
         this.getScene().setRoot(new TitleMenu(this.game));
     }
 }

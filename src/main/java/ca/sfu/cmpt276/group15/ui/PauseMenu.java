@@ -37,14 +37,14 @@ public class PauseMenu extends Menu {
         btnResume.setFont(Menu.loadFont(22));
         btnResume.setStyle(BUTTON_STYLE);
         btnResume.setGraphicTextGap(14);
-        btnResume.setOnAction(e -> onResume.run());
+        btnResume.setOnAction(e -> { AudioManager.play("click.wav"); onResume.run(); });
 
         Button btnMainMenu = new Button("EXIT");
         btnMainMenu.setGraphic(Menu.iconView("exit.png"));
         btnMainMenu.setFont(Menu.loadFont(22));
         btnMainMenu.setStyle(BUTTON_STYLE);
         btnMainMenu.setGraphicTextGap(14);
-        btnMainMenu.setOnAction(e -> game.openMenu(new TitleMenu(game)));
+        btnMainMenu.setOnAction(e -> { AudioManager.play("click.wav"); game.openMenu(new TitleMenu(game)); });
 
         VBox layout = new VBox(24, title, btnResume, btnMainMenu);
         layout.setAlignment(Pos.CENTER);
