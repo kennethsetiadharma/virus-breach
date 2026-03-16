@@ -159,8 +159,8 @@ public class Hud extends AnchorPane {
         this.timerLabel.setText(String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60));
 
         // Score
-        Entity playerEntity = board.getFirstEntityMatching(e -> e instanceof Player);
-        if (playerEntity instanceof Player player) {
+        var player = (Player)board.getFirstEntityMatching(e -> e instanceof Player);
+        if (player != null) {
             int currentScore = player.getDataCollected();
 
             // Show popup if score changed

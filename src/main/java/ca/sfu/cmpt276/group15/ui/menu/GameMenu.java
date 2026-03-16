@@ -39,15 +39,6 @@ public class GameMenu extends Menu implements BoardObserver {
     private final Group camera = new Group();
     private final Group entities = new Group();
 
-    // use animationtimer so it updates every fps
-    private final AnimationTimer cameraTimer = new AnimationTimer() {
-        @Override
-        public void handle(long now) {
-            updateCamera();
-            hud.update(board, dataCollectedCount);
-        }
-    };
-
     /**
      * Initializes the game menu with the given game and board.
      * Sets up the viewport, camera, and the HUD
@@ -97,13 +88,9 @@ public class GameMenu extends Menu implements BoardObserver {
     @Override
     public void onOpen() {
         super.onOpen();
-        this.cameraTimer.start();
         this.board.start();
         this.board.setPaused(true);
-        Platform.runLater(() -> {
-            updateCamera();
-            showTutorial();
-        });
+        Platform.runLater(this::showTutorial);
     }
 
     /**
@@ -123,7 +110,6 @@ public class GameMenu extends Menu implements BoardObserver {
     @Override
     public void onClose() {
         super.onClose();
-        this.cameraTimer.stop();
         this.board.close();
     }
 
@@ -234,15 +220,24 @@ public class GameMenu extends Menu implements BoardObserver {
         Platform.runLater(() -> this.game.openMenu(new GameOverMenu(game, timePlayed)));
     }
 
+    @Override
+    public void onUpdate() {
+        BoardObserver.super.onUpdate();
+        Platform.runLater(() -> {
+            Player player = null;
+            for (Entity entity : this.board.getEntities()) {
+                if (entity instanceof Player p) player = p;
+                entity.syncToView();
+            }
+            if (player != null) this.updateCamera(player);
+            this.hud.update(board, dataCollectedCount);
+        });
+    }
+
     /**
      * Updates the camera to follow the player, clamped to the board edges.
      */
-    private void updateCamera() {
-        Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
-        if (!(entity instanceof Player player)) {
-            return;
-        }
-
+    private void updateCamera(Player player) {
         double boardWidth  = Position.fromGrid(this.board.width());
         double boardHeight = Position.fromGrid(this.board.height());
 

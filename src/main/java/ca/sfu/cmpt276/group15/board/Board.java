@@ -200,14 +200,9 @@ public class Board implements Closeable {
             }
             this.entityWriteLock.unlock();
 
-            // synchronize board state to the display
-            Platform.runLater(() -> {
-                this.entityReadLock.lock();
-                for (Entity entity : this.entities) {
-                    entity.syncToView();
-                }
-                this.entityReadLock.unlock();
-            });
+            for (BoardObserver observer : this.observers) {
+                observer.onUpdate();
+            }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             Platform.runLater(Platform::exit);

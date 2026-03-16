@@ -40,6 +40,12 @@ public interface BoardObserver {
     }
 
     /**
+     * Called after the board has completed an update.
+     */
+    default void onUpdate() {
+    }
+
+    /**
      * Called when a tile is updated on the board
      *
      * @param x    the x-coordinate of the tile that was changed
