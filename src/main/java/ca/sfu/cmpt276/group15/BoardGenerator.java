@@ -20,6 +20,11 @@ public class BoardGenerator {
     private static final int STORAGE_FROM_RIGHT  = 11; // left wall at x = width - 12
     private static final int STORAGE_FROM_BOTTOM =  8; // top wall at  y = height - 7
 
+    /**
+     * How many normal (required) rewards to spawn on the board
+     */
+    public static final int TOTAL_DATA = 6;
+
     public static void generateBoard(Board board) {
         int width  = board.width();
         int height = board.height();
@@ -118,9 +123,6 @@ public class BoardGenerator {
     }
 
     /**
-     * Generates internal maze walls across the whole board, skipping the server room interior.
-     */
-    /**
      * Scatters random wall shapes across the board interior.
      * Each shape is one of: a single tile, a 2-tile path (horizontal or vertical),
      * or a 2×2 square.
@@ -191,7 +193,7 @@ public class BoardGenerator {
     }
 
     @FunctionalInterface
-    public static interface EntitySupplier {
+    public interface EntitySupplier {
         Entity create(Board board, int x, int y);
     }
 }

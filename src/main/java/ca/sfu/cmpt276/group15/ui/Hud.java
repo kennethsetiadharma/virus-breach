@@ -1,5 +1,6 @@
 package ca.sfu.cmpt276.group15.ui;
 
+import ca.sfu.cmpt276.group15.BoardGenerator;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
@@ -27,9 +28,6 @@ import javafx.util.Duration;
  * Must be updated every frame via {@link #update(Board, int)}.
  */
 public class Hud extends AnchorPane {
-
-    // Must match how many Data entities BoardGenerator spawns
-    private static final int TOTAL_DATA = 6;
     private static final int ICON_SIZE = 34;
 
     private final Text timerLabel;
@@ -99,9 +97,9 @@ public class Hud extends AnchorPane {
         HBox scoreRow = new HBox(10, dataLabel, this.scoreLabel);
         scoreRow.setStyle("-fx-alignment: center-left;");
 
-        this.dataIcons = new ImageView[TOTAL_DATA];
+        this.dataIcons = new ImageView[BoardGenerator.TOTAL_DATA];
         HBox iconRow = new HBox(4);
-        for (int i = 0; i < TOTAL_DATA; i++) {
+        for (int i = 0; i < BoardGenerator.TOTAL_DATA; i++) {
             ImageView iv = new ImageView(this.dataEmptyImage);
             iv.setFitWidth(ICON_SIZE);
             iv.setFitHeight(ICON_SIZE);
@@ -176,12 +174,12 @@ public class Hud extends AnchorPane {
         }
 
         // Data icons: first `dataCollected` slots show collected icon
-        for (int i = 0; i < TOTAL_DATA; i++) {
+        for (int i = 0; i < BoardGenerator.TOTAL_DATA; i++) {
             this.dataIcons[i].setImage(i < dataCollected ? this.dataFullImage : this.dataEmptyImage);
         }
 
         // Show EXIT UNLOCKED banner once when all data collected
-        if (dataCollected >= TOTAL_DATA && !bannerShown) {
+        if (dataCollected >= BoardGenerator.TOTAL_DATA && !bannerShown) {
             bannerShown = true;
             showBanner();
         }
