@@ -5,7 +5,9 @@ import ca.sfu.cmpt276.group15.board.BoardObserver;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
+import ca.sfu.cmpt276.group15.ui.AnimatedNode;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
+import javafx.scene.Node;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,15 +19,12 @@ import java.util.Set;
 /**
  * "Moving enemy" character that chases the player and instantly kills them on collision.
  */
-public class Antivirus extends AnimatedEntity implements BoardObserver {
+public class Antivirus extends Entity implements BoardObserver {
     private static final int MOVEMENT_TICKS = 2;
-    private static final String[] MOVING_SPRITES = {
-        "antivirus_moving1.png",
-        "antivirus_moving2.png"
-    };
 
     private final boolean[][] solidState;
     private int movementCounter = MOVEMENT_TICKS;
+    private AnimatedNode node;
 
     public Antivirus(Board board, int x, int y) {
         super(board, x, y);
@@ -124,12 +123,13 @@ public class Antivirus extends AnimatedEntity implements BoardObserver {
     }
 
     @Override
-    protected String getIdleSpriteAsset() {
-        return "antivirus.png";
+    protected Node createRenderNode() {
+        return this.node = new AnimatedNode("antivirus.png", 4, "antivirus_moving1.png", "antivirus_moving2.png");
     }
 
     @Override
-    protected String[] getMovingSpriteAssets() {
-        return MOVING_SPRITES;
+    public void syncToView() {
+        super.syncToView();
+        this.node.animate(this.getPosition(), this.getPrevPosition(), this.board.getTimePlayed());
     }
 }

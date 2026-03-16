@@ -2,6 +2,8 @@ package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.math.Direction;
+import ca.sfu.cmpt276.group15.ui.AnimatedNode;
+import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
@@ -10,12 +12,7 @@ import java.util.List;
 /**
  * The "hacker" character, with movement controlled by the player.
  */
-public class Player extends AnimatedEntity {
-    private static final String[] MOVING_SPRITES = {
-        "player_moving1.png",
-        "player_moving2.png"
-    };
-
+public class Player extends Entity {
     /**
      * List of movement directions to be attempted.
      * The player will move in the first direction that is possible from this list.
@@ -25,6 +22,7 @@ public class Player extends AnimatedEntity {
      * The amount of data that the player has collected from the board.
      */
     private int dataCollected = 0;
+    private AnimatedNode node;
 
     public Player(Board board, int x, int y) {
         super(board, x, y);
@@ -60,6 +58,17 @@ public class Player extends AnimatedEntity {
         }
     }
 
+    @Override
+    protected Node createRenderNode() {
+        return this.node = new AnimatedNode("player.png", 2, "player_moving1.png", "player_moving2.png");
+    }
+
+    @Override
+    public void syncToView() {
+        super.syncToView();
+        this.node.animate(this.getPosition(), this.getPrevPosition(), this.board.getTimePlayed());
+    }
+
     /**
      * Enqueues movement in the given direction.
      * This direction will be favored over previously queued options.
@@ -79,15 +88,5 @@ public class Player extends AnimatedEntity {
      */
     public void stopMoving(Direction direction) {
         this.pendingMovement.remove(direction);
-    }
-
-    @Override
-    protected String getIdleSpriteAsset() {
-        return "player.png";
-    }
-
-    @Override
-    protected String[] getMovingSpriteAssets() {
-        return MOVING_SPRITES;
     }
 }

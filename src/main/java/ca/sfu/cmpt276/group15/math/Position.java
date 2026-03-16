@@ -13,16 +13,6 @@ public record Position(int x, int y) {
     public static final int UNIT_SIZE = 16;
 
     /**
-     * Converts from JavaFX coordinate space to board coordinates
-     *
-     * @param position a location in the JavaFX coordinate space
-     * @return the position's associated board coordinate space position
-     */
-    public static int asGrid(double position) {
-        return Math.floorDiv((int) position, UNIT_SIZE);
-    }
-
-    /**
      * Converts from board coordinate space to JavaFX coordinate space
      *
      * @param position the position on the board

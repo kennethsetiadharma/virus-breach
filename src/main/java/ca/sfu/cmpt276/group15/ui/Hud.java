@@ -150,6 +150,7 @@ public class Hud extends AnchorPane {
 
     /**
      * Called every frame from GameMenu's AnimationTimer.
+     *
      * @param board         the active board (for timer)
      * @param dataCollected how many Data packets the player has collected so far
      */
