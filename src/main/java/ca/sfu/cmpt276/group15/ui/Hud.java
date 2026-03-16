@@ -59,12 +59,12 @@ public class Hud extends AnchorPane {
      */
     public Hud(Runnable onPause, Runnable onDamage) {
         this.onDamage = onDamage;
-        var font = Menu.loadFont(20);
-        var fontLarge = Menu.loadFont(28);
-        this.popupFont = Menu.loadFont(22);
+        var font = ResourceManager.loadFont(20);
+        var fontLarge = ResourceManager.loadFont(28);
+        this.popupFont = ResourceManager.loadFont(22);
 
-        this.dataEmptyImage = Menu.loadIcon("data.png");
-        this.dataFullImage = Menu.loadIcon("data_completed.png");
+        this.dataEmptyImage = ResourceManager.loadIcon("data.png");
+        this.dataFullImage = ResourceManager.loadIcon("data_completed.png");
 
         // --- Top-right: [timer icon] [MM:SS] [pause button] ---
         ImageView timerIcon = Menu.iconView("timer.png");
@@ -122,7 +122,7 @@ public class Hud extends AnchorPane {
         // --- Center: EXIT UNLOCKED banner (hidden until all data collected) ---
         ImageView exitIcon = Menu.iconView("exit.png");
         Text bannerText = new Text("EXIT UNLOCKED");
-        bannerText.setFont(Menu.loadFont(20));
+        bannerText.setFont(ResourceManager.loadFont(20));
         bannerText.setFill(Color.LIME);
 
         HBox banner = new HBox(10, exitIcon, bannerText);

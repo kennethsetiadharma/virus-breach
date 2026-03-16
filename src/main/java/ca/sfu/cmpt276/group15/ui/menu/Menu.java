@@ -1,12 +1,11 @@
 package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 
 /**
  * Handles display and player interaction with the game.
@@ -76,36 +75,10 @@ public class Menu extends Pane {
      * @return the created ImageView
      */
     public static ImageView iconView(String asset) {
-        ImageView iv = new ImageView(loadIcon(asset));
+        ImageView iv = new ImageView(ResourceManager.loadIcon(asset));
         iv.setFitWidth(28);
         iv.setFitHeight(28);
         iv.setPreserveRatio(true);
         return iv;
-    }
-
-    /**
-     * Loads an icon from the specified asset path.
-     *
-     * @param asset the icon asset name
-     * @return the loaded Image
-     */
-    public static Image loadIcon(String asset) {
-        try (var stream = HackingGame.class.getResourceAsStream("/icons/" + asset)) {
-            if (stream != null) return new Image(stream);
-        } catch (Exception ignored) {}
-        return null;
-    }
-
-    /**
-     * Loads a font from the specified asset path.
-     *
-     * @param size the font size
-     * @return the loaded Font
-     */
-    public static Font loadFont(double size) {
-        try (var stream = HackingGame.class.getResourceAsStream("/fonts/VCR_OSD_MONO_1.001.ttf")) {
-            if (stream != null) return Font.loadFont(stream, size);
-        } catch (Exception ignored) {}
-        return Font.font("Courier New", size);
     }
 }

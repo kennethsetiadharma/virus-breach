@@ -2,6 +2,7 @@ package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,18 +32,18 @@ public class PauseMenu extends Menu {
 
         Label title = new Label("PAUSED");
         title.setTextFill(Color.WHITE);
-        title.setFont(Menu.loadFont(48));
+        title.setFont(ResourceManager.loadFont(48));
 
         Button btnResume = new Button("RESUME");
         btnResume.setGraphic(Menu.iconView("resume.png"));
-        btnResume.setFont(Menu.loadFont(22));
+        btnResume.setFont(ResourceManager.loadFont(22));
         btnResume.setStyle(BUTTON_STYLE);
         btnResume.setGraphicTextGap(14);
         btnResume.setOnAction(e -> { AudioManager.play("click.wav"); onResume.run(); });
 
         Button btnMainMenu = new Button("EXIT");
         btnMainMenu.setGraphic(Menu.iconView("exit.png"));
-        btnMainMenu.setFont(Menu.loadFont(22));
+        btnMainMenu.setFont(ResourceManager.loadFont(22));
         btnMainMenu.setStyle(BUTTON_STYLE);
         btnMainMenu.setGraphicTextGap(14);
         btnMainMenu.setOnAction(e -> { AudioManager.play("click.wav"); game.openMenu(new TitleMenu(game)); });

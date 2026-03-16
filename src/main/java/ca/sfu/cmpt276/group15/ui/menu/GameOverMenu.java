@@ -2,6 +2,7 @@ package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -41,12 +42,12 @@ public class GameOverMenu extends Menu {
         // Title
         Label title = new Label("QUARANTINED");
         title.setTextFill(Color.RED);
-        title.setFont(Menu.loadFont(42));
+        title.setFont(ResourceManager.loadFont(42));
 
         // Subtitle
         Label subtitle = new Label("YOU'VE BEEN CAUGHT BY AN ANTIVIRUS");
         subtitle.setTextFill(Color.WHITE);
-        subtitle.setFont(Menu.loadFont(14));
+        subtitle.setFont(ResourceManager.loadFont(14));
         subtitle.setWrapText(true);
         subtitle.setMaxWidth(360);
         subtitle.setAlignment(javafx.geometry.Pos.CENTER);
@@ -61,21 +62,21 @@ public class GameOverMenu extends Menu {
         int seconds = totalSeconds % 60;
         Label timerLabel = new Label(String.format("%02d:%02d", minutes, seconds));
         timerLabel.setTextFill(Color.WHITE);
-        timerLabel.setFont(Menu.loadFont(22));
+        timerLabel.setFont(ResourceManager.loadFont(22));
         HBox timerRow = new HBox(10, timerIcon, timerLabel);
         timerRow.setAlignment(Pos.CENTER);
 
         // Buttons
         Button btnQuit = new Button("QUIT");
         btnQuit.setGraphic(Menu.iconView("home.png"));
-        btnQuit.setFont(Menu.loadFont(18));
+        btnQuit.setFont(ResourceManager.loadFont(18));
         btnQuit.setStyle(BUTTON_STYLE);
         btnQuit.setGraphicTextGap(8);
         btnQuit.setOnAction(e -> { AudioManager.play("click.wav"); game.openMenu(new TitleMenu(game)); });
 
         Button btnRetry = new Button("RETRY");
         btnRetry.setGraphic(Menu.iconView("retry.png"));
-        btnRetry.setFont(Menu.loadFont(18));
+        btnRetry.setFont(ResourceManager.loadFont(18));
         btnRetry.setStyle(BUTTON_STYLE);
         btnRetry.setGraphicTextGap(8);
         btnRetry.setOnAction(e -> { AudioManager.play("click.wav"); game.startNewGame(); });

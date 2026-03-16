@@ -18,12 +18,12 @@ public class AnimatedNode extends Parent {
     private Direction direction;
 
     public AnimatedNode(String idleSprite, int frameInterval, String... movingSprites) {
-        this.idleFrame = ResourceManager.createImageView(ResourceManager.fetch(idleSprite));
+        this.idleFrame = ResourceManager.createImageView(ResourceManager.loadSprite(idleSprite));
         this.frameInterval = frameInterval;
 
         this.movingFrames = new Node[movingSprites.length];
         for (int i = 0; i < movingSprites.length; i++) {
-            Image frame = ResourceManager.fetch(movingSprites[i]);
+            Image frame = ResourceManager.loadSprite(movingSprites[i]);
             this.movingFrames[i] = frame != null ? ResourceManager.createImageView(frame) : this.idleFrame;
         }
 

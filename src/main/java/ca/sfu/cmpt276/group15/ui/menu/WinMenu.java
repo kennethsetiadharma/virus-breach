@@ -2,6 +2,7 @@ package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -42,17 +43,17 @@ public class WinMenu extends Menu {
         // Title
         Label title = new Label("INFILTRATED");
         title.setTextFill(Color.LIME);
-        title.setFont(Menu.loadFont(42));
+        title.setFont(ResourceManager.loadFont(42));
 
         // Subtitle
         Label subtitle = new Label("YOU'VE ACQUIRED");
         subtitle.setTextFill(Color.WHITE);
-        subtitle.setFont(Menu.loadFont(16));
+        subtitle.setFont(ResourceManager.loadFont(16));
 
         // Score
         Label score = new Label(dataCollected + " GB");
         score.setTextFill(Color.LIME);
-        score.setFont(Menu.loadFont(48));
+        score.setFont(ResourceManager.loadFont(48));
 
         // Timer row
         var timerIcon = Menu.iconView("timer.png");
@@ -63,21 +64,21 @@ public class WinMenu extends Menu {
         int seconds = totalSeconds % 60;
         Label timerLabel = new Label(String.format("%02d:%02d", minutes, seconds));
         timerLabel.setTextFill(Color.WHITE);
-        timerLabel.setFont(Menu.loadFont(22));
+        timerLabel.setFont(ResourceManager.loadFont(22));
         HBox timerRow = new HBox(10, timerIcon, timerLabel);
         timerRow.setAlignment(Pos.CENTER);
 
         // Buttons
         Button btnQuit = new Button("QUIT");
         btnQuit.setGraphic(Menu.iconView("home.png"));
-        btnQuit.setFont(Menu.loadFont(18));
+        btnQuit.setFont(ResourceManager.loadFont(18));
         btnQuit.setStyle(BUTTON_STYLE);
         btnQuit.setGraphicTextGap(8);
         btnQuit.setOnAction(e -> { AudioManager.play("click.wav"); game.openMenu(new TitleMenu(game)); });
 
         Button btnRetry = new Button("RETRY");
         btnRetry.setGraphic(Menu.iconView("retry.png"));
-        btnRetry.setFont(Menu.loadFont(18));
+        btnRetry.setFont(ResourceManager.loadFont(18));
         btnRetry.setStyle(BUTTON_STYLE);
         btnRetry.setGraphicTextGap(8);
         btnRetry.setOnAction(e -> { AudioManager.play("click.wav"); game.startNewGame(); });

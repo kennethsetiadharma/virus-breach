@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -18,9 +19,9 @@ import static ca.sfu.cmpt276.group15.math.Position.UNIT_SIZE;
  * Contains methods to load and create {@code ImageViews} for sprites
  */
 public class ResourceManager {
-    private static final Map<String, Image> cache = new HashMap<>();
+    private static final Map<String, Image> IMAGE_CACHE = new HashMap<>();
+    private static Font font = null;
 
-    // sprite function split up since raw Image needed for animation (see AnimatedEntity)
     /**
      * Creates a sprite {@code Node} for the specified asset
      * Returns a coloured rectangle if the asset is not found
@@ -30,7 +31,7 @@ public class ResourceManager {
      * @return the created sprite Node
      */
     public static Node sprite(String asset, Color fallbackColor) {
-        Image image = fetch(asset);
+        Image image = loadSprite(asset);
         if (image == null) {
             return new Rectangle(UNIT_SIZE, UNIT_SIZE, fallbackColor);
         }
@@ -46,13 +47,13 @@ public class ResourceManager {
      * @return the fetched Image or null if not found
      */
     public static Image fetch(String asset) {
-        if (cache.containsKey(asset)) {
-            return cache.get(asset);
+        if (IMAGE_CACHE.containsKey(asset)) {
+            return IMAGE_CACHE.get(asset);
         }
-        try (InputStream stream = HackingGame.class.getResourceAsStream("/sprites/" + asset)) {
+        try (InputStream stream = HackingGame.class.getResourceAsStream(asset)) {
             if (stream != null) {
                 Image image = new Image(stream);
-                cache.put(asset, image);
+                IMAGE_CACHE.put(asset, image);
                 return image;
             }
             return null;
@@ -73,5 +74,42 @@ public class ResourceManager {
         view.setFitHeight(UNIT_SIZE);
         view.setPreserveRatio(false);
         return view;
+    }
+
+    /**
+     * Loads an icon from the specified asset path.
+     *
+     * @param asset the icon asset name
+     * @return the loaded Image
+     */
+    public static Image loadIcon(String asset) {
+        return fetch("/icons/" + asset);
+    }
+
+    /**
+     * Loads a sprite from the specified asset path.
+     *
+     * @param asset the sprite asset name
+     * @return the loaded Image
+     */
+    public static Image loadSprite(String asset) {
+        return fetch("/sprites/" + asset);
+    }
+
+    /**
+     * Loads the game font at the specified size.
+     *
+     * @param size the font size
+     * @return the loaded Font
+     */
+    public static Font loadFont(double size) {
+        if (font == null) {
+            try (var stream = HackingGame.class.getResourceAsStream("/fonts/VCR_OSD_MONO_1.001.ttf")) {
+                if (stream != null) font = Font.loadFont(stream, size);
+            } catch (Exception ignored) {
+                font = Font.font("Courier New", size);
+            }
+        }
+        return new Font(font.getName(), size);
     }
 }

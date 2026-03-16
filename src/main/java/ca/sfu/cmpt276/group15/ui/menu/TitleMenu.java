@@ -2,6 +2,7 @@ package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -30,14 +31,14 @@ public class TitleMenu extends Menu {
 
         Button start = new Button("START MISSION");
         start.setGraphic(Menu.iconView("resume.png"));
-        start.setFont(Menu.loadFont(22));
+        start.setFont(ResourceManager.loadFont(22));
         start.setStyle(BUTTON_STYLE);
         start.setGraphicTextGap(10);
         start.setOnAction(this::startClicked);
 
         Button options = new Button("OPTIONS");
         options.setGraphic(Menu.iconView("options.png"));
-        options.setFont(Menu.loadFont(22));
+        options.setFont(ResourceManager.loadFont(22));
         options.setStyle(BUTTON_STYLE);
         options.setGraphicTextGap(10);
         options.setOnAction(this::optionsClicked);
