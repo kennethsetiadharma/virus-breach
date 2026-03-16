@@ -23,6 +23,7 @@ public class Player extends Entity {
      * The amount of data that the player has collected from the board.
      */
     private int dataCollected = 0;
+    private boolean hasDecryptionKey = false;
     private AnimatedNode node;
 
     public Player(Board board, int x, int y) {
@@ -44,6 +45,14 @@ public class Player extends Entity {
 
     public int getDataCollected() {
         return dataCollected;
+    }
+
+    public boolean hasDecryptionKey() {
+        return hasDecryptionKey;
+    }
+
+    public void setHasDecryptionKey(boolean hasDecryptionKey) {
+        this.hasDecryptionKey = hasDecryptionKey;
     }
 
     @Override

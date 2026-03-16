@@ -16,7 +16,7 @@ public class ServerRoom extends Room {
 
     @Override
     protected void spawnEntities(Board board) {
-        // None for now
+        // Nothing to spawn yet
     }
 
     @Override

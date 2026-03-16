@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.group15.ui.menu;
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.BoardObserver;
+import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.board.entity.Data;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
@@ -38,6 +39,7 @@ public class GameMenu extends Menu implements BoardObserver {
 
     private final Group camera = new Group();
     private final Group entities = new Group();
+    private Node[][] tileNodes;
 
     /**
      * Initializes the game menu with the given game and board.
@@ -59,12 +61,14 @@ public class GameMenu extends Menu implements BoardObserver {
         this.camera.getChildren().add(this.entities);
         this.getChildren().add(this.camera);
 
+        this.tileNodes = new Node[board.height()][board.width()];
         for (int x = 0; x < board.width(); x++) {
             for (int y = 0; y < board.height(); y++) {
                 Node node = board.getTile(x, y).createNode(board, new Position(x, y));
                 node.setTranslateX(Position.fromGrid(x));
                 node.setTranslateY(Position.fromGrid(y));
                 node.setTranslateZ(-1.0);
+                this.tileNodes[y][x] = node;
                 this.entities.getChildren().add(node);
             }
         }
@@ -196,6 +200,28 @@ public class GameMenu extends Menu implements BoardObserver {
             this.dataCollectedCount++;
         }
         Platform.runLater(() -> this.entities.getChildren().remove(entity.getRenderNode()));
+    }
+
+    /**
+     * Called when a tile on the board changes.
+     * Replaces the old tile node with a new one at the same position.
+     *
+     * @param x    the x-coordinate of the changed tile
+     * @param y    the y-coordinate of the changed tile
+     * @param tile the new tile type
+     */
+    @Override
+    public void onTileChanged(int x, int y, TileType tile) {
+        Platform.runLater(() -> {
+            Node oldNode = this.tileNodes[y][x];
+            Node newNode = tile.createNode(this.board, new Position(x, y));
+            newNode.setTranslateX(Position.fromGrid(x));
+            newNode.setTranslateY(Position.fromGrid(y));
+            newNode.setTranslateZ(-1.0);
+            this.tileNodes[y][x] = newNode;
+            int index = this.entities.getChildren().indexOf(oldNode);
+            this.entities.getChildren().set(index, newNode);
+        });
     }
 
     /**

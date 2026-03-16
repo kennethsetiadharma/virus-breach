@@ -7,6 +7,7 @@ import ca.sfu.cmpt276.group15.board.entity.*;
 import ca.sfu.cmpt276.group15.board.tile.Entrance;
 import ca.sfu.cmpt276.group15.board.tile.Exit;
 import ca.sfu.cmpt276.group15.board.tile.Floor;
+import ca.sfu.cmpt276.group15.board.tile.LockedDoor;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
 import ca.sfu.cmpt276.group15.math.Position;
 
@@ -56,8 +57,7 @@ public class BoardGenerator {
         // Right boundary wall: vertical at x = SERVER_ROOM_WIDTH, with a doorway at mid-height.
         int doorY = SERVER_ROOM_HEIGHT / 2;
         for (int y = 1; y <= SERVER_ROOM_HEIGHT; y++) {
-            if (y == doorY) continue; // leave gap for the doorway
-            board.setTile(SERVER_ROOM_WIDTH, y, Wall.INSTANCE);
+            board.setTile(SERVER_ROOM_WIDTH, y, y == doorY ? LockedDoor.INSTANCE : Wall.INSTANCE);
         }
         // Bottom boundary wall: horizontal at y = SERVER_ROOM_HEIGHT.
         for (int x = 1; x <= SERVER_ROOM_WIDTH; x++) {
@@ -88,6 +88,16 @@ public class BoardGenerator {
         // Exit: top perimeter, outside the server room's top edge
         board.setTile(board.getRandom().nextInt(SERVER_ROOM_WIDTH + 1, width - 1), 0, Exit.INSTANCE);
 
+        // Furnish rooms before entity spawning so their internal walls exist when spawnAnywhere runs
+        ServerRoom serverRoom = new ServerRoom(0, 0, SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT,
+                new Position(SERVER_ROOM_WIDTH, doorY));
+        serverRoom.furnishRoom(board);
+
+        StorageRoom storageRoom = new StorageRoom(storageLeftX, storageTopY,
+                STORAGE_FROM_RIGHT, STORAGE_FROM_BOTTOM, new Position(storageLeftX, storageDoorY),
+                new Position(SERVER_ROOM_WIDTH, doorY));
+        storageRoom.furnishRoom(board);
+
         // Internal maze walls across the whole board, skipping the server room interior
         generateWalls(board, width, height);
 
@@ -99,15 +109,6 @@ public class BoardGenerator {
             spawnAnywhere(board, 1, 1, width - 1, height - 1, Firewall::new);
         }
         spawnAnywhere(board, 1, 1, width - 1, height - 1, Antivirus::new);
-
-        // Furnish the server room (currently empty)
-        ServerRoom serverRoom = new ServerRoom(0, 0, SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT,
-                new Position(SERVER_ROOM_WIDTH, doorY));
-        serverRoom.furnishRoom(board);
-
-        StorageRoom storageRoom = new StorageRoom(storageLeftX, storageTopY,
-                STORAGE_FROM_RIGHT, STORAGE_FROM_BOTTOM, new Position(storageLeftX, storageDoorY));
-        storageRoom.furnishRoom(board);
     }
 
     public static void spawnAnywhere(Board board, int minX, int minY, int maxX, int maxY, EntitySupplier supplier) {
