@@ -13,9 +13,16 @@ import javafx.scene.layout.VBox;
 
 import java.io.InputStream;
 
+/**
+ * A menu for the title screen of the game.
+ */
 public class TitleMenu extends Menu {
     
-
+    /**
+     * Creates a new title menu.
+     *
+     * @param game the game instance
+     */
     public TitleMenu(HackingGame game) {
         super(game);
         this.setBackground(loadBackground());
@@ -42,14 +49,29 @@ public class TitleMenu extends Menu {
         this.getChildren().add(buttonColumn);
     }
 
+    /**
+     * Handles when the options button is pressed.
+     *
+     * @param event the action event
+     */
     private void optionsClicked(ActionEvent event) {
         this.getScene().setRoot(new OptionsMenu(game, game.getOptions()));
     }
 
+    /**
+     * Handles when the start button is pressed.
+     *
+     * @param event the action event
+     */
     private void startClicked(ActionEvent event) {
         this.game.startNewGame();
     }
 
+    /**
+     * Loads the background image for the title menu.
+     *
+     * @return the loaded Background or null if not found
+     */
     private Background loadBackground() {
         try (InputStream stream = HackingGame.class.getResourceAsStream("/background/title.png")) {
             if (stream == null) {

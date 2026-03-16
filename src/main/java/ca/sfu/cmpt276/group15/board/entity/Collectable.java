@@ -17,6 +17,10 @@ public abstract class Collectable extends Entity {
         this.value = value;
     }
 
+    /**
+     * Called when a player collides with collectable.
+     * Adjust player's data based on the collectable's specified {@code value}, then remove it from the board.
+     */
     @Override
     public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);

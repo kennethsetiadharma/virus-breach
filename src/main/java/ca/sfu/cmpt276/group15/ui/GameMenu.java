@@ -18,6 +18,11 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Main game menu that displays the board and entities.
+ * Also handles player input, pauses, and tutorial display.
+ * Implements {@link BoardObserver} to update the view when the board changes, and to handle win/lose.
+ */
 public class GameMenu extends Menu implements BoardObserver {
     private final Board board;
     private PauseMenu pauseOverlay = null;
@@ -39,6 +44,13 @@ public class GameMenu extends Menu implements BoardObserver {
         }
     };
 
+    /**
+     * Initializes the game menu with the given game and board.
+     * Sets up the viewport, camera, and the HUD
+     * 
+     * @param game the game instance from {@link HackingGame}
+     * @param board the board instance, see {@link Board}
+     */
     public GameMenu(HackingGame game, Board board) {
         super(game);
         this.board = board;
@@ -82,6 +94,9 @@ public class GameMenu extends Menu implements BoardObserver {
         });
     }
 
+    /**
+     * Shows the tutorial overlay on top of the game view, and pauses the game
+     */
     private void showTutorial() {
         TutorialOverlay[] ref = new TutorialOverlay[1];
         ref[0] = new TutorialOverlay(() -> {
@@ -100,6 +115,11 @@ public class GameMenu extends Menu implements BoardObserver {
         this.board.close();
     }
 
+    /**
+     * Handles keydown events for player movement and pause
+     *
+     * @param event the key event
+     */
     @Override
     public void onKeyPressed(KeyEvent event) {
         if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
@@ -118,6 +138,10 @@ public class GameMenu extends Menu implements BoardObserver {
         }
     }
 
+    /**
+     * Toggles the pause state of the game
+     * Shows the pause menu, and pauses the board
+     */
     private void togglePause() {
         if (pauseOverlay == null) {
             pauseOverlay = new PauseMenu(game, this::togglePause);
@@ -132,6 +156,11 @@ public class GameMenu extends Menu implements BoardObserver {
         }
     }
 
+    /**
+     * Handles keyup events to stop player from moving
+     *
+     * @param event the key event
+     */
     @Override
     public void onKeyReleased(KeyEvent event) {
         Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
@@ -145,6 +174,12 @@ public class GameMenu extends Menu implements BoardObserver {
         }
     }
 
+    /**
+     * Called when an entity is added to the board
+     * Adds the render node to the view and updates the camera
+     * 
+     * @param entity the entity that was added
+     */
     @Override
     public void onEntityAdded(Entity entity) {
         Platform.runLater(() -> {
@@ -153,6 +188,12 @@ public class GameMenu extends Menu implements BoardObserver {
         });
     }
 
+    /**
+     * Called when an entity is removed from the board
+     * Removes the entity's render node from the view and updates the camera
+     *
+     * @param entity the entity that was removed
+     */
     @Override
     public void onEntityRemoved(Entity entity) {
         if (entity instanceof Data) {
@@ -164,6 +205,12 @@ public class GameMenu extends Menu implements BoardObserver {
         });
     }
 
+    /**
+     * Called when the player wins the game
+     * Plays a success sound and opens the win menu
+     *
+     * @param dataCollected the amount of data collected
+     */
     @Override
     public void onWin(int dataCollected) {
         AudioManager.play("success.wav");
@@ -171,12 +218,19 @@ public class GameMenu extends Menu implements BoardObserver {
         Platform.runLater(() -> this.game.openMenu(new WinMenu(game, dataCollected, timePlayed)));
     }
 
+    /**
+     * Called when the player loses the game
+     * Opens the game over menu
+     */
     @Override
     public void onLose() {
         int timePlayed = board.getTimePlayed();
         Platform.runLater(() -> this.game.openMenu(new GameOverMenu(game, timePlayed)));
     }
 
+    /**
+     * Updates the camera to fit the viewport
+     */
     private void updateCamera() {
         double boardPixelWidth = Position.fromGrid(this.board.width());
         double boardPixelHeight = Position.fromGrid(this.board.height());

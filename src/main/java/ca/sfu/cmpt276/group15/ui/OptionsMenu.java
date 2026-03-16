@@ -12,9 +12,18 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+/**
+ * A menu for adjusting game options.
+ */
 public class OptionsMenu extends Menu {
     private final GameOptions options;
 
+    /**
+     * Creates a new options menu.
+     *
+     * @param game  the game instance
+     * @param options the game options
+     */
     public OptionsMenu(HackingGame game, GameOptions options) {
         super(game);
         this.options = options;
@@ -61,6 +70,11 @@ public class OptionsMenu extends Menu {
         this.getChildren().add(layout);
     }
 
+    /**
+     * Handles when the back button is pressed.
+     *
+     * @param action the action event
+     */
     private void backPressed(ActionEvent action) {
         this.getScene().setRoot(new TitleMenu(this.game));
     }

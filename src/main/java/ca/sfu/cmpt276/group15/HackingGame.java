@@ -11,6 +11,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * The main class for the game.
+ * Initializes the game window and manages menu navigation
+ */
 public class HackingGame extends Application {
     public static final long UPDATE_INTERVAL = 100; //milliseconds
     public static final int BOARD_WIDTH = 46;

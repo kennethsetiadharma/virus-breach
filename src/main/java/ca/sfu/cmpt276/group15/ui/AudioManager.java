@@ -8,6 +8,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages game audio playback. 
+ * Audio clips are preloaded on init call, and played with specified volume.
+ */
 public class AudioManager {
     private static final String[] PRELOADED_ASSETS = {
         "bonus.wav",
@@ -21,12 +25,24 @@ public class AudioManager {
     private static GameOptions options;
     private static boolean initialized = false;
 
+    /**
+     * Apply the volume options and preload audio.
+     * To only run once at the very start. 
+     * Iterates through the list of preload assets to load them into the clips map.
+     * Then, play a silent clip to reduce lag on first real clip play.
+     * 
+     * @param options the game options 
+     * @see GameOptions
+     */
     public static void init(GameOptions options) {
         AudioManager.options = options;
         if (initialized) {
             return;
         }
-        preload();
+
+        for (String asset : PRELOADED_ASSETS) {
+            getClip(asset);
+        }
         
         // play silent clip (reduces lag on first real clip play)
         AudioClip clip = clips.get(PRELOADED_ASSETS[0]);
@@ -39,6 +55,11 @@ public class AudioManager {
         initialized = true;
     }
 
+    /**
+     * Play the specified audio clip
+     * 
+     * @param asset audio clip asset path
+     */
     public static void play(String asset) {
         AudioClip clip = getClip(asset);
         if (clip == null) {
@@ -48,12 +69,12 @@ public class AudioManager {
         clip.play(options == null ? 1.0 : options.getVolume());
     }
 
-    private static void preload() {
-        for (String asset : PRELOADED_ASSETS) {
-            getClip(asset);
-        }
-    }
-
+    /**
+     * Fetches audio clip from map, or loads it to the map
+     * 
+     * @param asset audio clip asset path
+     * @return the audio clip, or null if not found
+     */
     private static AudioClip getClip(String asset) {
         if (clips.containsKey(asset)) {
             return clips.get(asset);

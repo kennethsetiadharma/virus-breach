@@ -69,6 +69,12 @@ public class Menu extends Pane {
     public void onKeyReleased(KeyEvent event) {
     }
 
+    /**
+     * Creates an {@code ImageView} for the specified icon asset.
+     *
+     * @param asset the icon asset name
+     * @return the created ImageView
+     */
     public static ImageView iconView(String asset) {
         ImageView iv = new ImageView(loadIcon(asset));
         iv.setFitWidth(28);
@@ -77,6 +83,12 @@ public class Menu extends Pane {
         return iv;
     }
 
+    /**
+     * Loads an icon from the specified asset path.
+     *
+     * @param asset the icon asset name
+     * @return the loaded Image
+     */
     public static Image loadIcon(String asset) {
         try (var stream = HackingGame.class.getResourceAsStream("/icons/" + asset)) {
             if (stream != null) return new Image(stream);
@@ -84,6 +96,12 @@ public class Menu extends Pane {
         return null;
     }
 
+    /**
+     * Loads a font from the specified asset path.
+     *
+     * @param size the font size
+     * @return the loaded Font
+     */
     public static Font loadFont(double size) {
         try (var stream = HackingGame.class.getResourceAsStream("/fonts/VCR_OSD_MONO_1.001.ttf")) {
             if (stream != null) return Font.loadFont(stream, size);
