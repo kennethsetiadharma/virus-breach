@@ -1,4 +1,4 @@
-package ca.sfu.cmpt276.group15.ui;
+package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
 import javafx.scene.Scene;

@@ -1,4 +1,4 @@
-package ca.sfu.cmpt276.group15.ui;
+package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.board.Board;
@@ -8,6 +8,9 @@ import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
+import ca.sfu.cmpt276.group15.ui.AudioManager;
+import ca.sfu.cmpt276.group15.ui.Hud;
+import ca.sfu.cmpt276.group15.ui.TutorialOverlay;
 import javafx.animation.FadeTransition;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;

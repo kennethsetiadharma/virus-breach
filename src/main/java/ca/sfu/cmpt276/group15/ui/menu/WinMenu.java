@@ -1,6 +1,7 @@
-package ca.sfu.cmpt276.group15.ui;
+package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
+import ca.sfu.cmpt276.group15.ui.AudioManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,17 +14,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Screen shown when the player loses the game.
- * Displays the time played and options to retry or return to the title screen.
+ * Screen shown when the player wins the game.
+ * Displays the score, time played, and options to retry or return to the title screen.
  */
-public class GameOverMenu extends Menu {
+public class WinMenu extends Menu {
     /**
-     * Creates the game over screen.
+     * Creates the win screen.
      *
-     * @param game       the game instance
-     * @param timePlayed the time played in ticks
+     * @param game          the game instance
+     * @param dataCollected the total data collected by the player
+     * @param timePlayed    the time played in ticks
      */
-    public GameOverMenu(HackingGame game, int timePlayed) {
+    public WinMenu(HackingGame game, int dataCollected, int timePlayed) {
         super(game);
 
         // Full black background
@@ -32,24 +34,25 @@ public class GameOverMenu extends Menu {
         bg.heightProperty().bind(this.heightProperty());
         bg.setFill(Color.BLACK);
 
-        // Lock icon
-        var lockIcon = Menu.iconView("lock.png");
-        lockIcon.setFitWidth(64);
-        lockIcon.setFitHeight(64);
+        // Trophy icon
+        var trophy = Menu.iconView("trophy.png");
+        trophy.setFitWidth(64);
+        trophy.setFitHeight(64);
 
         // Title
-        Label title = new Label("QUARANTINED");
-        title.setTextFill(Color.RED);
+        Label title = new Label("INFILTRATED");
+        title.setTextFill(Color.LIME);
         title.setFont(Menu.loadFont(42));
 
         // Subtitle
-        Label subtitle = new Label("YOU'VE BEEN CAUGHT BY AN ANTIVIRUS");
+        Label subtitle = new Label("YOU'VE ACQUIRED");
         subtitle.setTextFill(Color.WHITE);
-        subtitle.setFont(Menu.loadFont(14));
-        subtitle.setWrapText(true);
-        subtitle.setMaxWidth(360);
-        subtitle.setAlignment(javafx.geometry.Pos.CENTER);
-        subtitle.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        subtitle.setFont(Menu.loadFont(16));
+
+        // Score
+        Label score = new Label(dataCollected + " GB");
+        score.setTextFill(Color.LIME);
+        score.setFont(Menu.loadFont(48));
 
         // Timer row
         var timerIcon = Menu.iconView("timer.png");
@@ -83,7 +86,7 @@ public class GameOverMenu extends Menu {
         buttons.setAlignment(Pos.CENTER);
 
         // Center card
-        VBox card = new VBox(16, lockIcon, title, subtitle, timerRow, buttons);
+        VBox card = new VBox(16, trophy, title, subtitle, score, timerRow, buttons);
         card.setAlignment(Pos.CENTER);
         card.setMaxWidth(480);
         card.setPadding(new Insets(40));

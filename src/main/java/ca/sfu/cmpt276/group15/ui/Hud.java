@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.group15.ui;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
+import ca.sfu.cmpt276.group15.ui.menu.Menu;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;

@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.group15.board.entity;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.ui.AnimatedNode;
+import ca.sfu.cmpt276.group15.ui.menu.GameMenu;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 
@@ -74,7 +75,7 @@ public class Player extends Entity {
      * This direction will be favored over previously queued options.
      *
      * @param direction the direction to move in
-     * @see ca.sfu.cmpt276.group15.ui.GameMenu#onKeyPressed(KeyEvent)
+     * @see GameMenu#onKeyPressed(KeyEvent)
      */
     public void startMoving(Direction direction) {
         if (!this.pendingMovement.contains(direction)) this.pendingMovement.add(direction);
@@ -84,7 +85,7 @@ public class Player extends Entity {
      * Stops movement in the given direction.
      *
      * @param direction the direction to stop moving in
-     * @see ca.sfu.cmpt276.group15.ui.GameMenu#onKeyReleased(KeyEvent)
+     * @see GameMenu#onKeyReleased(KeyEvent)
      */
     public void stopMoving(Direction direction) {
         this.pendingMovement.remove(direction);

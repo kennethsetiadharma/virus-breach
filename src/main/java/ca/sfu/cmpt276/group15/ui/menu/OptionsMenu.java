@@ -1,7 +1,8 @@
-package ca.sfu.cmpt276.group15.ui;
+package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.GameOptions;
 import ca.sfu.cmpt276.group15.HackingGame;
+import ca.sfu.cmpt276.group15.ui.AudioManager;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
