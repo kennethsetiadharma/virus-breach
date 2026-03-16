@@ -51,7 +51,7 @@ public class Antivirus extends Entity implements BoardObserver {
     /**
      * Called every game update cycle.
      * If there is a player on the board, the entity will move 1 step towards the player every {@link #MOVEMENT_TICKS} ticks.
-     * Internally, it uses the {@link <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* search algorithm</a>} to navigate to the player.
+     * Internally, it uses the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* search algorithm</a> to navigate to the player.
      */
     @Override
     public void tick() {
