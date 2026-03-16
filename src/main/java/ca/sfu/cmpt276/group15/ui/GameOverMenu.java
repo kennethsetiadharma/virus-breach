@@ -79,8 +79,8 @@ public class GameOverMenu extends Menu {
         card.setPadding(new Insets(40));
         card.setBackground(new Background(new BackgroundFill(Color.rgb(10, 10, 10), null, null)));
 
-        card.layoutXProperty().bind(this.widthProperty().subtract(card.maxWidthProperty()).divide(2));
-        card.layoutYProperty().bind(this.heightProperty().subtract(400).divide(2));
+        card.layoutXProperty().bind(this.widthProperty().subtract(card.widthProperty()).divide(2));
+        card.layoutYProperty().bind(this.heightProperty().subtract(card.heightProperty()).divide(2));
 
         this.getChildren().addAll(bg, card);
     }
