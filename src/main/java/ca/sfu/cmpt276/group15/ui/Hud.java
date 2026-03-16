@@ -5,7 +5,10 @@ import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -31,6 +35,10 @@ public class Hud extends AnchorPane {
 
     // Track score to detect changes for popup
     private int lastScore = 0;
+    private boolean bannerShown = false;
+
+    // Cached font so we don't read from disk on every score change
+    private final Font popupFont;
 
     // Fixed pixel position of the data box for anchoring popups
     private static final double DATA_BOX_LEFT = 16.0;
@@ -39,6 +47,7 @@ public class Hud extends AnchorPane {
     public Hud(Runnable onPause) {
         var font = Menu.loadFont(20);
         var fontLarge = Menu.loadFont(28);
+        this.popupFont = Menu.loadFont(22);
 
         this.dataEmptyImage = Menu.loadIcon("data.png");
         this.dataFullImage = Menu.loadIcon("data_completed.png");
@@ -96,9 +105,35 @@ public class Hud extends AnchorPane {
         AnchorPane.setBottomAnchor(dataBox, DATA_BOX_BOTTOM);
         AnchorPane.setLeftAnchor(dataBox, DATA_BOX_LEFT);
 
-        this.getChildren().addAll(timerBox, dataBox);
+        // --- Center: EXIT UNLOCKED banner (hidden until all data collected) ---
+        ImageView exitIcon = Menu.iconView("exit.png");
+        Text bannerText = new Text("EXIT UNLOCKED");
+        bannerText.setFont(Menu.loadFont(20));
+        bannerText.setFill(Color.LIME);
+
+        HBox banner = new HBox(10, exitIcon, bannerText);
+        banner.setAlignment(Pos.CENTER);
+        banner.setStyle(
+            "-fx-background-color: rgba(0,0,0,0.8);" +
+            "-fx-padding: 10 24 10 24;" +
+            "-fx-background-radius: 6;" +
+            "-fx-border-color: lime;" +
+            "-fx-border-width: 2;" +
+            "-fx-border-radius: 6;"
+        );
+        banner.setOpacity(0);
+        AnchorPane.setTopAnchor(banner, 60.0);
+        AnchorPane.setLeftAnchor(banner, 0.0);
+        AnchorPane.setRightAnchor(banner, 0.0);
+        banner.setMouseTransparent(true);
+
+        this.getChildren().addAll(timerBox, dataBox, banner);
         this.setPickOnBounds(false);
+
+        this.banner = banner;
     }
+
+    private final HBox banner;
 
     /**
      * Called every frame from GameMenu's AnimationTimer.
@@ -129,6 +164,26 @@ public class Hud extends AnchorPane {
         for (int i = 0; i < TOTAL_DATA; i++) {
             this.dataIcons[i].setImage(i < dataCollected ? this.dataFullImage : this.dataEmptyImage);
         }
+
+        // Show EXIT UNLOCKED banner once when all data collected
+        if (dataCollected >= TOTAL_DATA && !bannerShown) {
+            bannerShown = true;
+            showBanner();
+        }
+    }
+
+    private void showBanner() {
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), banner);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1.0);
+
+        PauseTransition hold = new PauseTransition(Duration.millis(2500));
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), banner);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0);
+
+        new SequentialTransition(fadeIn, hold, fadeOut).play();
     }
 
     private void showScorePopup(int delta) {
@@ -136,7 +191,7 @@ public class Hud extends AnchorPane {
         Color color = delta > 0 ? Color.LIME : Color.RED;
 
         Text popup = new Text(text);
-        popup.setFont(Menu.loadFont(22));
+        popup.setFont(this.popupFont);
         popup.setFill(color);
         popup.setOpacity(1.0);
 
