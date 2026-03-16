@@ -100,6 +100,7 @@ public class GameMenu extends Menu implements BoardObserver {
         TutorialOverlay[] ref = new TutorialOverlay[1];
         ref[0] = new TutorialOverlay(() -> {
             this.getChildren().remove(ref[0]);
+            AudioManager.play("click.wav");
             this.board.setPaused(false);
         });
         ref[0].prefWidthProperty().bind(this.widthProperty());
