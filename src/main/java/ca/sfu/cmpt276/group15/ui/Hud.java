@@ -20,6 +20,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+/**
+ * HUD overlay displayed on top of the game view during gameplay.
+ * Shows the elapsed timer, pause button, player score, and data packet icons.
+ * Must be updated every frame via {@link #update(Board, int)}.
+ */
 public class Hud extends AnchorPane {
 
     // Must match how many Data entities BoardGenerator spawns
@@ -45,6 +50,12 @@ public class Hud extends AnchorPane {
     private static final double DATA_BOX_LEFT = 16.0;
     private static final double DATA_BOX_BOTTOM = 50.0;
 
+    /**
+     * Creates the HUD and builds all overlay nodes.
+     *
+     * @param onPause  called when the pause button is clicked
+     * @param onDamage called when the player's score decreases
+     */
     public Hud(Runnable onPause, Runnable onDamage) {
         this.onDamage = onDamage;
         var font = Menu.loadFont(20);
@@ -174,6 +185,10 @@ public class Hud extends AnchorPane {
         }
     }
 
+    /**
+     * Fades in the exit unlocked banner, holds it, then fades it out.
+     * Only called once when all data packets have been collected.
+     */
     private void showBanner() {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(300), banner);
         fadeIn.setFromValue(0);
@@ -188,6 +203,13 @@ public class Hud extends AnchorPane {
         new SequentialTransition(fadeIn, hold, fadeOut).play();
     }
 
+    /**
+     * Shows a floating score change popup near the data box.
+     * Positive delta shows in green, negative in red.
+     * Also triggers the damage callback if delta is negative.
+     *
+     * @param delta the score change amount
+     */
     private void showScorePopup(int delta) {
         if (delta < 0) onDamage.run();
         String text = delta > 0 ? "+" + delta : String.valueOf(delta);

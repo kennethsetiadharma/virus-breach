@@ -8,7 +8,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Overlay shown when the game is paused.
+ * Sits on top of the game view and provides resume, options, and exit actions.
+ */
 public class PauseMenu extends Menu {
+    /**
+     * Creates the pause menu overlay.
+     *
+     * @param game     the game instance
+     * @param onResume called when the player clicks resume
+     */
     public PauseMenu(HackingGame game, Runnable onResume) {
         super(game);
 

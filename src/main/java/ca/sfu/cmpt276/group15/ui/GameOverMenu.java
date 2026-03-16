@@ -12,7 +12,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Screen shown when the player loses the game.
+ * Displays the time played and options to retry or return to the title screen.
+ */
 public class GameOverMenu extends Menu {
+    /**
+     * Creates the game over screen.
+     *
+     * @param game       the game instance
+     * @param timePlayed the time played in ticks
+     */
     public GameOverMenu(HackingGame game, int timePlayed) {
         super(game);
 

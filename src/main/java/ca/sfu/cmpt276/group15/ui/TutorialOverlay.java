@@ -11,8 +11,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+/**
+ * Overlay shown at the start of a game to explain the controls and objectives.
+ * Pauses the board until the player dismisses it.
+ */
 public class TutorialOverlay extends Pane {
 
+    /**
+     * Creates the tutorial overlay.
+     *
+     * @param onDismiss called when the player clicks the start button
+     */
     public TutorialOverlay(Runnable onDismiss) {
         // Semi-transparent full-screen background
         Rectangle bg = new Rectangle();

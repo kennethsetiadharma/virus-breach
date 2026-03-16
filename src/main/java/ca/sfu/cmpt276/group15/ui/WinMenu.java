@@ -12,7 +12,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Screen shown when the player wins the game.
+ * Displays the score, time played, and options to retry or return to the title screen.
+ */
 public class WinMenu extends Menu {
+    /**
+     * Creates the win screen.
+     *
+     * @param game          the game instance
+     * @param dataCollected the total data collected by the player
+     * @param timePlayed    the time played in ticks
+     */
     public WinMenu(HackingGame game, int dataCollected, int timePlayed) {
         super(game);
 
