@@ -8,8 +8,10 @@ import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
+import javafx.animation.FadeTransition;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.util.Duration;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
@@ -28,6 +30,7 @@ public class GameMenu extends Menu implements BoardObserver {
     private final Board board;
     private PauseMenu pauseOverlay = null;
     private final Hud hud;
+    private final Rectangle damageFlash;
     private int dataCollectedCount = 0;
 
     private final Group camera = new Group();
@@ -76,10 +79,17 @@ public class GameMenu extends Menu implements BoardObserver {
         board.getEntities().forEach(this::onEntityAdded);
         board.attach(this);
 
-        this.hud = new Hud(this::togglePause);
+        this.damageFlash = new Rectangle();
+        this.damageFlash.widthProperty().bind(this.widthProperty());
+        this.damageFlash.heightProperty().bind(this.heightProperty());
+        this.damageFlash.setFill(Color.RED);
+        this.damageFlash.setOpacity(0);
+        this.damageFlash.setMouseTransparent(true);
+
+        this.hud = new Hud(this::togglePause, this::flashDamage);
         this.hud.prefWidthProperty().bind(this.widthProperty());
         this.hud.prefHeightProperty().bind(this.heightProperty());
-        this.getChildren().add(this.hud);
+        this.getChildren().addAll(this.damageFlash, this.hud);
     }
 
     @Override
@@ -248,6 +258,14 @@ public class GameMenu extends Menu implements BoardObserver {
 
         this.camera.setTranslateX(translateX);
         this.camera.setTranslateY(translateY);
+    }
+
+    private void flashDamage() {
+        damageFlash.setOpacity(0.35);
+        FadeTransition fade = new FadeTransition(Duration.millis(500), damageFlash);
+        fade.setFromValue(0.35);
+        fade.setToValue(0);
+        fade.play();
     }
 
     private static double restrictToViewport(double translate, double contentSize, double viewportSize) {

@@ -39,12 +39,14 @@ public class Hud extends AnchorPane {
 
     // Cached font so we don't read from disk on every score change
     private final Font popupFont;
+    private final Runnable onDamage;
 
     // Fixed pixel position of the data box for anchoring popups
     private static final double DATA_BOX_LEFT = 16.0;
     private static final double DATA_BOX_BOTTOM = 50.0;
 
-    public Hud(Runnable onPause) {
+    public Hud(Runnable onPause, Runnable onDamage) {
+        this.onDamage = onDamage;
         var font = Menu.loadFont(20);
         var fontLarge = Menu.loadFont(28);
         this.popupFont = Menu.loadFont(22);
@@ -187,6 +189,7 @@ public class Hud extends AnchorPane {
     }
 
     private void showScorePopup(int delta) {
+        if (delta < 0) onDamage.run();
         String text = delta > 0 ? "+" + delta : String.valueOf(delta);
         Color color = delta > 0 ? Color.LIME : Color.RED;
 
