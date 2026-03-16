@@ -10,9 +10,7 @@ import javafx.application.Platform;
 
 import java.io.Closeable;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Predicate;
 
 /**
@@ -28,7 +26,7 @@ public class Board implements Closeable {
      *
      * @see #start()
      */
-    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, "Board Logic Thread"));
 
     /**
      * Shared random number generator
@@ -191,8 +189,8 @@ public class Board implements Closeable {
                 }
             });
         } catch (Throwable throwable) {
-            //TODO: remove try/catch and report handle exceptions properly
             throwable.printStackTrace();
+            Platform.runLater(Platform::exit);
             throw new RuntimeException(throwable);
         }
     }
@@ -313,7 +311,6 @@ public class Board implements Closeable {
             observer.onWin(dataCollected);
         }
     }
-
 
     /**
      * Notifies observers that the game has been lost.

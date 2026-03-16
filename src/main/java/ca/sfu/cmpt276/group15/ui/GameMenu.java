@@ -36,8 +36,6 @@ public class GameMenu extends Menu implements BoardObserver {
     private final Group camera = new Group();
     private final Group entities = new Group();
 
-    private final Rectangle viewportClip = new Rectangle();
-
     // use animationtimer so it updates every fps
     private final AnimationTimer cameraTimer = new AnimationTimer() {
         @Override
@@ -60,9 +58,10 @@ public class GameMenu extends Menu implements BoardObserver {
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
         this.entities.getTransforms().add(new Scale(HackingGame.CAMERA_ZOOM, HackingGame.CAMERA_ZOOM, 0, 0));
 
-        this.viewportClip.widthProperty().bind(this.widthProperty());
-        this.viewportClip.heightProperty().bind(this.heightProperty());
-        this.setClip(this.viewportClip);
+        Rectangle viewportClip = new Rectangle();
+        viewportClip.widthProperty().bind(this.widthProperty());
+        viewportClip.heightProperty().bind(this.heightProperty());
+        this.setClip(viewportClip);
         this.camera.getChildren().add(this.entities);
         this.getChildren().add(this.camera);
 
