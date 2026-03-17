@@ -39,7 +39,7 @@ public class HackingGame extends Application {
         this.stage.setWidth(1280);
         this.stage.setHeight(720);
         this.stage.setResizable(false);
-        this.stage.setTitle("Hacking Game");
+        this.stage.setTitle("Virus Breach");
 
         this.activeMenu = new TitleMenu(this);
         this.stage.setScene(new Scene(this.activeMenu));
