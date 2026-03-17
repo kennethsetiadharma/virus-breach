@@ -16,9 +16,9 @@ import java.util.List;
  * Non moving enemy that damages the player on colliding.
  */
 public class Firewall extends Collectable {
-    // Spread interval range in ticks (100ms each): 75–100 ticks = ~7.5–10 seconds
-    private static final int MIN_SPREAD_TICKS = 50;
-    private static final int MAX_SPREAD_TICKS = 100;
+    // Spread interval range in ticks (100ms each): 75–125 ticks = ~7.5–12.5 seconds
+    private static final int MIN_SPREAD_TICKS = 75;
+    private static final int MAX_SPREAD_TICKS = 125;
 
     private static boolean frozen = false;
 
