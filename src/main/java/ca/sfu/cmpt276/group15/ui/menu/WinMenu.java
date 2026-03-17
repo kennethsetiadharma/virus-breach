@@ -3,6 +3,8 @@ package ca.sfu.cmpt276.group15.ui.menu;
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.ui.AudioManager;
 import ca.sfu.cmpt276.group15.ui.ResourceManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 /**
  * Screen shown when the player wins the game.
@@ -50,10 +53,22 @@ public class WinMenu extends Menu {
         subtitle.setTextFill(Color.WHITE);
         subtitle.setFont(ResourceManager.loadFont(16));
 
-        // Score
-        Label score = new Label(dataCollected + " GB");
+        // Score — animates from 0 up to final value
+        Label score = new Label("0 GB");
         score.setTextFill(Color.LIME);
         score.setFont(ResourceManager.loadFont(48));
+
+        Timeline trickle = new Timeline();
+        int frames = 60;
+        for (int i = 1; i <= frames; i++) {
+            int displayed = (int)((i / (double) frames) * dataCollected);
+            trickle.getKeyFrames().add(new KeyFrame(
+                Duration.millis(i * (1500.0 / frames)),
+                e -> score.setText(displayed + " GB")
+            ));
+        }
+        trickle.getKeyFrames().add(new KeyFrame(Duration.millis(1500), e -> score.setText(dataCollected + " GB")));
+        trickle.play();
 
         // Timer row
         var timerIcon = Menu.iconView("timer.png");
