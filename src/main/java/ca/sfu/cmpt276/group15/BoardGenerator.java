@@ -101,6 +101,8 @@ public class BoardGenerator {
         board.setTile(board.getRandom().nextInt(SERVER_ROOM_WIDTH + 1, width - 1), 0, Exit.INSTANCE);
 
         // Furnish rooms before entity spawning so their internal walls exist when spawnAnywhere runs
+        // This prevents entities from spawning inside the rooms' internal wall layouts, which would trap 
+        // them and make them inaccessible to the player.
         ServerRoom serverRoom = new ServerRoom(0, 0, SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT,
                 new Position(SERVER_ROOM_WIDTH, doorY));
         serverRoom.furnishRoom(board);
