@@ -19,6 +19,6 @@ public class LockedDoor extends TileType {
 
     @Override
     public Node createNode(Board board, Position position) {
-        return ResourceManager.sprite("locked_door.png", Color.CRIMSON);
+        return ResourceManager.sprite("door_locked.png", Color.CRIMSON);
     }
 }

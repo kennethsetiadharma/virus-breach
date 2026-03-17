@@ -19,6 +19,6 @@ public class OpenDoor extends TileType {
 
     @Override
     public Node createNode(Board board, Position position) {
-        return ResourceManager.sprite("open_door.png", Color.LIMEGREEN);
+        return ResourceManager.sprite("door_open.png", Color.LIMEGREEN);
     }
 }
