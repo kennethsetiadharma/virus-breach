@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.group15.ui.menu;
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.BoardObserver;
+import ca.sfu.cmpt276.group15.board.tile.OpenDoor;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.board.entity.Data;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
@@ -212,6 +213,9 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onTileChanged(int x, int y, TileType tile) {
+        if (tile == OpenDoor.INSTANCE) {
+            Platform.runLater(() -> hud.showServerRoomBanner());
+        }
         Platform.runLater(() -> {
             Node oldNode = this.tileNodes[y][x];
             Node newNode = tile.createNode(this.board, new Position(x, y));
