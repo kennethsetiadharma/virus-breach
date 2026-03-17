@@ -37,9 +37,10 @@ public class TutorialOverlay extends Pane {
 
         // Tutorial rows
         VBox rows = new VBox(16,
-            makeRow("data.png",           false, "Collect all 6 data packets to unlock the exit"),
+            makeRow("data.png",           true, "Collect all 6 data packets to unlock the exit"),
             makeRow("exit_up.png",        true,  "Reach the exit to escape and win"),
             makeRow("decryption_key.png", true,  "Find the decryption key to unlock the server room door"),
+            makeRow("freeze_token.png",   true,  "Grab tokens to temporarily stop firewall spread"),
             makeRow("sourcecode.png",     true,  "Grab source code for bonus points"),
             makeRow("firewall.png",       true,  "Avoid firewalls! They drain your data"),
             makeRow("antivirus.png",      true,  "Don't get caught by the antivirus!")
