@@ -1,5 +1,7 @@
 package ca.sfu.cmpt276.group15.board;
 
+import ca.sfu.cmpt276.group15.BoardGenerator;
+import ca.sfu.cmpt276.group15.board.entity.FreezeToken;
 import ca.sfu.cmpt276.group15.math.Position;
 
 public class ServerRoom extends Room {
@@ -16,7 +18,8 @@ public class ServerRoom extends Room {
 
     @Override
     protected void spawnEntities(Board board) {
-        // Nothing to spawn yet
+        BoardGenerator.spawnAnywhere(board, this.x + 1, this.y + 1,
+                this.x + this.width, this.y + this.height, FreezeToken::new);
     }
 
     @Override
