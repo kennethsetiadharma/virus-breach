@@ -11,6 +11,11 @@ import ca.sfu.cmpt276.group15.board.tile.LockedDoor;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
 import ca.sfu.cmpt276.group15.math.Position;
 
+/**
+ * Generates the initial state of the game board.
+ * Responsible for placing tiles, carving out special rooms,
+ * scattering random wall shapes, and spawning all entities.
+ */
 public class BoardGenerator {
     // Server room dimensions — carved out of the top-left corner of the board.
     private static final int SERVER_ROOM_WIDTH  = 16;
@@ -26,6 +31,13 @@ public class BoardGenerator {
      */
     public static final int TOTAL_DATA = 6;
 
+    /**
+     * Generates all tiles, rooms, and entities on the given board.
+     * This includes the outer perimeter, server and storage rooms,
+     * random wall shapes, and all initial entity spawns.
+     *
+     * @param board the board to generate
+     */
     public static void generateBoard(Board board) {
         int width  = board.width();
         int height = board.height();
@@ -111,6 +123,17 @@ public class BoardGenerator {
         spawnAnywhere(board, 1, 1, width - 1, height - 1, Antivirus::new);
     }
 
+    /**
+     * Repeatedly picks a random tile within the given bounds until a free,
+     * non-solid, empty tile is found, then spawns the entity there.
+     *
+     * @param board    the board to spawn on
+     * @param minX     minimum x-coordinate (inclusive)
+     * @param minY     minimum y-coordinate (inclusive)
+     * @param maxX     maximum x-coordinate (exclusive)
+     * @param maxY     maximum y-coordinate (exclusive)
+     * @param supplier factory that creates the entity given the board and coordinates
+     */
     public static void spawnAnywhere(Board board, int minX, int minY, int maxX, int maxY, EntitySupplier supplier) {
         while (true) {
             int x = board.getRandom().nextInt(minX, maxX);

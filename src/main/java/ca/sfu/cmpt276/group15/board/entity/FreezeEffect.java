@@ -14,11 +14,20 @@ public class FreezeEffect extends Entity {
 
     private int remainingTicks = FREEZE_TICKS;
 
+    /**
+     * Creates the freeze effect and immediately freezes all firewalls.
+     *
+     * @param board the board this entity belongs to
+     */
     public FreezeEffect(Board board) {
         super(board, 0, 0);
         Firewall.setFrozen(true);
     }
 
+    /**
+     * Counts down the freeze timer each tick.
+     * When it reaches zero, unfreezes all firewalls and removes this entity.
+     */
     @Override
     public void tick() {
         super.tick();
@@ -28,6 +37,9 @@ public class FreezeEffect extends Entity {
         }
     }
 
+    /**
+     * {@return a zero-size transparent node — this entity is invisible}
+     */
     @Override
     protected Node createRenderNode() {
         return new Rectangle(0, 0, Color.TRANSPARENT);

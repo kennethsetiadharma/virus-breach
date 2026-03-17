@@ -13,10 +13,14 @@ import javafx.scene.paint.Color;
 public class LockedDoor extends TileType {
     public static final TileType INSTANCE = new LockedDoor();
 
+    /** Creates a solid locked door tile. */
     public LockedDoor() {
         super(true);
     }
 
+    /**
+     * {@return a crimson sprite node representing the locked door}
+     */
     @Override
     public Node createNode(Board board, Position position) {
         return ResourceManager.sprite("door_locked.png", Color.CRIMSON);

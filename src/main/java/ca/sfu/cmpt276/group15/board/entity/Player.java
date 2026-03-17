@@ -47,10 +47,18 @@ public class Player extends Entity {
         return dataCollected;
     }
 
+    /**
+     * {@return true if the player has collected the Decryption Key}
+     */
     public boolean hasDecryptionKey() {
         return hasDecryptionKey;
     }
 
+    /**
+     * Sets whether the player is holding the Decryption Key.
+     *
+     * @param hasDecryptionKey {@code true} if the player has the key
+     */
     public void setHasDecryptionKey(boolean hasDecryptionKey) {
         this.hasDecryptionKey = hasDecryptionKey;
     }

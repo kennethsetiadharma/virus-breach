@@ -13,10 +13,14 @@ import javafx.scene.paint.Color;
 public class OpenDoor extends TileType {
     public static final TileType INSTANCE = new OpenDoor();
 
+    /** Creates a passable open door tile. */
     public OpenDoor() {
         super(false);
     }
 
+    /**
+     * {@return a sprite node representing the open door}
+     */
     @Override
     public Node createNode(Board board, Position position) {
         return ResourceManager.sprite("door_open.png", Color.LIMEGREEN);

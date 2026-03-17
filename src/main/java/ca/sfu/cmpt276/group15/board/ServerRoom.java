@@ -5,11 +5,30 @@ import ca.sfu.cmpt276.group15.board.entity.FreezeToken;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
 import ca.sfu.cmpt276.group15.math.Position;
 
+/**
+ * The Server Room, located in the top-left corner of the board.
+ * Access is locked behind the {@link ca.sfu.cmpt276.group15.board.tile.LockedDoor}
+ * until the player collects the {@link ca.sfu.cmpt276.group15.board.entity.DecryptionKey}
+ * from the Storage Room. Contains the {@link ca.sfu.cmpt276.group15.board.entity.FreezeToken} buff.
+ */
 public class ServerRoom extends Room {
+    /**
+     * @param x        the x-coordinate of the room's left wall
+     * @param y        the y-coordinate of the room's top wall
+     * @param width    the room width in tiles
+     * @param height   the room height in tiles
+     * @param entrance the position of the room's doorway
+     */
     public ServerRoom(int x, int y, int width, int height, Position entrance) {
         super(x, y, width, height, entrance);
     }
 
+    /**
+     * Generates the internal layout then spawns entities inside the room.
+     *
+     * @param board the board to furnish
+     * @return {@code true} when furnishing completes successfully
+     */
     @Override
     public boolean furnishRoom(Board board) {
         generateInternalLayout(board);
@@ -17,6 +36,11 @@ public class ServerRoom extends Room {
         return true;
     }
 
+    /**
+     * Spawns the {@link FreezeToken} at a random free tile inside the room interior.
+     *
+     * @param board the board to spawn entities on
+     */
     @Override
     protected void spawnEntities(Board board) {
         BoardGenerator.spawnAnywhere(board, this.x + 1, this.y + 1,

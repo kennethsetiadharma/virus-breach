@@ -22,6 +22,12 @@ public class Firewall extends Collectable {
 
     private static boolean frozen = false;
 
+    /**
+     * Freezes or unfreezes all firewalls on the board.
+     * When frozen, firewalls stop spreading until this is set back to {@code false}.
+     *
+     * @param frozen {@code true} to freeze spreading, {@code false} to resume
+     */
     public static void setFrozen(boolean frozen) {
         Firewall.frozen = frozen;
     }

@@ -4,14 +4,33 @@ import ca.sfu.cmpt276.group15.board.entity.DecryptionKey;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
 import ca.sfu.cmpt276.group15.math.Position;
 
+/**
+ * The Storage Room, located in the bottom-right corner of the board.
+ * Contains a cross-shaped internal wall layout and the {@link ca.sfu.cmpt276.group15.board.entity.DecryptionKey},
+ * which unlocks the Server Room door when collected.
+ */
 public class StorageRoom extends Room {
     private final Position serverRoomDoor;
 
+    /**
+     * @param x              the x-coordinate of the room's left wall
+     * @param y              the y-coordinate of the room's top wall
+     * @param width          the room width in tiles
+     * @param height         the room height in tiles
+     * @param entrance       the position of the room's doorway
+     * @param serverRoomDoor the tile position of the Server Room door to unlock via the Decryption Key
+     */
     public StorageRoom(int x, int y, int width, int height, Position entrance, Position serverRoomDoor) {
         super(x, y, width, height, entrance);
         this.serverRoomDoor = serverRoomDoor;
     }
 
+    /**
+     * Generates the internal layout then spawns entities inside the room.
+     *
+     * @param board the board to furnish
+     * @return {@code true} when furnishing completes successfully
+     */
     @Override
     public boolean furnishRoom(Board board) {
         generateInternalLayout(board);
@@ -19,6 +38,11 @@ public class StorageRoom extends Room {
         return true;
     }
 
+    /**
+     * Spawns the {@link DecryptionKey} in the top-right corner of the room interior.
+     *
+     * @param board the board to spawn entities on
+     */
     @Override
     protected void spawnEntities(Board board) {
         board.addEntity(new DecryptionKey(board, this.x + this.width - 1, this.y + 1, serverRoomDoor));
