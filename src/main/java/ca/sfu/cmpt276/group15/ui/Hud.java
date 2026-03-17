@@ -117,35 +117,41 @@ public class Hud extends AnchorPane {
         AnchorPane.setBottomAnchor(dataBox, DATA_BOX_BOTTOM);
         AnchorPane.setLeftAnchor(dataBox, DATA_BOX_LEFT);
 
-        // --- Center: EXIT UNLOCKED banner (hidden until all data collected) ---
-        ImageView exitIcon = Menu.iconView("exit.png");
-        Text bannerText = new Text("EXIT UNLOCKED");
-        bannerText.setFont(ResourceManager.loadFont(20));
-        bannerText.setFill(Color.LIME);
+        HBox banner = buildBanner("EXIT UNLOCKED", "exit.png", "lime", 60.0);
+        HBox serverBanner = buildBanner("SERVER ROOM UNLOCKED", "lock.png", "cyan", 60.0);
 
-        HBox banner = new HBox(10, exitIcon, bannerText);
-        banner.setAlignment(Pos.CENTER);
-        banner.setStyle(
-            "-fx-background-color: rgba(0,0,0,0.8);" +
-            "-fx-padding: 10 24 10 24;" +
-            "-fx-background-radius: 6;" +
-            "-fx-border-color: lime;" +
-            "-fx-border-width: 2;" +
-            "-fx-border-radius: 6;"
-        );
-        banner.setOpacity(0);
-        AnchorPane.setTopAnchor(banner, 60.0);
-        AnchorPane.setLeftAnchor(banner, 0.0);
-        AnchorPane.setRightAnchor(banner, 0.0);
-        banner.setMouseTransparent(true);
-
-        this.getChildren().addAll(timerBox, dataBox, banner);
+        this.getChildren().addAll(timerBox, dataBox, banner, serverBanner);
         this.setPickOnBounds(false);
 
         this.banner = banner;
+        this.serverBanner = serverBanner;
+    }
+
+    private HBox buildBanner(String text, String iconAsset, String borderColor, double topAnchor) {
+        Text bannerText = new Text(text);
+        bannerText.setFont(ResourceManager.loadFont(20));
+        bannerText.setFill(Color.web(borderColor));
+
+        HBox box = new HBox(10, Menu.iconView(iconAsset), bannerText);
+        box.setAlignment(Pos.CENTER);
+        box.setStyle(
+            "-fx-background-color: rgba(0,0,0,0.8);" +
+            "-fx-padding: 10 24 10 24;" +
+            "-fx-background-radius: 6;" +
+            "-fx-border-color: " + borderColor + ";" +
+            "-fx-border-width: 2;" +
+            "-fx-border-radius: 6;"
+        );
+        box.setOpacity(0);
+        AnchorPane.setTopAnchor(box, topAnchor);
+        AnchorPane.setLeftAnchor(box, 0.0);
+        AnchorPane.setRightAnchor(box, 0.0);
+        box.setMouseTransparent(true);
+        return box;
     }
 
     private final HBox banner;
+    private final HBox serverBanner;
 
     /**
      * Called every frame from GameMenu's AnimationTimer.
@@ -190,13 +196,25 @@ public class Hud extends AnchorPane {
      * Only called once when all data packets have been collected.
      */
     private void showBanner() {
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), banner);
+        animateBanner(banner);
+    }
+
+    /**
+     * Shows the server room unlocked banner.
+     * Called from GameMenu when the decryption key is collected.
+     */
+    public void showServerRoomBanner() {
+        animateBanner(serverBanner);
+    }
+
+    private void animateBanner(HBox box) {
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), box);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1.0);
 
         PauseTransition hold = new PauseTransition(Duration.millis(2500));
 
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), banner);
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), box);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0);
 
