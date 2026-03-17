@@ -6,9 +6,12 @@ import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.ui.menu.Menu;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -44,6 +48,9 @@ public class Hud extends AnchorPane {
     // Cached font so we don't read from disk on every score change
     private final Font popupFont;
     private final Runnable onDamage;
+
+    // Freeze progress bar
+    private final Rectangle freezeBar;
 
     // Fixed pixel position of the data box for anchoring popups
     private static final double DATA_BOX_LEFT = 16.0;
@@ -119,20 +126,39 @@ public class Hud extends AnchorPane {
 
         HBox banner = buildBanner("EXIT UNLOCKED", "exit.png", "lime", 60.0);
         HBox serverBanner = buildBanner("SERVER ROOM UNLOCKED", "lock.png", "cyan", 60.0);
+        HBox freezeBanner = buildBanner("FIREWALLS FROZEN", "freeze_token.png", "#88ccff", 60.0, true);
 
-        this.getChildren().addAll(timerBox, dataBox, banner, serverBanner);
+        // Freeze progress bar — shown bottom-left while freeze is active
+        Rectangle freezeBar = new Rectangle(120, 8, Color.web("#88ccff"));
+        freezeBar.setOpacity(0);
+        freezeBar.setMouseTransparent(true);
+        AnchorPane.setBottomAnchor(freezeBar, DATA_BOX_BOTTOM + 102);
+        AnchorPane.setLeftAnchor(freezeBar, DATA_BOX_LEFT);
+
+        this.getChildren().addAll(timerBox, dataBox, banner, serverBanner, freezeBanner, freezeBar);
         this.setPickOnBounds(false);
 
         this.banner = banner;
         this.serverBanner = serverBanner;
+        this.freezeBanner = freezeBanner;
+        this.freezeBar = freezeBar;
     }
 
     private HBox buildBanner(String text, String iconAsset, String borderColor, double topAnchor) {
+        return buildBanner(text, iconAsset, borderColor, topAnchor, false);
+    }
+
+    private HBox buildBanner(String text, String iconAsset, String borderColor, double topAnchor, boolean isSprite) {
         Text bannerText = new Text(text);
         bannerText.setFont(ResourceManager.loadFont(20));
         bannerText.setFill(Color.web(borderColor));
 
-        HBox box = new HBox(10, Menu.iconView(iconAsset), bannerText);
+        ImageView icon = new ImageView(isSprite ? ResourceManager.loadSprite(iconAsset) : ResourceManager.loadIcon(iconAsset));
+        icon.setFitWidth(28);
+        icon.setFitHeight(28);
+        icon.setPreserveRatio(true);
+
+        HBox box = new HBox(10, icon, bannerText);
         box.setAlignment(Pos.CENTER);
         box.setStyle(
             "-fx-background-color: rgba(0,0,0,0.8);" +
@@ -152,6 +178,7 @@ public class Hud extends AnchorPane {
 
     private final HBox banner;
     private final HBox serverBanner;
+    private final HBox freezeBanner;
 
     /**
      * Called every frame from GameMenu's AnimationTimer.
@@ -205,6 +232,23 @@ public class Hud extends AnchorPane {
      */
     public void showServerRoomBanner() {
         animateBanner(serverBanner);
+    }
+
+    /**
+     * Shows the firewalls frozen banner and a shrinking progress bar.
+     * Called from GameMenu when the player collects a freeze token.
+     */
+    public void showFreezeBanner() {
+        animateBanner(freezeBanner);
+
+        freezeBar.setWidth(120);
+        freezeBar.setOpacity(1);
+
+        Timeline countdown = new Timeline(
+            new KeyFrame(Duration.millis(10000), new KeyValue(freezeBar.widthProperty(), 0))
+        );
+        countdown.setOnFinished(e -> freezeBar.setOpacity(0));
+        countdown.play();
     }
 
     private void animateBanner(HBox box) {

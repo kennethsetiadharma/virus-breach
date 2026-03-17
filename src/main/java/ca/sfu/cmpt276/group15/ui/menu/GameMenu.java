@@ -6,6 +6,7 @@ import ca.sfu.cmpt276.group15.board.BoardObserver;
 import ca.sfu.cmpt276.group15.board.tile.OpenDoor;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.board.entity.Data;
+import ca.sfu.cmpt276.group15.board.entity.FreezeToken;
 import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.math.Direction;
@@ -199,6 +200,9 @@ public class GameMenu extends Menu implements BoardObserver {
     public void onEntityRemoved(Entity entity) {
         if (entity instanceof Data) {
             this.dataCollectedCount++;
+        }
+        if (entity instanceof FreezeToken) {
+            Platform.runLater(() -> hud.showFreezeBanner());
         }
         Platform.runLater(() -> this.entities.getChildren().remove(entity.getRenderNode()));
     }
