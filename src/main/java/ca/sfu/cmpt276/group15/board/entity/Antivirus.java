@@ -20,7 +20,7 @@ import java.util.Set;
  * "Moving enemy" character that chases the player and instantly kills them on collision.
  */
 public class Antivirus extends Entity implements BoardObserver {
-    private static final int MOVEMENT_TICKS = 2;
+    static final int MOVEMENT_TICKS = 2;
 
     private final boolean[][] solidState;
     private int movementCounter = MOVEMENT_TICKS;
