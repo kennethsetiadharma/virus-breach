@@ -177,8 +177,8 @@ public class Board implements Closeable {
 
             // random source code (bonus) reward spawning
             if (this.random.nextInt(0, 100) <= 3) {
-                int sx = this.random.nextInt(1, this.width() - 1);
-                int sy = this.random.nextInt(1, this.height() - 1);
+                int sx = this.random.nextInt(0, this.width());
+                int sy = this.random.nextInt(0, this.height());
                 if (!this.getTile(sx, sy).isSolid() && this.getEntitiesAt(sx, sy).isEmpty()) {
                     this.addEntity(new SourceCode(this, sx, sy, this.random.nextInt(40, 100)));
                 }
