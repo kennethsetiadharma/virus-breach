@@ -69,6 +69,7 @@ public class Board implements Closeable {
      * When {@code true}, the board will not update.
      */
     private volatile boolean paused = false;
+    private int freezeTimer = 0;
 
     public Board(TileType[][] tiles) {
         if (tiles.length == 0 || tiles[0].length == 0) throw new IllegalArgumentException("board cannot be empty");
@@ -156,6 +157,7 @@ public class Board implements Closeable {
         if (this.paused) return;
         try {
             this.timePlayed++;
+            if (this.freezeTimer > 0) this.freezeTimer--;
             this.iterateEntities(Entity::tick);
 
             // random source code (bonus) reward spawning
@@ -245,6 +247,14 @@ public class Board implements Closeable {
 
     public int getTimePlayed() {
         return timePlayed;
+    }
+
+    public int getFreezeTimer() {
+        return freezeTimer;
+    }
+
+    public void freezeFirewallsFor(int ticks) {
+        this.freezeTimer = ticks;
     }
 
     @Override

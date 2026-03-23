@@ -13,24 +13,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Non moving enemy that damages the player on colliding.
+ * Non-moving enemy that damages the player on colliding.
  */
 public class Firewall extends Collectable {
     // Spread interval range in ticks (100ms each): 75–125 ticks = ~7.5–12.5 seconds
     private static final int MIN_SPREAD_TICKS = 75;
     private static final int MAX_SPREAD_TICKS = 125;
-
-    private static boolean frozen = false;
-
-    /**
-     * Freezes or unfreezes all firewalls on the board.
-     * When frozen, firewalls stop spreading until this is set back to {@code false}.
-     *
-     * @param frozen {@code true} to freeze spreading, {@code false} to resume
-     */
-    public static void setFrozen(boolean frozen) {
-        Firewall.frozen = frozen;
-    }
 
     private int spreadTimer;
 
@@ -42,7 +30,7 @@ public class Firewall extends Collectable {
     @Override
     public void tick() {
         super.tick();
-        if (frozen) return;
+        if (this.board.getFreezeTimer() > 0) return;
         if (--this.spreadTimer <= 0) {
             this.spreadTimer = board.getRandom().nextInt(MIN_SPREAD_TICKS, MAX_SPREAD_TICKS);
             trySpread();

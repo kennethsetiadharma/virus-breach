@@ -11,6 +11,9 @@ import javafx.scene.paint.Color;
  * Freezes all firewall spreading for 10 seconds when collected.
  */
 public class FreezeToken extends Entity {
+
+    public static final int FREEZE_TICKS = 100;
+
     /**
      * @param board the board this entity belongs to
      * @param x     the x-coordinate to spawn at
@@ -21,15 +24,15 @@ public class FreezeToken extends Entity {
     }
 
     /**
-     * When the player walks onto this tile, adds a {@link FreezeEffect} to
-     * the board to begin the freeze countdown, plays a sound, and removes this entity.
+     * When the player walks onto this tile, freezes firewall spread for a time,
+     * plays a sound, and removes this entity.
      *
      * @param entity the entity that collided with this token
      */
     @Override
     public void onCollideWith(Entity entity) {
         if (entity instanceof Player) {
-            this.board.addEntity(new FreezeEffect(this.board));
+            this.board.freezeFirewallsFor(FREEZE_TICKS);
             AudioManager.play("bonus.wav");
             this.board.removeEntity(this);
         }
