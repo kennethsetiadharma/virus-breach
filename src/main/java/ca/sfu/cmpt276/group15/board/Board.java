@@ -14,6 +14,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -45,19 +47,11 @@ public class Board implements Closeable {
     private final TileType[][] tiles;
 
     /**
-     * Entities that are in the process of being added to the board.
-     */
-    private final List<Entity> pendingEntities = new ArrayList<>();
-    /**
-     * Entities that are in the process of being removed from the board.
-     */
-    private final List<Entity> entitiesPendingRemoval = new ArrayList<>();
-    /**
      * All entities on the board
      */
     private final List<Entity> entities = new ArrayList<>();
-    private final Lock entityReadLock;
-    private final Lock entityWriteLock;
+    private final Lock entityReadAddLock;
+    private final Lock entityRemovalLock;
     
     /**
      * List of observers that are interested in this board's state.
@@ -80,26 +74,12 @@ public class Board implements Closeable {
         if (tiles.length == 0 || tiles[0].length == 0) throw new IllegalArgumentException("board cannot be empty");
         this.tiles = tiles;
         ReadWriteLock entityLock = new ReentrantReadWriteLock(true);
-        this.entityReadLock = entityLock.readLock();
-        this.entityWriteLock = entityLock.writeLock();
-    }
-
-    public List<Entity> getEntities() {
-        return new ArrayList<>(entities);
+        this.entityReadAddLock = entityLock.readLock();
+        this.entityRemovalLock = entityLock.writeLock();
     }
 
     public Entity getFirstEntityMatching(Predicate<Entity> predicate) {
-        this.entityReadLock.lock();
-        try {
-            for (Entity entity : this.entities) {
-                if (predicate.test(entity)) {
-                    return entity;
-                }
-            }
-        } finally {
-            this.entityReadLock.unlock();
-        }
-        return null;
+        return this.iterateEntitiesYield(e -> predicate.test(e) ? e : null);
     }
 
     /**
@@ -108,7 +88,12 @@ public class Board implements Closeable {
      * @param entity the entity being added
      */
     public void addEntity(Entity entity) {
-        this.pendingEntities.add(entity);
+        if (entity.isRemoved()) return;
+
+        this.entityReadAddLock.lock();
+        this.entities.add(entity);
+        this.entityReadAddLock.unlock();
+        this.observers.forEach(observer -> observer.onEntityAdded(entity));
     }
 
     /**
@@ -117,8 +102,10 @@ public class Board implements Closeable {
      * @param entity the entity being removed
      */
     public void removeEntity(Entity entity) {
+        if (entity.isRemoved()) return;
+
         entity.onRemove();
-        this.entitiesPendingRemoval.add(entity);
+        this.observers.forEach(observer -> observer.onEntityRemoved(entity));
     }
 
     /**
@@ -169,11 +156,7 @@ public class Board implements Closeable {
         if (this.paused) return;
         try {
             this.timePlayed++;
-            this.entityReadLock.lock();
-            for (Entity entity : this.entities) {
-                if (!entity.isRemoved()) entity.tick();
-            }
-            this.entityReadLock.unlock();
+            this.iterateEntities(Entity::tick);
 
             // random source code (bonus) reward spawning
             if (this.random.nextInt(0, 100) <= 3) {
@@ -184,21 +167,9 @@ public class Board implements Closeable {
                 }
             }
 
-            this.entityWriteLock.lock();
-            for (Iterator<Entity> iterator = this.entitiesPendingRemoval.reversed().iterator(); iterator.hasNext(); ) {
-                Entity entity = iterator.next();
-                this.entities.remove(entity);
-                this.observers.forEach(observer -> observer.onEntityRemoved(entity));
-                iterator.remove();
-            }
-
-            for (Iterator<Entity> iterator = this.pendingEntities.reversed().iterator(); iterator.hasNext(); ) {
-                Entity entity = iterator.next();
-                this.entities.add(entity);
-                this.observers.forEach(observer -> observer.onEntityAdded(entity));
-                iterator.remove();
-            }
-            this.entityWriteLock.unlock();
+            this.entityRemovalLock.lock();
+            this.entities.removeIf(Entity::isRemoved);
+            this.entityRemovalLock.unlock();
 
             for (BoardObserver observer : this.observers) {
                 observer.onUpdate();
@@ -219,16 +190,14 @@ public class Board implements Closeable {
         this.getTile(entity.getPosition()).onStep(this, entity.getPosition(), entity);
         this.getTile(entity.getPrevPosition()).onLeave(this, entity.getPrevPosition(), entity);
 
-        this.entityReadLock.lock();
-        for (Entity e : this.entities) {
+        this.iterateEntities(e -> {
             if (e != entity) {
                 if (e.getPosition().equals(entity.getPosition())) {
                     e.onCollideWith(entity);
                     entity.onCollideWith(e);
                 }
             }
-        }
-        this.entityReadLock.unlock();
+        });
     }
 
     /**
@@ -240,19 +209,11 @@ public class Board implements Closeable {
      */
     public Collection<Entity> getEntitiesAt(int x, int y) {
         List<Entity> entities = new ArrayList<>();
-        this.entityReadLock.lock();
-        for (Entity entity : this.entities) {
+        this.iterateEntities(entity -> {
             if (entity.getPosition().x() == x && entity.getPosition().y() == y && !entity.isRemoved()) {
                 entities.add(entity);
             }
-        }
-        this.entityReadLock.unlock();
-
-        for (Entity entity : new ArrayList<>(this.pendingEntities)) {
-            if (entity.getPosition().x() == x && entity.getPosition().y() == y && !entity.isRemoved()) {
-                entities.add(entity);
-            }
-        }
+        });
         return entities;
     }
 
@@ -315,15 +276,7 @@ public class Board implements Closeable {
      * @return {@code true} if there is no data remaining, {@code false} otherwise
      */
     public boolean allDataCollected() {
-        this.entityReadLock.lock();
-        try {
-            for (Entity entity : this.entities) {
-                if (entity instanceof Data && !entity.isRemoved()) return false;
-            }
-        } finally {
-            this.entityReadLock.unlock();
-        }
-        return true;
+        return this.iterateEntitiesYield(e -> e instanceof Data ? false : null) == null;
     }
 
     /**
@@ -344,5 +297,34 @@ public class Board implements Closeable {
         for (BoardObserver observer : this.observers) {
             observer.onLose();
         }
+    }
+
+    public void iterateEntities(Consumer<Entity> consumer) {
+        this.entityReadAddLock.lock();
+        int size = this.entities.size();
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < size; i++) {
+            Entity entity = this.entities.get(i);
+            if (entity.isRemoved()) continue;
+            consumer.accept(entity);
+        }
+        this.entityReadAddLock.unlock();
+    }
+
+    public <T> T iterateEntitiesYield(Function<Entity, T> function) {
+        this.entityReadAddLock.lock();
+        try {
+            int size = this.entities.size();
+            //noinspection ForLoopReplaceableByForEach
+            for (int i = 0; i < size; i++) {
+                Entity entity = this.entities.get(i);
+                if (entity.isRemoved()) continue;
+                T result = function.apply(entity);
+                if (result != null) return result;
+            }
+        } finally {
+            this.entityReadAddLock.unlock();
+        }
+        return null;
     }
 }

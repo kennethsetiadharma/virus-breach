@@ -22,7 +22,6 @@ class AntivirusTest {
 
         board.addEntity(antivirus);
         board.addEntity(new Player(board, 1, 2));
-        board.tick();
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -39,7 +38,6 @@ class AntivirusTest {
 
         board.addEntity(antivirus);
         board.addEntity(new Player(board, 3, 2));
-        board.tick();
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -56,7 +54,6 @@ class AntivirusTest {
 
         board.addEntity(antivirus);
         board.addEntity(new Player(board, 2, 1));
-        board.tick();
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -73,7 +70,6 @@ class AntivirusTest {
 
         board.addEntity(antivirus);
         board.addEntity(new Player(board, 2, 3));
-        board.tick();
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -90,7 +86,6 @@ class AntivirusTest {
 
         board.addEntity(antivirus);
         board.addEntity(new Player(board, 1, 1));
-        board.tick();
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 2; i++) board.tick();
 
@@ -108,7 +103,6 @@ class AntivirusTest {
         board.addEntity(antivirus);
         board.setTile(2, 2, Wall.INSTANCE);
         board.addEntity(new Player(board, 1, 2));
-        board.tick();
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 4; i++) {
             board.tick();
@@ -132,7 +126,6 @@ class AntivirusTest {
         board.setTile(2, 2, Wall.INSTANCE);
         board.setTile(2, 1, Wall.INSTANCE);
         board.addEntity(new Player(board, 1, 1));
-        board.tick();
 
         // should not move
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 10; i++) {
@@ -151,7 +144,6 @@ class AntivirusTest {
         Antivirus antivirus = new Antivirus(board, 2, 2);
 
         board.addEntity(antivirus);
-        board.tick();
 
         // should not move
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 10; i++) {

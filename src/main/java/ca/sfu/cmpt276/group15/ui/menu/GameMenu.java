@@ -15,7 +15,6 @@ import ca.sfu.cmpt276.group15.ui.AudioManager;
 import ca.sfu.cmpt276.group15.ui.Hud;
 import ca.sfu.cmpt276.group15.ui.TutorialOverlay;
 import javafx.animation.FadeTransition;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.util.Duration;
 import javafx.scene.Group;
@@ -75,7 +74,7 @@ public class GameMenu extends Menu implements BoardObserver {
             }
         }
 
-        board.getEntities().forEach(this::onEntityAdded);
+        board.iterateEntities(this::onEntityAdded);
         board.attach(this);
 
         this.damageFlash = new Rectangle();
@@ -259,12 +258,9 @@ public class GameMenu extends Menu implements BoardObserver {
     public void onUpdate() {
         BoardObserver.super.onUpdate();
         Platform.runLater(() -> {
-            Player player = null;
-            for (Entity entity : this.board.getEntities()) {
-                if (entity instanceof Player p) player = p;
-                entity.syncToView();
-            }
-            if (player != null) this.updateCamera(player);
+            this.board.iterateEntities(Entity::syncToView);
+            Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
+            if (entity instanceof Player player) this.updateCamera(player);
             this.hud.update(board, dataCollectedCount);
         });
     }

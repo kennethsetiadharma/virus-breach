@@ -40,23 +40,14 @@ class BoardObserverTest {
     void notifyEntityChanges() {
         Data entity = new Data(this.board, 0, 0);
         this.board.addEntity(entity);
-
-        assertEquals(0, this.observer.entitiesAdded);
-
-        this.board.tick();
-
+        
         assertEquals(1, this.observer.entitiesAdded);
         assertEquals(0, this.observer.entitiesRemoved);
 
         this.board.removeEntity(entity);
 
-        assertEquals(0, this.observer.entitiesRemoved);
-
-        this.board.tick();
-
         assertEquals(1, this.observer.entitiesAdded);
         assertEquals(1, this.observer.entitiesRemoved);
-        assertEquals(2, this.observer.boardUpdates);
     }
 
     @Test
