@@ -35,7 +35,7 @@ public class SourceCode extends Collectable {
     public void tick() {
         super.tick();
 
-        if (this.ttl-- <= 0) {
+        if (--this.ttl <= 0) {
             this.board.removeEntity(this);
         }
     }

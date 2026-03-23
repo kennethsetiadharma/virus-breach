@@ -1,13 +1,11 @@
 package ca.sfu.cmpt276.group15.board.entity;
 
 import ca.sfu.cmpt276.group15.board.Board;
+import ca.sfu.cmpt276.group15.board.TestHelper;
 import ca.sfu.cmpt276.group15.board.tile.Floor;
-import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
 import ca.sfu.cmpt276.group15.math.Position;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +15,7 @@ class AntivirusTest {
      */
     @Test
     void navigateLeft() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 2, 2);
 
         board.addEntity(antivirus);
@@ -33,7 +31,7 @@ class AntivirusTest {
      */
     @Test
     void navigateRight() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 2, 2);
 
         board.addEntity(antivirus);
@@ -49,7 +47,7 @@ class AntivirusTest {
      */
     @Test
     void navigateUp() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 2, 2);
 
         board.addEntity(antivirus);
@@ -65,7 +63,7 @@ class AntivirusTest {
      */
     @Test
     void navigateDown() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 2, 2);
 
         board.addEntity(antivirus);
@@ -81,7 +79,7 @@ class AntivirusTest {
      */
     @Test
     void navigateDiagonal() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 2, 2);
 
         board.addEntity(antivirus);
@@ -97,7 +95,7 @@ class AntivirusTest {
      */
     @Test
     void navigateAround() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 3, 2);
 
         board.addEntity(antivirus);
@@ -117,7 +115,7 @@ class AntivirusTest {
      */
     @Test
     void noPathIdle() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 3, 3);
 
         board.addEntity(antivirus);
@@ -140,7 +138,7 @@ class AntivirusTest {
      */
     @Test
     void noPlayerIdle() {
-        Board board = createEnclosedBoard();
+        Board board = TestHelper.createEnclosedBoard(5, 5);
         Antivirus antivirus = new Antivirus(board, 2, 2);
 
         board.addEntity(antivirus);
@@ -151,18 +149,5 @@ class AntivirusTest {
             assertEquals(new Position(2, 2), antivirus.getPosition());
         }
         board.removeEntity(antivirus);
-    }
-
-    private static Board createEnclosedBoard() {
-        TileType[][] tiles = new TileType[5][5];
-        for (int i = 0; i < 5; i++) {
-            if (i != 0 && i != 4) Arrays.fill(tiles[i], Floor.INSTANCE);
-
-            tiles[0][i] = Wall.INSTANCE;
-            tiles[4][i] = Wall.INSTANCE;
-            tiles[i][0] = Wall.INSTANCE;
-            tiles[i][4] = Wall.INSTANCE;
-        }
-        return new Board(tiles);
     }
 }

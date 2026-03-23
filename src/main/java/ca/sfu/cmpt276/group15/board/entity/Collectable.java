@@ -10,7 +10,7 @@ public abstract class Collectable extends Entity {
      * Represents the amount of data that this collectable stores.
      * If negative, the player will lose data upon collection.
      */
-    private final int value;
+    final int value;
 
     public Collectable(Board board, int x, int y, int value) {
         super(board, x, y);
