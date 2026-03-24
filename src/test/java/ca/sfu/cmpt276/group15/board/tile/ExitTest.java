@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.group15.board.tile;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.BoardObserver;
 import ca.sfu.cmpt276.group15.board.TestHelper;
+import ca.sfu.cmpt276.group15.board.entity.Antivirus;
 import ca.sfu.cmpt276.group15.board.entity.Data;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.board.entity.SourceCode;
@@ -92,6 +93,23 @@ class ExitTest implements BoardObserver {
 
         assertEquals(new Position(2, 0), player.getPosition());
         assertEquals(1, this.gamesWon);
+    }
+
+
+    /**
+     * Ensure that the antivirus cannot exit the board.
+     */
+    @Test
+    void antivirusCannotExit() {
+        Board board = TestHelper.createEnclosedBoard(5, 5);
+        board.attach(this);
+        board.setTile(2, 0, Exit.INSTANCE);
+        Antivirus antivirus = new Antivirus(board, 2, 1);
+        board.addEntity(antivirus);
+
+        antivirus.move(Direction.UP);
+        assertEquals(new Position(2, 0), antivirus.getPosition());
+        assertEquals(0, this.gamesWon);
     }
 
     @Override

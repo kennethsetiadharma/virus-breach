@@ -5,6 +5,7 @@ import ca.sfu.cmpt276.group15.board.TestHelper;
 import ca.sfu.cmpt276.group15.board.tile.Floor;
 import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
+import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
 import org.junit.jupiter.api.Test;
 
@@ -187,6 +188,78 @@ class AntivirusTest {
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
         assertEquals(new Position(2, 2), antivirus.getPosition());
+        board.removeEntity(antivirus);
+    }
+
+    /**
+     * Pathfind to player when even if it requires going further away temporarily.
+     */
+    @Test
+    void navigateFar() {
+        Board board = TestHelper.createEnclosedBoard(10, 10);
+
+        Player player = new Player(board, 1, 1);
+        Antivirus antivirus = new Antivirus(board, 8, 1);
+
+        //WWWWWWWWWW
+        //WPW     AW
+        //W WWWWWW W
+        //W W    W W
+        //W W    W W
+        //W W    W W
+        //W W    W W
+        //W WWWWWW W
+        //W        W
+        //WWWWWWWWWW
+        for (int i = 2; i < 8; i++) {
+            board.setTile(i, 2, Wall.INSTANCE);
+            board.setTile(i, 7, Wall.INSTANCE);
+            board.setTile(2, i, Wall.INSTANCE);
+            board.setTile(7, i, Wall.INSTANCE);
+        }
+        board.setTile(2, 1, Wall.INSTANCE);
+
+        board.addEntity(antivirus);
+        board.addEntity(player);
+
+        for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
+
+        assertEquals(new Position(8, 1).relative(Direction.DOWN), antivirus.getPosition());
+        board.removeEntity(antivirus);
+    }
+
+    /**
+     * Pathfind around a large obstacle.
+     */
+    @Test
+    void pathfindAroundLarge() {
+        Board board = TestHelper.createEnclosedBoard(10, 10);
+
+        Player player = new Player(board, 1, 1);
+        Antivirus antivirus = new Antivirus(board, 8, 8);
+
+        //WWWWWWWWWW
+        //WP       W
+        //W WWWWWW W
+        //W W      W
+        //W W      W
+        //W W      W
+        //W W      W
+        //W W      W
+        //W       AW
+        //WWWWWWWWWW
+        for (int i = 2; i < 8; i++) {
+            board.setTile(i, 2, Wall.INSTANCE);
+            board.setTile(2, i, Wall.INSTANCE);
+        }
+
+        board.addEntity(antivirus);
+        board.addEntity(player);
+
+        for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
+
+        // ensure antivirus found player
+        assertNotEquals(new Position(8, 1), antivirus.getPosition());
         board.removeEntity(antivirus);
     }
 }

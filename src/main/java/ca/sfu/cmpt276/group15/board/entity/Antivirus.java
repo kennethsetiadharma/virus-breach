@@ -79,7 +79,6 @@ public class Antivirus extends Entity implements BoardObserver {
                 Position current = null;
                 while (!pending.isEmpty()) {
                     current = pending.poll();
-                    if (visited.contains(current)) continue;
                     visited.add(current);
 
                     if (current.equals(target)) {
