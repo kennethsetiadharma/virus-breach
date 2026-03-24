@@ -25,12 +25,12 @@ public class HackingGame extends Application {
     /**
      * The root window used for display and input.
      */
-    private Stage stage;
+    Stage stage;
     /**
      * The currently opened menu.
      * Should never be {@code null} once the game starts.
      */
-    private Menu activeMenu;
+    Menu activeMenu;
 
     @Override
     public void start(Stage stage) {
