@@ -34,9 +34,8 @@ public class DecryptionKey extends Entity {
      */
     @Override
     public void onCollideWith(Entity entity) {
-        if (entity instanceof Player player) {
-            player.setHasDecryptionKey(true);
-            this.board.setTile(doorToUnlock.x(), doorToUnlock.y(), OpenDoor.INSTANCE);
+        if (entity instanceof Player) {
+            this.board.setTile(this.doorToUnlock.x(), this.doorToUnlock.y(), OpenDoor.INSTANCE);
             AudioManager.play("bonus.wav");
             this.board.removeEntity(this);
         }
