@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.group15.board.entity;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.TestHelper;
 import ca.sfu.cmpt276.group15.board.tile.Floor;
+import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
 import ca.sfu.cmpt276.group15.math.Position;
 import org.junit.jupiter.api.Test;
@@ -133,6 +134,26 @@ class AntivirusTest {
         board.removeEntity(antivirus);
     }
 
+
+    /**
+     * Antivirus will not pathfind off of the board.
+     */
+    @Test
+    void noPathOOB() {
+        Board board = new Board(new TileType[][]{{Floor.INSTANCE, Wall.INSTANCE, Floor.INSTANCE}});
+        Antivirus antivirus = new Antivirus(board, 0, 0);
+
+        board.addEntity(antivirus);
+        board.addEntity(new Player(board, 2, 0));
+
+        // should not move
+        for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 10; i++) {
+            board.tick();
+            assertEquals(new Position(0, 0), antivirus.getPosition());
+        }
+        board.removeEntity(antivirus);
+    }
+
     /**
      * Antivirus is inactive when there is no player.
      */
@@ -148,6 +169,24 @@ class AntivirusTest {
             board.tick();
             assertEquals(new Position(2, 2), antivirus.getPosition());
         }
+        board.removeEntity(antivirus);
+    }
+
+    /**
+     * Antivirus is inactive when it has already at the same point as the player.
+     */
+    @Test
+    void noPathCaught() {
+        Board board = TestHelper.createEnclosedBoard(5, 5);
+        Antivirus antivirus = new Antivirus(board, 2, 2);
+
+        board.addEntity(antivirus);
+        board.addEntity(new Player(board, 2, 2));
+
+        // should not move
+        for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
+
+        assertEquals(new Position(2, 2), antivirus.getPosition());
         board.removeEntity(antivirus);
     }
 }
