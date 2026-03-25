@@ -178,8 +178,13 @@ public class Board implements Closeable {
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            Platform.runLater(Platform::exit);
-            throw new RuntimeException(throwable);
+            RuntimeException exception = new RuntimeException(throwable);
+            try {
+                Platform.runLater(Platform::exit);
+            } catch (IllegalStateException ignore) {
+                // not running in JavaFX (e.g. tests)
+            }
+            throw exception;
         }
     }
 
@@ -212,7 +217,7 @@ public class Board implements Closeable {
     public Collection<Entity> getEntitiesAt(int x, int y) {
         List<Entity> entities = new ArrayList<>();
         this.iterateEntities(entity -> {
-            if (entity.getPosition().x() == x && entity.getPosition().y() == y && !entity.isRemoved()) {
+            if (entity.getPosition().x() == x && entity.getPosition().y() == y) {
                 entities.add(entity);
             }
         });

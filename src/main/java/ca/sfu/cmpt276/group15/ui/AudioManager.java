@@ -62,6 +62,8 @@ public class AudioManager {
      * @param asset audio clip asset path
      */
     public static void play(String asset) {
+        if (!initialized) return;
+
         AudioClip clip = getClip(asset);
         if (clip == null) {
             return;

@@ -114,6 +114,7 @@ class ExitTest implements BoardObserver {
 
     @Override
     public void onWin(int dataCollected) {
+        BoardObserver.super.onWin(dataCollected);
         this.gamesWon++;
     }
 }

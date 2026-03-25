@@ -1,12 +1,20 @@
 package ca.sfu.cmpt276.group15.board;
 
+import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.board.entity.Data;
+import ca.sfu.cmpt276.group15.board.entity.Entity;
 import ca.sfu.cmpt276.group15.board.entity.SourceCode;
+import ca.sfu.cmpt276.group15.board.tile.Floor;
+import ca.sfu.cmpt276.group15.board.tile.TileType;
+import javafx.scene.Node;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BoardTest {
+class BoardTest implements BoardObserver {
+    private int removedEntites = 0;
+    private int boardUpdates = 0;
+
     /**
      * Ensure that source code randomly spawns in the game.
      */
@@ -79,5 +87,136 @@ class BoardTest {
             assertEquals(1, board.getEntitiesAt(1, 1).size());
             assertEquals(entity, board.getEntitiesAt(1, 1).iterator().next());
         }
+    }
+
+    /**
+     * Ensure that entities that have been removed cannot be re-added to the board.
+     */
+    @Test
+    void cannotAddRemovedEntity() {
+        Board board = TestHelper.createEnclosedBoard(3, 3);
+
+        Data entity = new Data(board, 1, 1);
+        board.addEntity(entity);
+
+        // mark entity as removed
+        board.removeEntity(entity);
+
+        board.addEntity(entity);
+        assertEquals(0, board.getEntitiesAt(1, 1).size());
+    }
+
+    /**
+     * Ensure that callbacks for entities that have been removed wont be run multiple times.
+     */
+    @Test
+    void cannotRemoveEntityMultipleTimes() {
+        Board board = TestHelper.createEnclosedBoard(3, 3);
+        board.attach(this);
+
+        Data entity = new Data(board, 1, 1);
+        board.addEntity(entity);
+
+        board.removeEntity(entity);
+        board.removeEntity(entity);
+
+        assertEquals(0, board.getEntitiesAt(1, 1).size());
+        assertEquals(1, this.removedEntites);
+        board.detach(this);
+    }
+
+    /**
+     * Empty boards cannot be created.
+     */
+    @Test
+    void minimumBoardSize() {
+        assertThrows(IllegalArgumentException.class, () -> new Board(new TileType[0][0]));
+        assertThrows(IllegalArgumentException.class, () -> new Board(new TileType[1][0]));
+        assertThrows(IllegalArgumentException.class, () -> new Board(new TileType[0][1]));
+        assertDoesNotThrow(() -> new Board(new TileType[][] {{Floor.INSTANCE}}));
+    }
+
+    /**
+     * The board notifies listeners when it updates.
+     */
+    @Test
+    void notifyUpdate() {
+        Board board = TestHelper.createEnclosedBoard(3, 3);
+        board.attach(this);
+        board.tick();
+
+        assertEquals(1, this.boardUpdates);
+    }
+
+    /**
+     * The board does not tick when oaused.
+     */
+    @Test
+    void notifyUpdatePause() {
+        Board board = TestHelper.createEnclosedBoard(3, 3);
+        board.attach(this);
+        board.setPaused(true);
+
+        board.tick();
+
+        assertEquals(0, this.boardUpdates);
+        assertEquals(0, board.getTimePlayed());
+
+        board.setPaused(false);
+
+        board.tick();
+
+        assertEquals(1, this.boardUpdates);
+        assertEquals(1, board.getTimePlayed());
+    }
+
+    /**
+     * Ensure that the game can run on a separate thread with the update interval.
+     */
+    @Test
+    void scheduledUpdate() {
+        try (Board board = TestHelper.createEnclosedBoard(3, 3)) {
+            board.attach(this);
+            board.start();
+
+            assertDoesNotThrow(() -> Thread.sleep(HackingGame.UPDATE_INTERVAL + HackingGame.UPDATE_INTERVAL / 2));
+
+            assertNotEquals(0, this.boardUpdates);
+        }
+    }
+
+    /**
+     * Test that exceptions are handled when raised in the board logic.
+     */
+    @Test
+    void failException() {
+        Board board = TestHelper.createEnclosedBoard(3, 3);
+
+        Entity entity = new Entity(board, 1, 1) {
+            @Override
+            public boolean isRemoved() {
+                if (super.isRemoved()) throw new UnsupportedOperationException("Testing exception, ignore");
+                return false;
+            }
+
+            @Override
+            protected Node createRenderNode() {
+                return null;
+            }
+        };
+        board.addEntity(entity);
+        board.removeEntity(entity);
+
+        assertThrowsExactly(RuntimeException.class, board::tick);
+    }
+
+    @Override
+    public void onEntityRemoved(Entity entity) {
+        this.removedEntites++;
+    }
+
+    @Override
+    public void onUpdate() {
+        this.boardUpdates++;
     }
 }
