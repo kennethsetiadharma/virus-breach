@@ -40,7 +40,7 @@ public class GameMenu extends Menu implements BoardObserver {
 
     private final Group camera = new Group();
     private final Group entities = new Group();
-    private Node[][] tileNodes;
+    private final Node[][] tileNodes;
 
     /**
      * Initializes the game menu with the given game and board.
@@ -116,7 +116,7 @@ public class GameMenu extends Menu implements BoardObserver {
     @Override
     public void onClose() {
         super.onClose();
-        this.board.close();
+        this.board.stop();
     }
 
     /**
@@ -198,10 +198,10 @@ public class GameMenu extends Menu implements BoardObserver {
     @Override
     public void onEntityRemoved(Entity entity) {
         if (entity instanceof Data) {
-            this.dataCollectedCount++;
+            Platform.runLater(() -> this.dataCollectedCount++);
         }
         if (entity instanceof FreezeToken) {
-            Platform.runLater(() -> hud.showFreezeBanner());
+            Platform.runLater(hud::showFreezeBanner);
         }
         Platform.runLater(() -> this.entities.getChildren().remove(entity.getRenderNode()));
     }
@@ -217,7 +217,7 @@ public class GameMenu extends Menu implements BoardObserver {
     @Override
     public void onTileChanged(int x, int y, TileType tile) {
         if (tile == OpenDoor.INSTANCE) {
-            Platform.runLater(() -> hud.showServerRoomBanner());
+            Platform.runLater(hud::showServerRoomBanner);
         }
         Platform.runLater(() -> {
             Node oldNode = this.tileNodes[y][x];
@@ -301,6 +301,6 @@ public class GameMenu extends Menu implements BoardObserver {
             return (viewportSize - contentSize) / 2.0;
         }
         double minTranslate = viewportSize - contentSize;
-        return Math.max(minTranslate, Math.min(0.0, translate));
+        return Math.clamp(translate, minTranslate, 0.0);
     }
 }

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.framework.junit5.Stop;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,5 +34,10 @@ class HackingGameTest {
         robot.clickOn(startMission);
 
         assertInstanceOf(GameMenu.class, this.game.activeMenu);
+    }
+
+    @Stop
+    void close() {
+        this.game.close();
     }
 }

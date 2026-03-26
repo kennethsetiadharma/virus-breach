@@ -9,7 +9,6 @@ import ca.sfu.cmpt276.group15.ui.menu.TitleMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * The main class for the game.
@@ -46,11 +45,11 @@ public class HackingGame extends Application {
         this.activeMenu.onOpen();
 
         this.stage.show();
-        this.stage.setOnCloseRequest(this::close);
+        this.stage.setOnCloseRequest(e -> this.close());
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 
     public HackingGame() {
@@ -62,10 +61,8 @@ public class HackingGame extends Application {
 
     /**
      * Called when the game window is being closed (shutdown).
-     *
-     * @param event the associated event data
      */
-    private void close(WindowEvent event) {
+    void close() {
         this.activeMenu.onClose();
     }
 

@@ -8,7 +8,6 @@ import ca.sfu.cmpt276.group15.board.tile.TileType;
 import ca.sfu.cmpt276.group15.math.Position;
 import javafx.application.Platform;
 
-import java.io.Closeable;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
@@ -25,7 +24,7 @@ import java.util.function.Predicate;
  *
  * @see BoardObserver
  */
-public class Board implements Closeable {
+public class Board {
     /**
      * Executor that runs the game loop on a fixed interval.
      *
@@ -262,8 +261,7 @@ public class Board implements Closeable {
         this.freezeTimer = ticks;
     }
 
-    @Override
-    public void close() {
+    public void stop() {
         this.executor.close();
     }
 

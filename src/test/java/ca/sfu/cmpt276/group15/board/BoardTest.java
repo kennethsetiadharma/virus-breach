@@ -175,13 +175,16 @@ class BoardTest implements BoardObserver {
      */
     @Test
     void scheduledUpdate() {
-        try (Board board = TestHelper.createEnclosedBoard(3, 3)) {
+        Board board = TestHelper.createEnclosedBoard(3, 3);
+        try {
             board.attach(this);
             board.start();
 
             assertDoesNotThrow(() -> Thread.sleep(HackingGame.UPDATE_INTERVAL + HackingGame.UPDATE_INTERVAL / 2));
 
             assertNotEquals(0, this.boardUpdates);
+        } finally {
+            board.stop();
         }
     }
 
