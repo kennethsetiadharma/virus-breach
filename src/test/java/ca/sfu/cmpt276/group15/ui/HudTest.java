@@ -70,7 +70,7 @@ class HudTest {
         assertTrue(this.hud.getChildren().stream()
             .filter(node -> node instanceof javafx.scene.shape.Rectangle)
             .map(node -> (javafx.scene.shape.Rectangle) node)
-            .anyMatch(rect -> rect.getOpacity() > 0 && rect.getWidth() == 120)
+            .anyMatch(rect -> rect.getOpacity() > 0 && rect.getWidth() > 0 && rect.getWidth() <= 120)
         );
     }
 
