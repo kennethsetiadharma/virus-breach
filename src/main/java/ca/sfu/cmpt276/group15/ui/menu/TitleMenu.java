@@ -110,14 +110,27 @@ public class TitleMenu extends Menu {
     }
 
     /**
-     * Loads the background image for the title menu.
-     *
-     * @return the loaded Background or null if not found
+     * Loads background from asset path.
+     * Handles asset to stream and calls {@link #buildBackground(InputStream)}.
+     * 
+     * @param asset the asset path
+     * @return the built background
      */
     private Background loadBackground(String asset) {
-        try (InputStream stream = HackingGame.class.getResourceAsStream(asset)) {
+        return buildBackground(HackingGame.class.getResourceAsStream(asset));
+    }
+
+    /**
+     * Builds background from input stream.
+     * Returns a black background if the stream is null or an exception thrown.
+     * 
+     * @param stream the input stream
+     * @return the built background
+     */
+    static Background buildBackground(InputStream stream) {
+        try (InputStream ignored = stream) {
             if (stream == null) {
-                return new Background(new BackgroundFill(Color.BLACK, null, null));
+                return blackBackground();
             }
 
             BackgroundImage image = new BackgroundImage(
@@ -132,7 +145,16 @@ public class TitleMenu extends Menu {
                 new BackgroundImage[]{image}
             );
         } catch (Exception ignored) {
-            return new Background(new BackgroundFill(Color.BLACK, null, null));
+            return blackBackground();
         }
+    }
+
+    /**
+     * Returns a black background for fallback.
+     * 
+     * @return a black background
+     */
+    private static Background blackBackground() {
+        return new Background(new BackgroundFill(Color.BLACK, null, null));
     }
 }

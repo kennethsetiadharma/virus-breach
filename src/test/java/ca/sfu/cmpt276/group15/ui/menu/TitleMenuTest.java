@@ -2,8 +2,10 @@ package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
 import javafx.application.Platform;
+import javafx.scene.layout.Background;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +19,13 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @ExtendWith(ApplicationExtension.class)
 class TitleMenuTest {
@@ -76,6 +83,26 @@ class TitleMenuTest {
         assertEquals("Volume: " + (int)(volume * 100) + "%", volumeLabel.getText());
     }
 
+    @Test
+    void fallbackBackgroundNullStream() {
+        Background background = TitleMenu.buildBackground(null);
+
+        assertNotNull(background);
+        assertEquals(1, background.getFills().size());
+        assertEquals(0, background.getImages().size());
+        assertEquals(Color.BLACK, background.getFills().getFirst().getFill());
+    }
+
+    @Test
+    void fallbackBackgroundThrownStream() {
+        Background background = TitleMenu.buildBackground(new ThrowOnCloseStream());
+
+        assertNotNull(background);
+        assertEquals(1, background.getFills().size());
+        assertEquals(0, background.getImages().size());
+        assertEquals(Color.BLACK, background.getFills().getFirst().getFill());
+    }
+
     @Stop
     void close() {
         WaitForAsyncUtils.clearExceptions();
@@ -83,5 +110,19 @@ class TitleMenuTest {
             menu.onClose();
         }
         this.stage.close();
+    }
+
+    private static class ThrowOnCloseStream extends InputStream {
+        private final ByteArrayInputStream buf = new ByteArrayInputStream(new byte[0]);
+
+        @Override
+        public int read() {
+            return buf.read();
+        }
+
+        @Override
+        public void close() throws IOException {
+            throw new IOException("intended exception");
+        }
     }
 }
