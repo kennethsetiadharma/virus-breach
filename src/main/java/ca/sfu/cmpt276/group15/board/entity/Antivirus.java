@@ -38,6 +38,15 @@ public class Antivirus extends Entity implements BoardObserver {
         this.board.attach(this);
     }
 
+    /**
+     * Get the current solid state 
+     * 
+     * @return boolean 2d array for solid state
+     */
+    boolean[][] getSolidState() {
+        return this.solidState;
+    }
+
     @Override
     public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);

@@ -262,4 +262,19 @@ class AntivirusTest {
         assertNotEquals(new Position(8, 1), antivirus.getPosition());
         board.removeEntity(antivirus);
     }
+
+    @Test
+    void tileChangeUpdatesSolidState() {
+        Board board = TestHelper.createEnclosedBoard(5, 5);
+        Antivirus antivirus = new Antivirus(board, 2, 2);
+        board.addEntity(antivirus);
+
+        board.setTile(1, 1, Wall.INSTANCE);
+        assertTrue(antivirus.getSolidState()[1][1]);
+
+        board.setTile(1, 1, Floor.INSTANCE);
+        assertFalse(antivirus.getSolidState()[1][1]);
+
+        board.removeEntity(antivirus);
+    }
 }
