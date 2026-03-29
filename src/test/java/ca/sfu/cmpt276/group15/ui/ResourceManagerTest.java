@@ -7,15 +7,31 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import static ca.sfu.cmpt276.group15.math.Position.UNIT_SIZE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceManagerTest {
     @Test
+    void constructorNotNull() {
+        assertNotNull(new ResourceManager());
+    }
+
+    @Test
     void spriteFallsBackToRectangle() {
         Node node = ResourceManager.sprite("fakeasset.png", Color.HOTPINK);
 
         assertInstanceOf(javafx.scene.shape.Rectangle.class, node);
+    }
+
+    @Test
+    void spriteUsesImageView() {
+        Node node = ResourceManager.sprite("player.png", Color.HOTPINK);
+
+        assertInstanceOf(ImageView.class, node);
     }
 
     @Test
@@ -45,5 +61,40 @@ class ResourceManagerTest {
 
         assertNotNull(first);
         assertSame(first, second);
+    }
+
+    @Test
+    void readImageNullThrownStream() {
+        assertNull(ResourceManager.readImage(new ThrowOnCloseStream()));
+    }
+
+    @Test
+    void fallbackFontThrownStream() {
+        Font font = ResourceManager.readFont(new ThrowOnCloseStream(), 18);
+
+        assertNotNull(font);
+        assertEquals(18, font.getSize(), 0.01);
+    }
+
+    @Test
+    void fallbackFontNullStream() {
+        Font font = ResourceManager.readFont(null, 16);
+
+        assertNotNull(font);
+        assertEquals(16, font.getSize(), 0.01);
+    }
+
+    private static class ThrowOnCloseStream extends InputStream {
+        private final ByteArrayInputStream buf = new ByteArrayInputStream(new byte[0]);
+
+        @Override
+        public int read() {
+            return buf.read();
+        }
+
+        @Override
+        public void close() throws IOException {
+            throw new IOException("intended exception");
+        }
     }
 }

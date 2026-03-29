@@ -50,16 +50,11 @@ public class ResourceManager {
         if (IMAGE_CACHE.containsKey(asset)) {
             return IMAGE_CACHE.get(asset);
         }
-        try (InputStream stream = HackingGame.class.getResourceAsStream(asset)) {
-            if (stream != null) {
-                Image image = new Image(stream);
-                IMAGE_CACHE.put(asset, image);
-                return image;
-            }
-            return null;
-        } catch (Exception e) {
-            return null;
+        Image image = readImage(HackingGame.class.getResourceAsStream(asset));
+        if (image != null) {
+            IMAGE_CACHE.put(asset, image);
         }
+        return image;
     }
 
     /**
@@ -104,12 +99,31 @@ public class ResourceManager {
      */
     public static Font loadFont(double size) {
         if (font == null) {
-            try (var stream = HackingGame.class.getResourceAsStream("/fonts/VCR_OSD_MONO_1.001.ttf")) {
-                if (stream != null) font = Font.loadFont(stream, size);
-            } catch (Exception ignored) {
-                font = Font.font("Courier New", size);
-            }
+            font = readFont(HackingGame.class.getResourceAsStream("/fonts/VCR_OSD_MONO_1.001.ttf"), size);
         }
         return new Font(font.getName(), size);
+    }
+
+    static Image readImage(InputStream stream) {
+        try (InputStream ignored = stream) {
+            if (stream == null) {
+                return null;
+            }
+            return new Image(stream);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    static Font readFont(InputStream stream, double size) {
+        try (InputStream ignored = stream) {
+            if (stream == null) {
+                return Font.font("Courier New", size);
+            }
+            Font loaded = Font.loadFont(stream, size);
+            return loaded == null ? Font.font("Courier New", size) : loaded;
+        } catch (Exception ignored) {
+            return Font.font("Courier New", size);
+        }
     }
 }
