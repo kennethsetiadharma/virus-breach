@@ -78,7 +78,7 @@ public class AudioManager {
      * @param asset audio clip asset path
      * @return the audio clip, or null if not found
      */
-    private static AudioClip getClip(String asset) {
+    public static AudioClip getClip(String asset) {
         if (clips.containsKey(asset)) {
             return clips.get(asset);
         }
@@ -87,5 +87,59 @@ public class AudioManager {
         AudioClip clip = resource == null ? null : new AudioClip(resource.toExternalForm());
         clips.put(asset, clip);
         return clip;
+    }
+
+    /**
+     * Getter for preloaded assets
+     * 
+     * @return list of preloaded asset paths
+     */
+    static String[] getPreloadedAssets() {
+        return PRELOADED_ASSETS;
+    }
+
+    /**
+     * Getter for clips map
+     * 
+     * @return audio clips map
+     */
+    static Map<String, AudioClip> getClips() {
+        return clips;
+    }
+
+    /**
+     * Getter for options
+     * 
+     * @return game options
+     */
+    static GameOptions getOptions() {
+        return options;
+    }
+
+    /**
+     * Setter for options
+     * 
+     * @param options new options to set
+     */
+    static void setOptions(GameOptions options) {
+        AudioManager.options = options;
+    }
+
+    /**
+     * Getter for initialized state
+     * 
+     * @return true if audio manager is initialized, false if not
+     */
+    static boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
+     * Setter for initialized state
+     * 
+     * @param initialized new initialized state to set
+     */
+    static void setInitialized(boolean initialized) {
+        AudioManager.initialized = initialized;
     }
 }

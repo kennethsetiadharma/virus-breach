@@ -296,14 +296,31 @@ public class GameMenu extends Menu implements BoardObserver {
         fade.play();
     }
 
+    /**
+     * Getter for camera node.
+     * 
+     * @return the camera ndoe
+     */
     Group getCameraNode() {
         return this.camera;
     }
 
+    /**
+     * Getter for damage flash node.
+     * 
+     * @return the damage flash node
+     */
     Rectangle getDamageFlashNode() {
         return this.damageFlash;
     }
 
+    /**
+     * Getter for a tile node at given x,y.
+     * 
+     * @param x x-coordinate of the tile
+     * @param y y-coordinate of the tile
+     * @return the tile node
+     */
     Node getTileNode(int x, int y) {
         return this.tileNodes[y][x];
     }
