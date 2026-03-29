@@ -3,13 +3,17 @@ package ca.sfu.cmpt276.group15.ui.menu;
 import ca.sfu.cmpt276.group15.HackingGame;
 import ca.sfu.cmpt276.group15.board.Board;
 import ca.sfu.cmpt276.group15.board.TestHelper;
+import ca.sfu.cmpt276.group15.board.entity.Data;
+import ca.sfu.cmpt276.group15.board.entity.FreezeToken;
 import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.board.tile.OpenDoor;
 import ca.sfu.cmpt276.group15.board.tile.Wall;
 import ca.sfu.cmpt276.group15.math.Position;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -30,6 +34,7 @@ import org.testfx.util.WaitForAsyncUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -129,6 +134,16 @@ class GameMenuTest {
     }
 
     @Test
+    void keyPressOtherThanWASD() {
+        setUpGame(5, 5, 2, 2);
+
+        this.menu.onKeyPressed(newKeyEvent(KeyEvent.KEY_PRESSED, KeyCode.Q));
+        this.board.tick();
+
+        assertEquals(new Position(2, 2), this.player.getPosition());
+    }
+
+    @Test
     void tileChangeReplaceTileNode() {
         setUpGame(5, 5, 2, 2);
         Node before = this.menu.getTileNode(1, 1);
@@ -176,6 +191,20 @@ class GameMenuTest {
     }
 
     @Test
+    void onLoseLoses() {
+        setUpGame(5, 5, 2, 2);
+        for (int i = 0; i < 25; i++) {
+            this.board.tick();
+        }
+
+        this.menu.onLose();
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertInstanceOf(GameOverMenu.class, this.stage.getScene().getRoot());
+        verifyThat("QUARANTINED", hasText("QUARANTINED"));
+    }
+
+    @Test
     void damageFlash() {
         setUpGame(5, 5, 2, 2);
 
@@ -189,6 +218,77 @@ class GameMenuTest {
         WaitForAsyncUtils.waitForFxEvents();
         Rectangle damageFlash = this.menu.getDamageFlashNode();
         assertTrue(damageFlash.getOpacity() > 0.0);
+    }
+
+    @Test
+    void entityRemovedData() {
+        // set up game but with data
+        this.board = TestHelper.createEnclosedBoard(5, 5);
+        this.player = new Player(this.board, 2, 2);
+        Data data = new Data(this.board, 1, 1);
+        this.board.addEntity(this.player);
+        this.board.addEntity(data);
+        runOnFxThread(() -> {
+            this.menu = new GameMenu(this.game, this.board);
+            this.stage.getScene().setRoot(this.menu);
+        });
+
+        this.menu.onEntityRemoved(data);
+        WaitForAsyncUtils.waitForFxEvents();
+        this.menu.onUpdate();
+        WaitForAsyncUtils.waitForFxEvents();
+
+        long fullIcons = collectNodes(this.menu).stream()
+            .filter(ImageView.class::isInstance)
+            .map(ImageView.class::cast)
+            .filter(iv -> iv.getImage() == ResourceManager.loadIcon("data_completed.png"))
+            .count();
+
+        assertEquals(1, fullIcons);
+        assertFalse(collectNodes(this.menu).contains(data.getRenderNode()));
+    }
+
+    @Test
+    void entityRemovedFreezeToken() {
+        // set up game but with freeze token
+        this.board = TestHelper.createEnclosedBoard(5, 5);
+        this.player = new Player(this.board, 2, 2);
+        FreezeToken freezeToken = new FreezeToken(this.board, 1, 1);
+        this.board.addEntity(this.player);
+        this.board.addEntity(freezeToken);
+        runOnFxThread(() -> {
+            this.menu = new GameMenu(this.game, this.board);
+            this.stage.getScene().setRoot(this.menu);
+        });
+
+        this.menu.onEntityRemoved(freezeToken);
+        WaitForAsyncUtils.waitForFxEvents();
+
+        double notifOpacity = collectNodes(this.menu).stream()
+            .filter(Text.class::isInstance)
+            .map(Text.class::cast)
+            .filter(node -> "FIREWALLS FROZEN".equals(node.getText()))
+            .map(Node::getParent)
+            .findFirst()
+            .orElseThrow()
+            .getOpacity();
+
+        assertTrue(notifOpacity > 0.0);
+        assertFalse(collectNodes(this.menu).contains(freezeToken.getRenderNode()));
+    }
+
+    @Test
+    void playerMovementDuringPause() {
+        setUpGame(5, 5, 2, 2);
+        WaitForAsyncUtils.waitForAsyncFx(1000,
+            () -> this.menu.onKeyPressed(newKeyEvent(KeyEvent.KEY_PRESSED, KeyCode.ESCAPE)));
+        this.board.setPaused(true);
+
+        WaitForAsyncUtils.waitForAsyncFx(1000,
+            () -> this.menu.onKeyPressed(newKeyEvent(KeyEvent.KEY_PRESSED, KeyCode.D)));
+        this.board.tick();
+
+        assertEquals(new Position(2, 2), this.player.getPosition());
     }
 
     @Test
@@ -208,6 +308,31 @@ class GameMenuTest {
         assertEquals(expectedY, camera.getTranslateY(), 0.01);
     }
 
+    @Test
+    void keyPressedNoPlayer() {
+        setUpGameNoPlayer(5, 5);
+
+        assertDoesNotThrow(() -> this.menu.onKeyPressed(newKeyEvent(KeyEvent.KEY_PRESSED, KeyCode.W)));
+    }
+
+    @Test
+    void keyReleasedNoPlayer() {
+        setUpGameNoPlayer(5, 5);
+
+        assertDoesNotThrow(() -> this.menu.onKeyReleased(newKeyEvent(KeyEvent.KEY_RELEASED, KeyCode.W)));
+    }
+
+    @Test
+    void onUpdateNoPlayer() {
+        setUpGameNoPlayer(5, 5);
+
+        this.menu.onUpdate();
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertEquals(0.0, this.menu.getCameraNode().getTranslateX(), 0.01);
+        assertEquals(0.0, this.menu.getCameraNode().getTranslateY(), 0.01);
+    }
+
     private void startGame(FxRobot robot) {
         Button startMission = robot.lookup("START MISSION").queryButton();
         robot.clickOn(startMission);
@@ -225,9 +350,20 @@ class GameMenuTest {
         this.player = new Player(this.board, playerX, playerY);
         this.board.addEntity(this.player);
 
-        this.menu = new GameMenu(this.game, this.board);
-        this.stage.getScene().setRoot(this.menu);
-        WaitForAsyncUtils.waitForFxEvents();
+        runOnFxThread(() -> {
+            this.menu = new GameMenu(this.game, this.board);
+            this.stage.getScene().setRoot(this.menu);
+        });
+    }
+
+    private void setUpGameNoPlayer(int width, int height) {
+        this.board = TestHelper.createEnclosedBoard(width, height);
+        this.player = null;
+
+        runOnFxThread(() -> {
+            this.menu = new GameMenu(this.game, this.board);
+            this.stage.getScene().setRoot(this.menu);
+        });
     }
 
     private static List<Node> collectNodes(Node node) {
@@ -248,15 +384,21 @@ class GameMenuTest {
     @Stop
     void close() {
         WaitForAsyncUtils.clearExceptions();
-        if (this.stage.getScene() != null && this.stage.getScene().getRoot() instanceof Menu menu) {
-            menu.onClose();
-        }
-        this.stage.close();
+        runOnFxThread(() -> {
+            if (this.stage.getScene() != null && this.stage.getScene().getRoot() instanceof Menu menu) {
+                menu.onClose();
+            }
+            this.stage.close();
+        });
         try {
             FxToolkit.hideStage();
             FxToolkit.cleanupStages();
         } catch (java.util.concurrent.TimeoutException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void runOnFxThread(Runnable action) {
+        WaitForAsyncUtils.waitForAsyncFx(1000, action);
     }
 }
