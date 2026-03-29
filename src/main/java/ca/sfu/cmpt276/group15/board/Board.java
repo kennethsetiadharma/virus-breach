@@ -178,10 +178,13 @@ public class Board {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             RuntimeException exception = new RuntimeException(throwable);
-            try {
-                Platform.runLater(Platform::exit);
-            } catch (IllegalStateException ignore) {
-                // not running in JavaFX (e.g. tests)
+            // don't kill javafx on tests
+            if (!(Boolean.getBoolean("testfx.headless") || Boolean.getBoolean("java.awt.headless"))) {
+                try {
+                    Platform.runLater(Platform::exit);
+                } catch (IllegalStateException ignore) {
+                    // not running in JavaFX (e.g. tests)
+                }
             }
             throw exception;
         }
