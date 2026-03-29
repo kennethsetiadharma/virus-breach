@@ -9,6 +9,9 @@ import ca.sfu.cmpt276.group15.board.entity.Player;
 import ca.sfu.cmpt276.group15.board.entity.SourceCode;
 import ca.sfu.cmpt276.group15.math.Direction;
 import ca.sfu.cmpt276.group15.math.Position;
+import ca.sfu.cmpt276.group15.ui.ResourceManager;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -110,6 +113,28 @@ class ExitTest implements BoardObserver {
         antivirus.move(Direction.UP);
         assertEquals(new Position(2, 0), antivirus.getPosition());
         assertEquals(0, this.gamesWon);
+    }
+
+    @Test
+    void loadCorrectAsset() {
+        Board board = TestHelper.createEnclosedBoard(5, 5);
+
+        assertSame(ResourceManager.loadSprite("exit_left.png"), imageAt(board, new Position(0, 2)));
+        assertSame(ResourceManager.loadSprite("exit_right.png"), imageAt(board, new Position(4, 2)));
+        assertSame(ResourceManager.loadSprite("exit_up.png"), imageAt(board, new Position(2, 0)));
+        assertSame(ResourceManager.loadSprite("exit_down.png"), imageAt(board, new Position(2, 4)));
+    }
+
+    @Test
+    void loadFallbackToLeftAsset() {
+        Board board = TestHelper.createEnclosedBoard(5, 5);
+
+        assertSame(ResourceManager.loadSprite("exit_left.png"), imageAt(board, new Position(2, 2)));
+    }
+
+    private static Image imageAt(Board board, Position position) {
+        ImageView node = (ImageView) Exit.INSTANCE.createNode(board, position);
+        return node.getImage();
     }
 
     @Override
