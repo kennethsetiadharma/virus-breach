@@ -1,19 +1,39 @@
 package ca.sfu.cmpt276.group15.ui.menu;
 
 import ca.sfu.cmpt276.group15.HackingGame;
+import ca.sfu.cmpt276.group15.board.Board;
+import ca.sfu.cmpt276.group15.board.TestHelper;
+import ca.sfu.cmpt276.group15.board.entity.Player;
+import ca.sfu.cmpt276.group15.board.tile.OpenDoor;
+import ca.sfu.cmpt276.group15.board.tile.Wall;
+import ca.sfu.cmpt276.group15.math.Position;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.testfx.api.FxRobot;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 import org.testfx.util.WaitForAsyncUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
@@ -22,6 +42,9 @@ import static org.testfx.matcher.control.LabeledMatchers.hasText;
 class GameMenuTest {
     private final HackingGame game = new HackingGame();
     private Stage stage;
+    private Board board;
+    private Player player;
+    private GameMenu menu;
 
     @Start
     void start(Stage stage) {
@@ -88,6 +111,103 @@ class GameMenuTest {
         verifyThat("START MISSION", hasText("START MISSION"));
     }
 
+    @ParameterizedTest
+    @CsvSource({
+        "W,2,1",
+        "A,1,2",
+        "S,2,3",
+        "D,3,2"
+    })
+    void playerMovement(KeyCode keyCode, int expectedX, int expectedY) {
+        setUpGame(5, 5, 2, 2);
+
+        this.menu.onKeyPressed(newKeyEvent(KeyEvent.KEY_PRESSED, keyCode));
+        this.board.tick();
+        this.menu.onKeyReleased(newKeyEvent(KeyEvent.KEY_RELEASED, keyCode));
+
+        assertEquals(new Position(expectedX, expectedY), this.player.getPosition());
+    }
+
+    @Test
+    void tileChangeReplaceTileNode() {
+        setUpGame(5, 5, 2, 2);
+        Node before = this.menu.getTileNode(1, 1);
+
+        this.menu.onTileChanged(1, 1, Wall.INSTANCE);
+
+        WaitForAsyncUtils.waitForFxEvents();
+        Node after = this.menu.getTileNode(1, 1);
+
+        assertNotSame(before, after);
+    }
+
+    @Test
+    void tileChangeOpenServerRoom() {
+        setUpGame(5, 5, 2, 2);
+
+        this.menu.onTileChanged(1, 1, OpenDoor.INSTANCE);
+
+        WaitForAsyncUtils.waitForFxEvents();
+
+        double notifOpacity = collectNodes(this.menu).stream()
+            .filter(Text.class::isInstance)
+            .map(Text.class::cast)
+            .filter(node -> "SERVER ROOM UNLOCKED".equals(node.getText()))
+            .map(Node::getParent)
+            .findFirst()
+            .orElseThrow()
+            .getOpacity();
+        
+        assertTrue(notifOpacity > 0.0);
+    }
+
+    @Test
+    void onWinWins() {
+        setUpGame(5, 5, 2, 2);
+        for (int i = 0; i < 25; i++) {
+            this.board.tick();
+        }
+
+        this.menu.onWin(250);
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertInstanceOf(WinMenu.class, this.stage.getScene().getRoot());
+        verifyThat("INFILTRATED", hasText("INFILTRATED"));
+    }
+
+    @Test
+    void damageFlash() {
+        setUpGame(5, 5, 2, 2);
+
+        this.player.adjustData(100);
+        this.menu.onUpdate();
+
+        WaitForAsyncUtils.waitForFxEvents();
+        this.player.adjustData(-50);
+        this.menu.onUpdate();
+
+        WaitForAsyncUtils.waitForFxEvents();
+        Rectangle damageFlash = this.menu.getDamageFlashNode();
+        assertTrue(damageFlash.getOpacity() > 0.0);
+    }
+
+    @Test
+    void centrePlayerViewport() {
+        setUpGame(3, 3, 1, 1);
+
+        this.menu.onUpdate();
+        WaitForAsyncUtils.waitForFxEvents();
+
+        Group camera = this.menu.getCameraNode();
+        double contentWidth = Position.fromGrid(this.board.width()) * HackingGame.CAMERA_ZOOM;
+        double contentHeight = Position.fromGrid(this.board.height()) * HackingGame.CAMERA_ZOOM;
+        double expectedX = (this.menu.getWidth() - contentWidth) / 2.0;
+        double expectedY = (this.menu.getHeight() - contentHeight) / 2.0;
+
+        assertEquals(expectedX, camera.getTranslateX(), 0.01);
+        assertEquals(expectedY, camera.getTranslateY(), 0.01);
+    }
+
     private void startGame(FxRobot robot) {
         Button startMission = robot.lookup("START MISSION").queryButton();
         robot.clickOn(startMission);
@@ -100,6 +220,31 @@ class GameMenuTest {
         WaitForAsyncUtils.waitForFxEvents();
     }
 
+    private void setUpGame(int width, int height, int playerX, int playerY) {
+        this.board = TestHelper.createEnclosedBoard(width, height);
+        this.player = new Player(this.board, playerX, playerY);
+        this.board.addEntity(this.player);
+
+        this.menu = new GameMenu(this.game, this.board);
+        this.stage.getScene().setRoot(this.menu);
+        WaitForAsyncUtils.waitForFxEvents();
+    }
+
+    private static List<Node> collectNodes(Node node) {
+        List<Node> nodes = new ArrayList<>();
+        nodes.add(node);
+        if (node instanceof Parent parent) {
+            for (Node child : parent.getChildrenUnmodifiable()) {
+                nodes.addAll(collectNodes(child));
+            }
+        }
+        return nodes;
+    }
+
+    private static KeyEvent newKeyEvent(javafx.event.EventType<KeyEvent> type, KeyCode code) {
+        return new KeyEvent(type, "", "", code, false, false, false, false);
+    }
+
     @Stop
     void close() {
         WaitForAsyncUtils.clearExceptions();
@@ -107,5 +252,11 @@ class GameMenuTest {
             menu.onClose();
         }
         this.stage.close();
+        try {
+            FxToolkit.hideStage();
+            FxToolkit.cleanupStages();
+        } catch (java.util.concurrent.TimeoutException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

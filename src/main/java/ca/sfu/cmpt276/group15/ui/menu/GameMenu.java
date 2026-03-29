@@ -296,6 +296,18 @@ public class GameMenu extends Menu implements BoardObserver {
         fade.play();
     }
 
+    Group getCameraNode() {
+        return this.camera;
+    }
+
+    Rectangle getDamageFlashNode() {
+        return this.damageFlash;
+    }
+
+    Node getTileNode(int x, int y) {
+        return this.tileNodes[y][x];
+    }
+
     private static double restrictToViewport(double translate, double contentSize, double viewportSize) {
         if (contentSize <= viewportSize) {
             return (viewportSize - contentSize) / 2.0;
