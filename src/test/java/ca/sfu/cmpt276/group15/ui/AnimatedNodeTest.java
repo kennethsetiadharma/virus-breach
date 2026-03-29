@@ -45,4 +45,14 @@ class AnimatedNodeTest {
         assertSame(idle, node.getChildrenUnmodifiable().getFirst());
         assertEquals(1.0, node.getChildrenUnmodifiable().getFirst().getScaleX());
     }
+
+    @Test
+    void idleFallbackMissingMovingFrames() {
+        AnimatedNode node = new AnimatedNode("player.png", 2, "missing_frame.png", "player_moving2.png");
+        Node idle = node.getChildrenUnmodifiable().getFirst();
+
+        node.animate(new Position(2, 2), new Position(1, 2), 0);
+
+        assertSame(idle, node.getChildrenUnmodifiable().getFirst());
+    }
 }

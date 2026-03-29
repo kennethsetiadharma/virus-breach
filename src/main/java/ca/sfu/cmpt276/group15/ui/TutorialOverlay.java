@@ -85,7 +85,7 @@ public class TutorialOverlay extends Pane {
         return row;
     }
 
-    private Image loadImage(String asset, boolean isSprite) {
+    Image loadImage(String asset, boolean isSprite) {
         return isSprite ? ResourceManager.loadSprite(asset) : ResourceManager.loadIcon(asset);
     }
 }

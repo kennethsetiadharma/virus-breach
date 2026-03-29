@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.group15.ui;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 @ExtendWith(ApplicationExtension.class)
 class TutorialOverlayTest {
@@ -42,6 +44,13 @@ class TutorialOverlayTest {
         WaitForAsyncUtils.waitForFxEvents();
 
         assertEquals(1, this.callbackCount);
+    }
+
+    @Test
+    void loadIconsNotSprite() throws ReflectiveOperationException {
+        TutorialOverlay overlay = new TutorialOverlay(this::callbackIncrement);
+        Image loaded = (Image) overlay.loadImage("pause.png", false);
+        assertSame(ResourceManager.loadIcon("pause.png"), loaded);
     }
 
     @Stop
