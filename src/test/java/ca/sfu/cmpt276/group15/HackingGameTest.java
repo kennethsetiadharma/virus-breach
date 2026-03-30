@@ -38,6 +38,6 @@ class HackingGameTest {
 
     @Stop
     void close() {
-        this.game.close();
+        this.game.stop();
     }
 }

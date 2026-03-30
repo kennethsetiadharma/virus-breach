@@ -31,6 +31,9 @@ public class HackingGame extends Application {
      */
     Menu activeMenu;
 
+    public HackingGame() {
+    }
+
     @Override
     public void start(Stage stage) {
         this.stage = stage;
@@ -45,25 +48,15 @@ public class HackingGame extends Application {
         this.activeMenu.onOpen();
 
         this.stage.show();
-        this.stage.setOnCloseRequest(e -> this.close());
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public HackingGame() {
+    @Override
+    public void stop() {
+        this.activeMenu.onClose();
     }
 
     public GameOptions getOptions() {
         return options;
-    }
-
-    /**
-     * Called when the game window is being closed (shutdown).
-     */
-    void close() {
-        this.activeMenu.onClose();
     }
 
     /**
@@ -85,5 +78,9 @@ public class HackingGame extends Application {
         this.activeMenu = menu;
         this.stage.getScene().setRoot(menu);
         this.activeMenu.onOpen();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
