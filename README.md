@@ -1,6 +1,7 @@
 # Virus Breach
+### CMPT 276 — Group 15
 
-A 2D tile-based hacking game built with JavaFX. Navigate the board, collect data, find the decryption key, and escape through the exit — while avoiding firewalls and the antivirus enemy.
+A 2D tile-based hacking game built with JavaFX. Navigate the board, collect data, find the decryption key, and escape through the exit while avoiding firewalls and the antivirus enemy.
 
 ## Prerequisites
 
