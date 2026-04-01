@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * The main class for the game.
  * Initializes the game window and manages menu navigation
  */
 public class HackingGame extends Application {
@@ -78,9 +77,5 @@ public class HackingGame extends Application {
         this.activeMenu = menu;
         this.stage.getScene().setRoot(menu);
         this.activeMenu.onOpen();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
