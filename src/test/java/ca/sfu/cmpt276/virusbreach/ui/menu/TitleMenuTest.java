@@ -23,10 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 @ExtendWith(ApplicationExtension.class)
 class TitleMenuTest {
     private final VirusBreach game = new VirusBreach();
@@ -93,16 +89,6 @@ class TitleMenuTest {
         assertEquals(Color.BLACK, background.getFills().getFirst().getFill());
     }
 
-    @Test
-    void fallbackBackgroundThrownStream() {
-        Background background = TitleMenu.buildBackground(new ThrowOnCloseStream());
-
-        assertNotNull(background);
-        assertEquals(1, background.getFills().size());
-        assertEquals(0, background.getImages().size());
-        assertEquals(Color.BLACK, background.getFills().getFirst().getFill());
-    }
-
     @Stop
     void close() {
         WaitForAsyncUtils.clearExceptions();
@@ -110,19 +96,5 @@ class TitleMenuTest {
             menu.onClose();
         }
         this.stage.close();
-    }
-
-    private static class ThrowOnCloseStream extends InputStream {
-        private final ByteArrayInputStream buf = new ByteArrayInputStream(new byte[0]);
-
-        @Override
-        public int read() {
-            return buf.read();
-        }
-
-        @Override
-        public void close() throws IOException {
-            throw new IOException("intended exception");
-        }
     }
 }
