@@ -1,6 +1,48 @@
-# CMPT276S26_Group15
+# Virus Breach
 
-Run with:
+A 2D tile-based hacking game built with JavaFX. Navigate the board, collect data, find the decryption key, and escape through the exit — while avoiding firewalls and the antivirus enemy.
+
+## Prerequisites
+
+- Java 21
+- Maven 3.8+
+
+## Build
+
+```shell
+mvn package
+```
+
+This compiles the project and produces a self-contained jar at `target/virusbreach-1.0-SNAPSHOT.jar`.
+
+## Run
+
+**Option 1 — Maven (recommended during development):**
 ```shell
 mvn javafx:run
+```
+
+**Option 2 — Run the jar directly:**
+```shell
+java -jar target/virusbreach-1.0-SNAPSHOT.jar
+```
+
+## Test
+
+Run the full test suite:
+```shell
+mvn test
+```
+
+Run a specific test class:
+```shell
+mvn test -Dtest=PositionTest
+```
+
+## Code Coverage
+
+Generate a JaCoCo HTML coverage report:
+```shell
+mvn clean test jacoco:report -Dmaven.test.failure.ignore=true
+open target/site/jacoco/index.html
 ```
