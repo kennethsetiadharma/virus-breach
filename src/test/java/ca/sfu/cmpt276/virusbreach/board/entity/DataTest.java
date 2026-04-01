@@ -1,0 +1,10 @@
+package ca.sfu.cmpt276.virusbreach.board.entity;
+
+import ca.sfu.cmpt276.virusbreach.board.Board;
+
+class DataTest extends CollectableTest {
+    @Override
+    protected Collectable createCollectable(Board board, int x, int y) {
+        return new Data(board, x, y);
+    }
+}

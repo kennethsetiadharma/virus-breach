@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ca.sfu.cmpt276</groupId>
-  <artifactId>group15</artifactId>
+  <artifactId>virusbreach</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <build>
@@ -16,7 +16,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ca.sfu.cmpt276.group15.Main</mainClass>
+              <mainClass>ca.sfu.cmpt276.virusbreach.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -76,7 +76,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>ca.sfu.cmpt276.group15.HackingGame</mainClass>
+          <mainClass>ca.sfu.cmpt276.virusbreach.VirusBreach</mainClass>
         </configuration>
       </plugin>
     </plugins>
