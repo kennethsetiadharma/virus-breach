@@ -9,6 +9,9 @@ import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
 import javafx.scene.Node;
 import org.junit.jupiter.api.Test;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest implements BoardObserver {
@@ -189,7 +192,7 @@ class BoardTest implements BoardObserver {
     }
 
     /**
-     * Test that exceptions are handled when raised in the board logic.
+     * Test that exceptions are printed when raised in the board logic thread.
      */
     @Test
     void failException() {
@@ -210,7 +213,15 @@ class BoardTest implements BoardObserver {
         board.addEntity(entity);
         board.removeEntity(entity);
 
-        assertThrowsExactly(RuntimeException.class, board::tick);
+        PrintStream err = System.err;
+        CountingStream stream = new CountingStream();
+        try {
+            System.setErr(new PrintStream(stream));
+            assertThrowsExactly(RuntimeException.class, board::tick);
+            assertNotEquals(0, stream.written);
+        } finally {
+            System.setErr(err);
+        }
     }
 
     @Override
@@ -221,5 +232,14 @@ class BoardTest implements BoardObserver {
     @Override
     public void onUpdate() {
         this.boardUpdates++;
+    }
+
+    private static class CountingStream extends OutputStream {
+        private int written;
+
+        @Override
+        public void write(int b) {
+            this.written++;
+        }
     }
 }
