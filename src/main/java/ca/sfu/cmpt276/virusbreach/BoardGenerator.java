@@ -187,7 +187,7 @@ public class BoardGenerator {
      * not inside a special room, not within 1 tile of a room boundary wall,
      * not a room doorway, and not already solid.
      */
-    private static void placeWall(Board board, int x, int y) {
+    static void placeWall(Board board, int x, int y) {
         int width  = board.width();
         int height = board.height();
 
