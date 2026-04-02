@@ -3,6 +3,7 @@ package ca.sfu.cmpt276.virusbreach.ui;
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.TestHelper;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
+import ca.sfu.cmpt276.virusbreach.math.Position;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,7 +44,7 @@ class HudTest {
     @Test
     void updateShowsTimeAndScore() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
         player.adjustData(250);
 
@@ -60,7 +61,7 @@ class HudTest {
     @Test
     void updateShowsExitText() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         WaitForAsyncUtils.waitForAsyncFx(1000, () -> this.hud.update(board, ca.sfu.cmpt276.virusbreach.BoardGenerator.TOTAL_DATA));
@@ -92,7 +93,7 @@ class HudTest {
     @Test
     void onlyShowExitNotifOnce() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         WaitForAsyncUtils.waitForAsyncFx(1000, () -> this.hud.update(board, TOTAL_DATA));
@@ -104,7 +105,7 @@ class HudTest {
     @Test
     void negativeScoreRunsDamageCallback() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.adjustData(100);

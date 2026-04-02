@@ -18,9 +18,9 @@ class DecryptionKeyTest {
     void unlockDoor() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         Position doorPos = new Position(0, 2);
-        DecryptionKey key = new DecryptionKey(board, 2, 2, doorPos);
-        Player player = new Player(board, 3, 2);
-        board.setTile(doorPos.x(), doorPos.y(), LockedDoor.INSTANCE);
+        DecryptionKey key = new DecryptionKey(board, new Position(2, 2), doorPos);
+        Player player = new Player(board, new Position(3, 2));
+        board.setTile(doorPos, LockedDoor.INSTANCE);
         board.addEntity(key);
         board.addEntity(player);
 
@@ -36,9 +36,9 @@ class DecryptionKeyTest {
     void noAntivirusInteraction() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         Position doorPos = new Position(0, 2);
-        DecryptionKey key = new DecryptionKey(board, 2, 2, doorPos);
-        Antivirus antivirus = new Antivirus(board, 3, 2);
-        board.setTile(doorPos.x(), doorPos.y(), LockedDoor.INSTANCE);
+        DecryptionKey key = new DecryptionKey(board, new Position(2, 2), doorPos);
+        Antivirus antivirus = new Antivirus(board, new Position(3, 2));
+        board.setTile(doorPos, LockedDoor.INSTANCE);
         board.addEntity(key);
         board.addEntity(antivirus);
 

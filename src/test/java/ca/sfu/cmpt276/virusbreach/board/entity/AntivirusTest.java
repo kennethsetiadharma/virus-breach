@@ -18,10 +18,10 @@ class AntivirusTest {
     @Test
     void navigateLeft() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
 
         board.addEntity(antivirus);
-        board.addEntity(new Player(board, 1, 2));
+        board.addEntity(new Player(board, new Position(1, 2)));
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -34,10 +34,10 @@ class AntivirusTest {
     @Test
     void navigateRight() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
 
         board.addEntity(antivirus);
-        board.addEntity(new Player(board, 3, 2));
+        board.addEntity(new Player(board, new Position(3, 2)));
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -50,10 +50,10 @@ class AntivirusTest {
     @Test
     void navigateUp() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
 
         board.addEntity(antivirus);
-        board.addEntity(new Player(board, 2, 1));
+        board.addEntity(new Player(board, new Position(2, 1)));
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -66,10 +66,10 @@ class AntivirusTest {
     @Test
     void navigateDown() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
 
         board.addEntity(antivirus);
-        board.addEntity(new Player(board, 2, 3));
+        board.addEntity(new Player(board, new Position(2, 3)));
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
 
@@ -82,10 +82,10 @@ class AntivirusTest {
     @Test
     void navigateDiagonal() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
 
         board.addEntity(antivirus);
-        board.addEntity(new Player(board, 1, 1));
+        board.addEntity(new Player(board, new Position(1, 1)));
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 2; i++) board.tick();
 
@@ -98,11 +98,11 @@ class AntivirusTest {
     @Test
     void navigateAround() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 3, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(3, 2));
 
         board.addEntity(antivirus);
-        board.setTile(2, 2, Wall.INSTANCE);
-        board.addEntity(new Player(board, 1, 2));
+        board.setTile(new Position(2, 2), Wall.INSTANCE);
+        board.addEntity(new Player(board, new Position(1, 2)));
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 4; i++) {
             board.tick();
@@ -118,14 +118,14 @@ class AntivirusTest {
     @Test
     void noPathIdle() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 3, 3);
+        Antivirus antivirus = new Antivirus(board, new Position(3, 3));
 
         board.addEntity(antivirus);
-        board.setTile(1, 1, Floor.INSTANCE);
-        board.setTile(1, 2, Wall.INSTANCE);
-        board.setTile(2, 2, Wall.INSTANCE);
-        board.setTile(2, 1, Wall.INSTANCE);
-        board.addEntity(new Player(board, 1, 1));
+        board.setTile(new Position(1, 1), Floor.INSTANCE);
+        board.setTile(new Position(1, 2), Wall.INSTANCE);
+        board.setTile(new Position(2, 2), Wall.INSTANCE);
+        board.setTile(new Position(2, 1), Wall.INSTANCE);
+        board.addEntity(new Player(board, new Position(1, 1)));
 
         // should not move
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 10; i++) {
@@ -142,10 +142,10 @@ class AntivirusTest {
     @Test
     void noPathOOB() {
         Board board = new Board(new TileType[][]{{Floor.INSTANCE, Wall.INSTANCE, Floor.INSTANCE}});
-        Antivirus antivirus = new Antivirus(board, 0, 0);
+        Antivirus antivirus = new Antivirus(board, new Position(0, 0));
 
         board.addEntity(antivirus);
-        board.addEntity(new Player(board, 2, 0));
+        board.addEntity(new Player(board, new Position(2, 0)));
 
         // should not move
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 10; i++) {
@@ -161,7 +161,7 @@ class AntivirusTest {
     @Test
     void noPlayerIdle() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
 
         board.addEntity(antivirus);
 
@@ -179,10 +179,10 @@ class AntivirusTest {
     @Test
     void noPathCaught() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
 
         board.addEntity(antivirus);
-        board.addEntity(new Player(board, 2, 2));
+        board.addEntity(new Player(board, new Position(2, 2)));
 
         // should not move
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS; i++) board.tick();
@@ -198,8 +198,8 @@ class AntivirusTest {
     void navigateFar() {
         Board board = TestHelper.createEnclosedBoard(10, 10);
 
-        Player player = new Player(board, 1, 1);
-        Antivirus antivirus = new Antivirus(board, 8, 1);
+        Player player = new Player(board, new Position(1, 1));
+        Antivirus antivirus = new Antivirus(board, new Position(8, 1));
 
         //WWWWWWWWWW
         //WPW     AW
@@ -212,12 +212,12 @@ class AntivirusTest {
         //W        W
         //WWWWWWWWWW
         for (int i = 2; i < 8; i++) {
-            board.setTile(i, 2, Wall.INSTANCE);
-            board.setTile(i, 7, Wall.INSTANCE);
-            board.setTile(2, i, Wall.INSTANCE);
-            board.setTile(7, i, Wall.INSTANCE);
+            board.setTile(new Position(i, 2), Wall.INSTANCE);
+            board.setTile(new Position(i, 7), Wall.INSTANCE);
+            board.setTile(new Position(2, i), Wall.INSTANCE);
+            board.setTile(new Position(7, i), Wall.INSTANCE);
         }
-        board.setTile(2, 1, Wall.INSTANCE);
+        board.setTile(new Position(2, 1), Wall.INSTANCE);
 
         board.addEntity(antivirus);
         board.addEntity(player);
@@ -235,8 +235,8 @@ class AntivirusTest {
     void pathfindAroundLarge() {
         Board board = TestHelper.createEnclosedBoard(10, 10);
 
-        Player player = new Player(board, 1, 1);
-        Antivirus antivirus = new Antivirus(board, 8, 8);
+        Player player = new Player(board, new Position(1, 1));
+        Antivirus antivirus = new Antivirus(board, new Position(8, 8));
 
         //WWWWWWWWWW
         //WP       W
@@ -249,8 +249,8 @@ class AntivirusTest {
         //W       AW
         //WWWWWWWWWW
         for (int i = 2; i < 8; i++) {
-            board.setTile(i, 2, Wall.INSTANCE);
-            board.setTile(2, i, Wall.INSTANCE);
+            board.setTile(new Position(i, 2), Wall.INSTANCE);
+            board.setTile(new Position(2, i), Wall.INSTANCE);
         }
 
         board.addEntity(antivirus);
@@ -266,13 +266,13 @@ class AntivirusTest {
     @Test
     void tileChangeUpdatesSolidState() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Antivirus antivirus = new Antivirus(board, 2, 2);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 2));
         board.addEntity(antivirus);
 
-        board.setTile(1, 1, Wall.INSTANCE);
+        board.setTile(new Position(1, 1), Wall.INSTANCE);
         assertTrue(antivirus.getSolidState()[1][1]);
 
-        board.setTile(1, 1, Floor.INSTANCE);
+        board.setTile(new Position(1, 1), Floor.INSTANCE);
         assertFalse(antivirus.getSolidState()[1][1]);
 
         board.removeEntity(antivirus);

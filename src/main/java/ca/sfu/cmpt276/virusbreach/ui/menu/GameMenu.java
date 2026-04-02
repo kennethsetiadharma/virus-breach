@@ -65,7 +65,7 @@ public class GameMenu extends Menu implements BoardObserver {
         this.tileNodes = new Node[board.height()][board.width()];
         for (int x = 0; x < board.width(); x++) {
             for (int y = 0; y < board.height(); y++) {
-                Node node = board.getTile(x, y).createNode(board, new Position(x, y));
+                Node node = board.getTile(new Position(x, y)).createNode(board, new Position(x, y));
                 node.setTranslateX(Position.fromGrid(x));
                 node.setTranslateY(Position.fromGrid(y));
                 node.setTranslateZ(-1.0);
@@ -215,17 +215,17 @@ public class GameMenu extends Menu implements BoardObserver {
      * @param tile the new tile type
      */
     @Override
-    public void onTileChanged(int x, int y, TileType tile) {
+    public void onTileChanged(Position position, TileType tile) {
         if (tile == OpenDoor.INSTANCE) {
             Platform.runLater(hud::showServerRoomBanner);
         }
         Platform.runLater(() -> {
-            Node oldNode = this.tileNodes[y][x];
-            Node newNode = tile.createNode(this.board, new Position(x, y));
-            newNode.setTranslateX(Position.fromGrid(x));
-            newNode.setTranslateY(Position.fromGrid(y));
+            Node oldNode = this.tileNodes[position.y()][position.x()];
+            Node newNode = tile.createNode(this.board, position);
+            newNode.setTranslateX(Position.fromGrid(position.x()));
+            newNode.setTranslateY(Position.fromGrid(position.y()));
             newNode.setTranslateZ(-1.0);
-            this.tileNodes[y][x] = newNode;
+            this.tileNodes[position.y()][position.x()] = newNode;
             int index = this.entities.getChildren().indexOf(oldNode);
             this.entities.getChildren().set(index, newNode);
         });
@@ -321,8 +321,8 @@ public class GameMenu extends Menu implements BoardObserver {
      * @param y y-coordinate of the tile
      * @return the tile node
      */
-    Node getTileNode(int x, int y) {
-        return this.tileNodes[y][x];
+    Node getTileNode(Position position) {
+        return this.tileNodes[position.y()][position.x()];
     }
 
     private static double restrictToViewport(double translate, double contentSize, double viewportSize) {

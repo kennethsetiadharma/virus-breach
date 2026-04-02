@@ -6,6 +6,7 @@ import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.board.entity.SourceCode;
 import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
+import ca.sfu.cmpt276.virusbreach.math.Position;
 import javafx.scene.Node;
 import org.junit.jupiter.api.Test;
 
@@ -82,13 +83,13 @@ class BoardTest implements BoardObserver {
     void noSourceCodeOverlaps() {
         Board board = TestHelper.createEnclosedBoard(3, 3);
 
-        Data entity = new Data(board, 1, 1);
+        Data entity = new Data(board, new Position(1, 1));
         board.addEntity(entity);
 
         for (int i = 0; i < 10000; i++) {
             board.tick();
-            assertEquals(1, board.getEntitiesAt(1, 1).size());
-            assertEquals(entity, board.getEntitiesAt(1, 1).iterator().next());
+            assertEquals(1, board.getEntitiesAt(new Position(1, 1)).size());
+            assertEquals(entity, board.getEntitiesAt(new Position(1, 1)).iterator().next());
         }
     }
 
@@ -99,14 +100,14 @@ class BoardTest implements BoardObserver {
     void cannotAddRemovedEntity() {
         Board board = TestHelper.createEnclosedBoard(3, 3);
 
-        Data entity = new Data(board, 1, 1);
+        Data entity = new Data(board, new Position(1, 1));
         board.addEntity(entity);
 
         // mark entity as removed
         board.removeEntity(entity);
 
         board.addEntity(entity);
-        assertEquals(0, board.getEntitiesAt(1, 1).size());
+        assertEquals(0, board.getEntitiesAt(new Position(1, 1)).size());
     }
 
     /**
@@ -117,13 +118,13 @@ class BoardTest implements BoardObserver {
         Board board = TestHelper.createEnclosedBoard(3, 3);
         board.attach(this);
 
-        Data entity = new Data(board, 1, 1);
+        Data entity = new Data(board, new Position(1, 1));
         board.addEntity(entity);
 
         board.removeEntity(entity);
         board.removeEntity(entity);
 
-        assertEquals(0, board.getEntitiesAt(1, 1).size());
+        assertEquals(0, board.getEntitiesAt(new Position(1, 1)).size());
         assertEquals(1, this.removedEntites);
         board.detach(this);
     }
@@ -198,7 +199,7 @@ class BoardTest implements BoardObserver {
     void failException() {
         Board board = TestHelper.createEnclosedBoard(3, 3);
 
-        Entity entity = new Entity(board, 1, 1) {
+        Entity entity = new Entity(board, new Position(1, 1)) {
             @Override
             public boolean isRemoved() {
                 if (super.isRemoved()) throw new UnsupportedOperationException("Testing exception, ignore");

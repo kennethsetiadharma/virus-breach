@@ -146,12 +146,12 @@ class GameMenuTest {
     @Test
     void tileChangeReplaceTileNode() {
         setUpGame(5, 5, 2, 2);
-        Node before = this.menu.getTileNode(1, 1);
+        Node before = this.menu.getTileNode(new Position(1, 1));
 
-        this.menu.onTileChanged(1, 1, Wall.INSTANCE);
+        this.menu.onTileChanged(new Position(1, 1), Wall.INSTANCE);
 
         WaitForAsyncUtils.waitForFxEvents();
-        Node after = this.menu.getTileNode(1, 1);
+        Node after = this.menu.getTileNode(new Position(1, 1));
 
         assertNotSame(before, after);
     }
@@ -160,7 +160,7 @@ class GameMenuTest {
     void tileChangeOpenServerRoom() {
         setUpGame(5, 5, 2, 2);
 
-        this.menu.onTileChanged(1, 1, OpenDoor.INSTANCE);
+        this.menu.onTileChanged(new Position(1, 1), OpenDoor.INSTANCE);
 
         WaitForAsyncUtils.waitForFxEvents();
 
@@ -224,8 +224,8 @@ class GameMenuTest {
     void entityRemovedData() {
         // set up game but with data
         this.board = TestHelper.createEnclosedBoard(5, 5);
-        this.player = new Player(this.board, 2, 2);
-        Data data = new Data(this.board, 1, 1);
+        this.player = new Player(this.board, new Position(2, 2));
+        Data data = new Data(this.board, new Position(1, 1));
         this.board.addEntity(this.player);
         this.board.addEntity(data);
         runOnFxThread(() -> {
@@ -252,8 +252,8 @@ class GameMenuTest {
     void entityRemovedFreezeToken() {
         // set up game but with freeze token
         this.board = TestHelper.createEnclosedBoard(5, 5);
-        this.player = new Player(this.board, 2, 2);
-        FreezeToken freezeToken = new FreezeToken(this.board, 1, 1);
+        this.player = new Player(this.board, new Position(2, 2));
+        FreezeToken freezeToken = new FreezeToken(this.board, new Position(1, 1));
         this.board.addEntity(this.player);
         this.board.addEntity(freezeToken);
         runOnFxThread(() -> {
@@ -347,7 +347,7 @@ class GameMenuTest {
 
     private void setUpGame(int width, int height, int playerX, int playerY) {
         this.board = TestHelper.createEnclosedBoard(width, height);
-        this.player = new Player(this.board, playerX, playerY);
+        this.player = new Player(this.board, new Position(playerX, playerY));
         this.board.addEntity(this.player);
 
         runOnFxThread(() -> {

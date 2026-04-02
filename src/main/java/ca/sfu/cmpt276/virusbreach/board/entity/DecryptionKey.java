@@ -21,8 +21,8 @@ public class DecryptionKey extends Entity {
      * @param y             the y-coordinate to spawn at
      * @param doorToUnlock  the tile position of the Server Room door to open on pickup
      */
-    public DecryptionKey(Board board, int x, int y, Position doorToUnlock) {
-        super(board, x, y);
+    public DecryptionKey(Board board, Position position, Position doorToUnlock) {
+        super(board, position);
         this.doorToUnlock = doorToUnlock;
     }
 
@@ -35,7 +35,7 @@ public class DecryptionKey extends Entity {
     @Override
     public void onCollideWith(Entity entity) {
         if (entity instanceof Player) {
-            this.board.setTile(this.doorToUnlock.x(), this.doorToUnlock.y(), OpenDoor.INSTANCE);
+            this.board.setTile(new Position(this.doorToUnlock.x(), this.doorToUnlock.y()), OpenDoor.INSTANCE);
             AudioManager.play("bonus.wav");
             this.board.removeEntity(this);
         }

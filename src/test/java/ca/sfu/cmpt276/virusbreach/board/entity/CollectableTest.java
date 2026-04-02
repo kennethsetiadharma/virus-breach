@@ -7,14 +7,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ca.sfu.cmpt276.virusbreach.math.Position;
+
 abstract class CollectableTest {
-    protected abstract Collectable createCollectable(Board board, int x, int y);
+    protected abstract Collectable createCollectable(Board board, Position position);
 
     @Test
     void playerCollection() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Collectable collectable = this.createCollectable(board, 2, 2);
-        Player player = new Player(board, 1, 2);
+        Collectable collectable = this.createCollectable(board, new Position(2, 2));
+        Player player = new Player(board, new Position(1, 2));
 
         board.addEntity(collectable);
         board.addEntity(player);
@@ -28,8 +30,8 @@ abstract class CollectableTest {
     @Test
     void noAntivirusInteraction() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Collectable collectable = this.createCollectable(board, 2, 2);
-        Antivirus antivirus = new Antivirus(board, 1, 2);
+        Collectable collectable = this.createCollectable(board, new Position(2, 2));
+        Antivirus antivirus = new Antivirus(board, new Position(1, 2));
 
         board.addEntity(collectable);
         board.addEntity(antivirus);
@@ -37,6 +39,6 @@ abstract class CollectableTest {
         antivirus.move(Direction.RIGHT);
 
         assertFalse(collectable.isRemoved());
-        assertEquals(2, board.getEntitiesAt(2, 2).size());
+        assertEquals(2, board.getEntitiesAt(new Position(2, 2)).size());
     }
 }

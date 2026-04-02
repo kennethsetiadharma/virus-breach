@@ -17,8 +17,8 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     int gamesLost = 0;
 
     @Override
-    protected Collectable createCollectable(Board board, int x, int y) {
-        return new Firewall(board, x, y);
+    protected Collectable createCollectable(Board board, Position position) {
+        return new Firewall(board, position);
     }
 
     /**
@@ -27,8 +27,8 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void canKillPlayer() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Collectable collectable = this.createCollectable(board, 2, 2);
-        Player player = new Player(board, 1, 2);
+        Collectable collectable = this.createCollectable(board, new Position(2,2));
+        Player player = new Player(board, new Position(1, 2));
 
         board.attach(this);
         board.addEntity(collectable);
@@ -48,8 +48,8 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void damagePlayerWithScore() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Collectable collectable = this.createCollectable(board, 2, 2);
-        Player player = new Player(board, 1, 2);
+        Collectable collectable = this.createCollectable(board, new Position(2, 2));
+        Player player = new Player(board, new Position(1, 2));
         player.adjustData(-collectable.value);
 
         board.attach(this);
@@ -70,8 +70,8 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void damagePlayerWithNotEnoughScore() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Collectable collectable = this.createCollectable(board, 2, 2);
-        Player player = new Player(board, 1, 2);
+        Collectable collectable = this.createCollectable(board, new Position(2, 2));
+        Player player = new Player(board, new Position(1, 2));
         player.adjustData(-collectable.value - 1);
 
         board.attach(this);
@@ -92,7 +92,7 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void firewallSpread() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Firewall firewall = new Firewall(board, 2, 2);
+        Firewall firewall = new Firewall(board, new Position(2, 2));
         board.addEntity(firewall);
 
         boolean spread = false;
@@ -100,7 +100,7 @@ class FirewallTest extends CollectableTest implements BoardObserver{
             board.tick();
             for (Direction direction : Direction.values()) {
                 Position pos = firewall.getPosition().relative(direction);
-                Collection<Entity> entities = board.getEntitiesAt(pos.x(), pos.y());
+                Collection<Entity> entities = board.getEntitiesAt(pos);
                 for (Entity entity : entities) {
                     if (entity instanceof Firewall) {
                         spread = true;
@@ -119,7 +119,7 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void spreadBlockedByWall() {
         Board board = TestHelper.createEnclosedBoard(3, 3);
-        Firewall firewall = new Firewall(board, 1, 1);
+        Firewall firewall = new Firewall(board, new Position(1, 1));
         board.addEntity(firewall);
 
         boolean spread = false;
@@ -140,11 +140,11 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void spreadBlockedByData() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Firewall firewall = new Firewall(board, 2, 2);
+        Firewall firewall = new Firewall(board, new Position(2, 2));
         board.addEntity(firewall);
         for (Direction value : Direction.values()) {
             Position pos = firewall.getPosition().relative(value);
-            board.addEntity(new Data(board, pos.x(), pos.y()));
+            board.addEntity(new Data(board, pos));
         }
 
         boolean spread = false;
@@ -165,7 +165,7 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void cannotSpreadOOB() {
         Board board = new Board(new TileType[][] {{Floor.INSTANCE}});
-        Firewall firewall = new Firewall(board, 0, 0);
+        Firewall firewall = new Firewall(board, new Position(0,0));
         board.addEntity(firewall);
 
         boolean spread = false;
@@ -185,7 +185,7 @@ class FirewallTest extends CollectableTest implements BoardObserver{
     @Test
     void cannotSpreadFrozen() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Firewall firewall = new Firewall(board, 2, 2);
+        Firewall firewall = new Firewall(board, new Position(2, 2));
         board.addEntity(firewall);
         board.freezeFirewallsFor(10000);
 
@@ -194,7 +194,7 @@ class FirewallTest extends CollectableTest implements BoardObserver{
             board.tick();
             for (Direction direction : Direction.values()) {
                 Position pos = firewall.getPosition().relative(direction);
-                Collection<Entity> entities = board.getEntitiesAt(pos.x(), pos.y());
+                Collection<Entity> entities = board.getEntitiesAt(pos);
                 for (Entity entity : entities) {
                     if (entity instanceof Firewall) {
                         spread = true;

@@ -6,6 +6,8 @@ import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
+import ca.sfu.cmpt276.virusbreach.math.Position;
+
 /**
  * A collectible found in the Server Room.
  * Freezes all firewall spreading for 10 seconds when collected.
@@ -19,8 +21,8 @@ public class FreezeToken extends Entity {
      * @param x     the x-coordinate to spawn at
      * @param y     the y-coordinate to spawn at
      */
-    public FreezeToken(Board board, int x, int y) {
-        super(board, x, y);
+    public FreezeToken(Board board, Position position) {
+        super(board, position);
     }
 
     /**

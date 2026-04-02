@@ -19,8 +19,8 @@ public class ServerRoom extends Room {
      * @param height   the room height in tiles
      * @param entrance the position of the room's doorway
      */
-    public ServerRoom(int x, int y, int width, int height, Position entrance) {
-        super(x, y, width, height, entrance);
+    public ServerRoom(Position position, int width, int height, Position entrance) {
+        super(position, width, height, entrance);
     }
 
     /**
@@ -60,25 +60,25 @@ public class ServerRoom extends Room {
         int arm    = 3; // tiles per arm including the corner tile
 
         // Top-left: arms go right and down
-        for (int i = 0; i < arm; i++) board.setTile(left + i, top,     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(left,     top + i, Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(left + i, top),     Wall.INSTANCE);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(left,     top + i), Wall.INSTANCE);
 
         // Top-right: arms go left and down
-        for (int i = 0; i < arm; i++) board.setTile(right - i, top,     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(right,     top + i, Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(right - i, top),     Wall.INSTANCE);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(right,     top + i), Wall.INSTANCE);
 
         // Bottom-left: arms go right and up
-        for (int i = 0; i < arm; i++) board.setTile(left + i, bottom,     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(left,     bottom - i, Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(left + i, bottom),     Wall.INSTANCE);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(left,     bottom - i), Wall.INSTANCE);
 
         // Bottom-right: arms go left and up
-        for (int i = 0; i < arm; i++) board.setTile(right - i, bottom,     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(right,     bottom - i, Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(right - i, bottom),     Wall.INSTANCE);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(right,     bottom - i), Wall.INSTANCE);
 
         // Small cross centered in the room (arm length 1)
         int cx = this.x + this.width / 2;
         int cy = this.y + this.height / 2;
-        for (int dx = -1; dx <= 1; dx++) board.setTile(cx + dx, cy,      Wall.INSTANCE);
-        for (int dy = -1; dy <= 1; dy++) board.setTile(cx,      cy + dy, Wall.INSTANCE);
+        for (int dx = -1; dx <= 1; dx++) board.setTile(new Position(cx + dx, cy),      Wall.INSTANCE);
+        for (int dy = -1; dy <= 1; dy++) board.setTile(new Position(cx,      cy + dy), Wall.INSTANCE);
     }
 }

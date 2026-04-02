@@ -3,6 +3,8 @@ package ca.sfu.cmpt276.virusbreach.board.entity;
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.TestHelper;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
+import ca.sfu.cmpt276.virusbreach.math.Position;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +16,8 @@ class FreezeTokenTest {
     @Test
     void collectFreezeToken() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        FreezeToken token = new FreezeToken(board, 2, 2);
-        Player player = new Player(board, 1, 2);
+        FreezeToken token = new FreezeToken(board, new Position(2, 2));
+        Player player = new Player(board, new Position(1, 2));
         board.addEntity(token);
         board.addEntity(player);
 
@@ -31,8 +33,8 @@ class FreezeTokenTest {
     @Test
     void noAntivirusInteraction() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        FreezeToken token = new FreezeToken(board, 2, 2);
-        Antivirus antivirus = new Antivirus(board, 1, 2);
+        FreezeToken token = new FreezeToken(board, new Position(2, 2));
+        Antivirus antivirus = new Antivirus(board, new Position(1, 2));
         board.addEntity(token);
         board.addEntity(antivirus);
 
@@ -40,6 +42,6 @@ class FreezeTokenTest {
 
         assertFalse(token.isRemoved());
         assertEquals(0, board.getFreezeTimer());
-        assertEquals(2, board.getEntitiesAt(2, 2).size());
+        assertEquals(2, board.getEntitiesAt(new Position(2, 2)).size());
     }
 }

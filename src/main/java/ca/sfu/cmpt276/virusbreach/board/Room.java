@@ -9,7 +9,7 @@ public abstract class Room {
     protected int height;
     protected Position entrance;
     
-    public Room(int x, int y, int width, int height, Position entrance) {
+    public Room(Position position, int width, int height, Position entrance) {
         this.x = x;
         this.y = y;
         this.width = width;

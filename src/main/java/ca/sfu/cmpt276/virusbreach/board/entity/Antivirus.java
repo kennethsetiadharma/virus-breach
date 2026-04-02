@@ -26,13 +26,13 @@ public class Antivirus extends Entity implements BoardObserver {
     private int movementCounter = MOVEMENT_TICKS;
     private AnimatedNode node;
 
-    public Antivirus(Board board, int x, int y) {
-        super(board, x, y);
+    public Antivirus(Board board, Position position) {
+        super(board, position);
 
         this.solidState = new boolean[this.board.height()][this.board.width()];
         for (int yi = 0; yi < this.solidState.length; yi++) {
             for (int xi = 0; xi < this.solidState[yi].length; xi++) {
-                this.solidState[yi][xi] = this.board.getTile(xi, yi).isSolid();
+                this.solidState[yi][xi] = this.board.getTile(new Position(xi, yi)).isSolid();
             }
         }
         this.board.attach(this);
@@ -111,16 +111,16 @@ public class Antivirus extends Entity implements BoardObserver {
                         current = sources.get(current);
                     }
 
-                    this.move(Direction.fromVector(current.x() - this.getPosition().x(), current.y() - this.getPosition().y()));
+                    this.move(Direction.fromVector(new Position(current.x() - this.getPosition().x(), current.y() - this.getPosition().y())));
                 }
             }
         }
     }
 
     @Override
-    public void onTileChanged(int x, int y, TileType tile) {
-        if (this.solidState[y][x] != this.board.getTile(x, y).isSolid()) {
-            this.solidState[y][x] = !this.solidState[y][x];
+    public void onTileChanged(Position position, TileType tile) {
+        if (this.solidState[position.y()][position.x()] != this.board.getTile(position).isSolid()) {
+            this.solidState[position.y()][position.x()] = !this.solidState[position.y()][position.x()];
         }
     }
 

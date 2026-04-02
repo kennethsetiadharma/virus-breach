@@ -20,8 +20,8 @@ public class StorageRoom extends Room {
      * @param entrance       the position of the room's doorway
      * @param serverRoomDoor the tile position of the Server Room door to unlock via the Decryption Key
      */
-    public StorageRoom(int x, int y, int width, int height, Position entrance, Position serverRoomDoor) {
-        super(x, y, width, height, entrance);
+    public StorageRoom(Position position, int width, int height, Position entrance, Position serverRoomDoor) {
+        super(position, width, height, entrance);
         this.serverRoomDoor = serverRoomDoor;
     }
 
@@ -45,7 +45,7 @@ public class StorageRoom extends Room {
      */
     @Override
     protected void spawnEntities(Board board) {
-        board.addEntity(new DecryptionKey(board, this.x + this.width - 1, this.y + 1, serverRoomDoor));
+        board.addEntity(new DecryptionKey(board, new Position(this.x + this.width - 1, this.y + 1), serverRoomDoor));
     }
 
     /**
@@ -59,11 +59,11 @@ public class StorageRoom extends Room {
 
         // Horizontal arm (length 2 on each side)
         for (int dx = -2; dx <= 2; dx++) {
-            board.setTile(cx + dx, cy, Wall.INSTANCE);
+            board.setTile(new Position(cx + dx, cy), Wall.INSTANCE);
         }
         // Vertical arm (length 2 above and below, centre already placed)
         for (int dy = -2; dy <= 2; dy++) {
-            board.setTile(cx, cy + dy, Wall.INSTANCE);
+            board.setTile(new Position(cx, cy + dy), Wall.INSTANCE);
         }
     }
 }

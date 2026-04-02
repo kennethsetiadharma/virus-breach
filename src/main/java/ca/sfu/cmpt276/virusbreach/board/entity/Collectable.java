@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.virusbreach.board.entity;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
+import ca.sfu.cmpt276.virusbreach.math.Position;
 
 /**
  * Represents an entity that can be collected by a player to gain or lose data.
@@ -12,8 +13,8 @@ public abstract class Collectable extends Entity {
      */
     final int value;
 
-    public Collectable(Board board, int x, int y, int value) {
-        super(board, x, y);
+    public Collectable(Board board, Position position, int value) {
+        super(board, position);
         this.value = value;
     }
 

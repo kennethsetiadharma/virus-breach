@@ -7,16 +7,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ca.sfu.cmpt276.virusbreach.math.Position;
+
 class SourceCodeTest extends CollectableTest {
     @Override
-    protected Collectable createCollectable(Board board, int x, int y) {
-        return new SourceCode(board, x, y, 1000);
+    protected Collectable createCollectable(Board board, Position position) {
+        return new SourceCode(board, position, 1000);
     }
 
     @Test
     void sourceCodeExpiry() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        SourceCode sourceCode = new SourceCode(board, 2, 2, 20);
+        SourceCode sourceCode = new SourceCode(board, new Position(2, 2), 20);
 
         board.addEntity(sourceCode);
 
@@ -32,8 +34,8 @@ class SourceCodeTest extends CollectableTest {
     @Test
     void sourceCodeExpiredUncollectable() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        SourceCode collectable = new SourceCode(board, 2, 2, 20);
-        Player player = new Player(board, 1, 2);
+        SourceCode collectable = new SourceCode(board, new Position(2, 2), 20);
+        Player player = new Player(board, new Position(1, 2));
 
         board.addEntity(collectable);
         board.addEntity(player);

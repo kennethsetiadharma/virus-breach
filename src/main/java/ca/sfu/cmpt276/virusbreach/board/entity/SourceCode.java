@@ -6,6 +6,8 @@ import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
+import ca.sfu.cmpt276.virusbreach.math.Position;
+
 /**
  * A bonus reward that is spawned in at random during the game.
  * After a certain amount of time passes it will be removed from the game, even if the player has not collected it.
@@ -18,8 +20,8 @@ public class SourceCode extends Collectable {
      */
     private int ttl;
 
-    public SourceCode(Board board, int x, int y, int ttl) {
-        super(board, x, y, 250);
+    public SourceCode(Board board, Position position, int ttl) {
+        super(board, position, 250);
         this.ttl = ttl;
     }
 

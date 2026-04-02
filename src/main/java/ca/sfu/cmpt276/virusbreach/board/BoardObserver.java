@@ -2,6 +2,7 @@ package ca.sfu.cmpt276.virusbreach.board;
 
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
+import ca.sfu.cmpt276.virusbreach.math.Position;
 
 /**
  * Observer participant in the observer pattern for a board
@@ -52,6 +53,6 @@ public interface BoardObserver {
      * @param y    the y-coordinate of the tile that was changed
      * @param tile the new tile that was placed at the given position
      */
-    default void onTileChanged(int x, int y, TileType tile) {
+    default void onTileChanged(Position position, TileType tile) {
     }
 }

@@ -26,10 +26,10 @@ class ExitTest implements BoardObserver {
     void cannotEscapeWithoutCollectingData() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         board.attach(this);
-        board.setTile(2, 0, Exit.INSTANCE);
-        Player player = new Player(board, 2, 1);
+        board.setTile(new Position(2, 0), Exit.INSTANCE);
+        Player player = new Player(board, new Position(2, 1));
         board.addEntity(player);
-        board.addEntity(new Data(board, 2, 2));
+        board.addEntity(new Data(board, new Position(2, 2)));
 
         player.move(Direction.UP);
 
@@ -44,8 +44,8 @@ class ExitTest implements BoardObserver {
     void canEscape() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         board.attach(this);
-        board.setTile(2, 0, Exit.INSTANCE);
-        Player player = new Player(board, 2, 1);
+        board.setTile(new Position(2, 0), Exit.INSTANCE);
+        Player player = new Player(board, new Position(2, 1));
         board.addEntity(player);
 
         player.move(Direction.UP);
@@ -61,10 +61,10 @@ class ExitTest implements BoardObserver {
     void canEscapeWithoutCollectingSourceCode() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         board.attach(this);
-        board.setTile(2, 0, Exit.INSTANCE);
-        Player player = new Player(board, 2, 1);
+        board.setTile(new Position(2, 0), Exit.INSTANCE);
+        Player player = new Player(board, new Position(2, 1));
         board.addEntity(player);
-        board.addEntity(new SourceCode(board, 2, 2, 1000));
+        board.addEntity(new SourceCode(board, new Position(2, 2), 1000));
 
         player.move(Direction.UP);
 
@@ -80,10 +80,10 @@ class ExitTest implements BoardObserver {
     void canEscapeAfterCollectingData() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         board.attach(this);
-        board.setTile(2, 0, Exit.INSTANCE);
-        Player player = new Player(board, 2, 1);
+        board.setTile(new Position(2, 0), Exit.INSTANCE);
+        Player player = new Player(board, new Position(2, 1));
         board.addEntity(player);
-        board.addEntity(new Data(board, 2, 2));
+        board.addEntity(new Data(board, new Position(2, 2)));
 
         player.move(Direction.UP);
         assertEquals(new Position(2, 0), player.getPosition());
@@ -106,8 +106,8 @@ class ExitTest implements BoardObserver {
     void antivirusCannotExit() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         board.attach(this);
-        board.setTile(2, 0, Exit.INSTANCE);
-        Antivirus antivirus = new Antivirus(board, 2, 1);
+        board.setTile(new Position(2, 0), Exit.INSTANCE);
+        Antivirus antivirus = new Antivirus(board, new Position(2, 1));
         board.addEntity(antivirus);
 
         antivirus.move(Direction.UP);

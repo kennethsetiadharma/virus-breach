@@ -22,8 +22,8 @@ public class Firewall extends Collectable {
 
     private int spreadTimer;
 
-    public Firewall(Board board, int x, int y) {
-        super(board, x, y, -200);
+    public Firewall(Board board, Position position) {
+        super(board, position, -200);
         this.spreadTimer = board.getRandom().nextInt(MIN_SPREAD_TICKS, MAX_SPREAD_TICKS);
     }
 
@@ -47,8 +47,8 @@ public class Firewall extends Collectable {
 
         for (Direction dir : dirs) {
             Position adj = this.getPosition().relative(dir);
-            if (board.contains(adj) && !board.getTile(adj).isSolid() && board.getEntitiesAt(adj.x(), adj.y()).isEmpty()) {
-                board.addEntity(new Firewall(board, adj.x(), adj.y()));
+            if (board.contains(adj) && !board.getTile(adj).isSolid() && board.getEntitiesAt(new Position(adj.x(), adj.y())).isEmpty()) {
+                board.addEntity(new Firewall(board, new Position(adj.x(), adj.y())));
                 return;
             }
         }

@@ -18,7 +18,7 @@ class PlayerTest {
     @Test
     void moveUpward() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.UP);
@@ -33,7 +33,7 @@ class PlayerTest {
     @Test
     void moveDownward() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.DOWN);
@@ -48,7 +48,7 @@ class PlayerTest {
     @Test
     void moveLeftward() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.LEFT);
@@ -63,7 +63,7 @@ class PlayerTest {
     @Test
     void moveRightward() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.RIGHT);
@@ -78,7 +78,7 @@ class PlayerTest {
     @Test
     void movementRepeats() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 1, 2);
+        Player player = new Player(board, new Position(1, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.RIGHT);
@@ -94,12 +94,12 @@ class PlayerTest {
     @Test
     void cannotMoveIntoSolid() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
-        board.setTile(1, 2, Wall.INSTANCE);
-        board.setTile(2, 3, Wall.INSTANCE);
-        board.setTile(3, 2, Wall.INSTANCE);
-        board.setTile(2, 1, Wall.INSTANCE);
+        board.setTile(new Position(1, 2), Wall.INSTANCE);
+        board.setTile(new Position(2, 3), Wall.INSTANCE);
+        board.setTile(new Position(3, 2), Wall.INSTANCE);
+        board.setTile(new Position(2, 1), Wall.INSTANCE);
 
         for (Direction direction : Direction.values()) {
             player.startMoving(direction);
@@ -116,7 +116,7 @@ class PlayerTest {
     @Test
     void cannotMoveOutOfBounds() {
         Board board = new Board(new TileType[][]{{Floor.INSTANCE}});
-        Player player = new Player(board, 0, 0);
+        Player player = new Player(board, new Position(0, 0));
         board.addEntity(player);
 
         for (Direction direction : Direction.values()) {
@@ -134,7 +134,7 @@ class PlayerTest {
     @Test
     void preferNewDirection() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.RIGHT);
@@ -150,7 +150,7 @@ class PlayerTest {
     @Test
     void preferNewDirectionFallback() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.RIGHT);
@@ -167,7 +167,7 @@ class PlayerTest {
     @Test
     void repeatMovementIgnored() {
         Board board = TestHelper.createEnclosedBoard(5, 5);
-        Player player = new Player(board, 2, 2);
+        Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
         player.startMoving(Direction.RIGHT);

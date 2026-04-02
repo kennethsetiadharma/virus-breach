@@ -30,10 +30,6 @@ public abstract class Entity {
      */
     protected Node renderNode;
 
-    public Entity(Board board, int x, int y) {
-        this(board, new Position(x, y));
-    }
-
     public Entity(Board board, Position position) {
         this.board = board;
         this.position = position;

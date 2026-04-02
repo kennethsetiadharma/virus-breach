@@ -115,13 +115,9 @@ public class Board {
      * @param y    the y-coordinate of the tile being changed
      * @param tile the type of the tile being placed
      */
-    public void setTile(int x, int y, TileType tile) {
-        this.tiles[y][x] = tile;
-        this.observers.forEach(o -> o.onTileChanged(x, y, tile));
-    }
-
-    public TileType getTile(Position pos) {
-        return this.tiles[pos.y()][pos.x()];
+    public void setTile(Position position, TileType tile) {
+        this.tiles[position.y()][position.x()] = tile;
+        this.observers.forEach(o -> o.onTileChanged(position, tile));
     }
 
     /**
@@ -163,8 +159,8 @@ public class Board {
             if (this.random.nextInt(0, 100) <= 3) {
                 int sx = this.random.nextInt(0, this.width());
                 int sy = this.random.nextInt(0, this.height());
-                if (!this.getTile(sx, sy).isSolid() && this.getEntitiesAt(sx, sy).isEmpty()) {
-                    this.addEntity(new SourceCode(this, sx, sy, this.random.nextInt(40, 100)));
+                if (!this.getTile(new Position(sx, sy)).isSolid() && this.getEntitiesAt(new Position(sx, sy)).isEmpty()) {
+                    this.addEntity(new SourceCode(this, new Position(sx, sy), this.random.nextInt(40, 100)));
                 }
             }
 
@@ -216,10 +212,10 @@ public class Board {
      * @param y the y-coordinate of the entities
      * @return all entities that exist at the given position
      */
-    public Collection<Entity> getEntitiesAt(int x, int y) {
+    public Collection<Entity> getEntitiesAt(Position position) {
         List<Entity> entities = new ArrayList<>();
         this.iterateEntities(entity -> {
-            if (entity.getPosition().x() == x && entity.getPosition().y() == y) {
+            if (entity.getPosition().equals(position)) {
                 entities.add(entity);
             }
         });
@@ -248,8 +244,8 @@ public class Board {
         return random;
     }
 
-    public TileType getTile(int x, int y) {
-        return this.tiles[y][x];
+    public TileType getTile(Position position) {
+        return this.tiles[position.y()][position.x()];
     }
 
     public int getTimePlayed() {

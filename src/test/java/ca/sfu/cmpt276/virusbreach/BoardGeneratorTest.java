@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ca.sfu.cmpt276.virusbreach.math.Position;
+
 class BoardGeneratorTest {
     private static final int WIDTH  = 46;
     private static final int HEIGHT = 26;
@@ -48,12 +50,12 @@ class BoardGeneratorTest {
     @Test
     void outerPerimeterIsWallsOrSpecialTiles() {
         for (int x = 0; x < WIDTH; x++) {
-            assertTrue(isPerimeterTile(board.getTile(x, 0)),          "top row at x=" + x);
-            assertTrue(isPerimeterTile(board.getTile(x, HEIGHT - 1)), "bottom row at x=" + x);
+            assertTrue(isPerimeterTile(board.getTile(new Position(x, 0))),          "top row at x=" + x);
+            assertTrue(isPerimeterTile(board.getTile(new Position(x, HEIGHT - 1))), "bottom row at x=" + x);
         }
         for (int y = 0; y < HEIGHT; y++) {
-            assertInstanceOf(Wall.class, board.getTile(0, y),         "left wall at y=" + y);
-            assertInstanceOf(Wall.class, board.getTile(WIDTH - 1, y), "right wall at y=" + y);
+            assertInstanceOf(Wall.class, board.getTile(new Position(0, y)),         "left wall at y=" + y);
+            assertInstanceOf(Wall.class, board.getTile(new Position(WIDTH - 1, y)), "right wall at y=" + y);
         }
     }
 
@@ -62,7 +64,7 @@ class BoardGeneratorTest {
      */
     @Test
     void serverRoomDoorwayNotOverwritten() {
-        assertEquals(LockedDoor.INSTANCE, board.getTile(SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2));
+        assertEquals(LockedDoor.INSTANCE, board.getTile(new Position(SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2)));
     }
 
     /**
@@ -71,7 +73,7 @@ class BoardGeneratorTest {
     @Test
     void serverRoomRightBufferNotWalled() {
         for (int y = 1; y <= SERVER_ROOM_HEIGHT; y++) {
-            assertFalse(board.getTile(SERVER_ROOM_WIDTH + 1, y).isSolid(),
+            assertFalse(board.getTile(new Position(SERVER_ROOM_WIDTH + 1, y)).isSolid(),
                     "server room right buffer at y=" + y);
         }
     }
@@ -82,7 +84,7 @@ class BoardGeneratorTest {
     @Test
     void serverRoomBottomBufferNotWalled() {
         for (int x = 1; x <= SERVER_ROOM_WIDTH; x++) {
-            assertFalse(board.getTile(x, SERVER_ROOM_HEIGHT + 1).isSolid(),
+            assertFalse(board.getTile(new Position(x, SERVER_ROOM_HEIGHT + 1)).isSolid(),
                     "server room bottom buffer at x=" + x);
         }
     }
@@ -92,7 +94,7 @@ class BoardGeneratorTest {
      */
     @Test
     void storageRoomDoorwayNotWalled() {
-        assertFalse(board.getTile(STORAGE_LEFT_X, STORAGE_DOOR_Y).isSolid());
+        assertFalse(board.getTile(new Position(STORAGE_LEFT_X, STORAGE_DOOR_Y)).isSolid());
     }
 
     /**
@@ -101,7 +103,7 @@ class BoardGeneratorTest {
     @Test
     void storageRoomLeftBufferNotWalled() {
         for (int y = STORAGE_TOP_Y; y <= HEIGHT - 2; y++) {
-            assertFalse(board.getTile(STORAGE_LEFT_X - 1, y).isSolid(),
+            assertFalse(board.getTile(new Position(STORAGE_LEFT_X - 1, y)).isSolid(),
                     "storage room left buffer at y=" + y);
         }
     }
@@ -112,7 +114,7 @@ class BoardGeneratorTest {
     @Test
     void storageRoomTopBufferNotWalled() {
         for (int x = STORAGE_LEFT_X; x <= WIDTH - 2; x++) {
-            assertFalse(board.getTile(x, STORAGE_TOP_Y - 1).isSolid(),
+            assertFalse(board.getTile(new Position(x, STORAGE_TOP_Y - 1)).isSolid(),
                     "storage room top buffer at x=" + x);
         }
     }
@@ -162,9 +164,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsBorder() {
-        TileType before = board.getTile(0, 5);
-        BoardGenerator.placeWall(board, 0, 5);
-        assertEquals(before, board.getTile(0, 5));
+        TileType before = board.getTile(new Position(0, 5));
+        BoardGenerator.placeWall(board, new Position(0, 5));
+        assertEquals(before, board.getTile(new Position(0, 5)));
     }
 
     /**
@@ -172,9 +174,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsServerRoomInterior() {
-        TileType before = board.getTile(5, 5);
-        BoardGenerator.placeWall(board, 5, 5);
-        assertEquals(before, board.getTile(5, 5));
+        TileType before = board.getTile(new Position(5, 5));
+        BoardGenerator.placeWall(board, new Position(5, 5));
+        assertEquals(before, board.getTile(new Position(5, 5)));
     }
 
     /**
@@ -182,9 +184,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsServerRoomDoorway() {
-        TileType before = board.getTile(SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2);
-        BoardGenerator.placeWall(board, SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2);
-        assertEquals(before, board.getTile(SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2));
+        TileType before = board.getTile(new Position(SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2));
+        BoardGenerator.placeWall(board, new Position(SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2));
+        assertEquals(before, board.getTile(new Position(SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT / 2)));
     }
 
     /**
@@ -192,9 +194,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsServerRoomRightBuffer() {
-        TileType before = board.getTile(SERVER_ROOM_WIDTH + 1, 5);
-        BoardGenerator.placeWall(board, SERVER_ROOM_WIDTH + 1, 5);
-        assertEquals(before, board.getTile(SERVER_ROOM_WIDTH + 1, 5));
+        TileType before = board.getTile(new Position(SERVER_ROOM_WIDTH + 1, 5));
+        BoardGenerator.placeWall(board, new Position(SERVER_ROOM_WIDTH + 1, 5));
+        assertEquals(before, board.getTile(new Position(SERVER_ROOM_WIDTH + 1, 5)));
     }
 
     /**
@@ -202,9 +204,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsServerRoomBottomBuffer() {
-        TileType before = board.getTile(5, SERVER_ROOM_HEIGHT + 1);
-        BoardGenerator.placeWall(board, 5, SERVER_ROOM_HEIGHT + 1);
-        assertEquals(before, board.getTile(5, SERVER_ROOM_HEIGHT + 1));
+        TileType before = board.getTile(new Position(5, SERVER_ROOM_HEIGHT + 1));
+        BoardGenerator.placeWall(board, new Position(5, SERVER_ROOM_HEIGHT + 1));
+        assertEquals(before, board.getTile(new Position(5, SERVER_ROOM_HEIGHT + 1)));
     }
 
     /**
@@ -212,9 +214,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsStorageRoomDoorway() {
-        TileType before = board.getTile(STORAGE_LEFT_X, STORAGE_DOOR_Y);
-        BoardGenerator.placeWall(board, STORAGE_LEFT_X, STORAGE_DOOR_Y);
-        assertEquals(before, board.getTile(STORAGE_LEFT_X, STORAGE_DOOR_Y));
+        TileType before = board.getTile(new Position(STORAGE_LEFT_X, STORAGE_DOOR_Y));
+        BoardGenerator.placeWall(board, new Position(STORAGE_LEFT_X, STORAGE_DOOR_Y));
+        assertEquals(before, board.getTile(new Position(STORAGE_LEFT_X, STORAGE_DOOR_Y)));
     }
 
     /**
@@ -222,9 +224,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsStorageRoomLeftBuffer() {
-        TileType before = board.getTile(STORAGE_LEFT_X - 1, STORAGE_TOP_Y + 1);
-        BoardGenerator.placeWall(board, STORAGE_LEFT_X - 1, STORAGE_TOP_Y + 1);
-        assertEquals(before, board.getTile(STORAGE_LEFT_X - 1, STORAGE_TOP_Y + 1));
+        TileType before = board.getTile(new Position(STORAGE_LEFT_X - 1, STORAGE_TOP_Y + 1));
+        BoardGenerator.placeWall(board, new Position(STORAGE_LEFT_X - 1, STORAGE_TOP_Y + 1));
+        assertEquals(before, board.getTile(new Position(STORAGE_LEFT_X - 1, STORAGE_TOP_Y + 1)));
     }
 
     /**
@@ -232,9 +234,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsStorageRoomTopBuffer() {
-        TileType before = board.getTile(STORAGE_LEFT_X + 1, STORAGE_TOP_Y - 1);
-        BoardGenerator.placeWall(board, STORAGE_LEFT_X + 1, STORAGE_TOP_Y - 1);
-        assertEquals(before, board.getTile(STORAGE_LEFT_X + 1, STORAGE_TOP_Y - 1));
+        TileType before = board.getTile(new Position(STORAGE_LEFT_X + 1, STORAGE_TOP_Y - 1));
+        BoardGenerator.placeWall(board, new Position(STORAGE_LEFT_X + 1, STORAGE_TOP_Y - 1));
+        assertEquals(before, board.getTile(new Position(STORAGE_LEFT_X + 1, STORAGE_TOP_Y - 1)));
     }
 
     /**
@@ -242,9 +244,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallOnFreeTile() {
-        board.setTile(20, 5, new Floor());
-        BoardGenerator.placeWall(board, 20, 5);
-        assertInstanceOf(Wall.class, board.getTile(20, 5));
+        board.setTile(new Position(20, 5), new Floor());
+        BoardGenerator.placeWall(board, new Position(20, 5));
+        assertInstanceOf(Wall.class, board.getTile(new Position(20, 5)));
     }
 
     /**
@@ -252,9 +254,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallDoesNotOverwriteSolid() {
-        board.setTile(20, 5, Wall.INSTANCE);
-        BoardGenerator.placeWall(board, 20, 5);
-        assertEquals(Wall.INSTANCE, board.getTile(20, 5));
+        board.setTile(new Position(20, 5), Wall.INSTANCE);
+        BoardGenerator.placeWall(board, new Position(20, 5));
+        assertEquals(Wall.INSTANCE, board.getTile(new Position(20, 5)));
     }
 
     /**
@@ -265,9 +267,9 @@ class BoardGeneratorTest {
     void placeWallServerRoomRightBufferYOutOfRange() {
         int x = SERVER_ROOM_WIDTH + 1;
         int y = SERVER_ROOM_HEIGHT + 1; // y <= SERVER_ROOM_HEIGHT is false, falls through
-        board.setTile(x, y, new Floor());
-        BoardGenerator.placeWall(board, x, y);
-        assertInstanceOf(Wall.class, board.getTile(x, y));
+        board.setTile(new Position(x, y), new Floor());
+        BoardGenerator.placeWall(board, new Position(x, y));
+        assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }
 
     /**
@@ -278,9 +280,9 @@ class BoardGeneratorTest {
     void placeWallServerRoomBottomBufferXOutOfRange() {
         int x = SERVER_ROOM_WIDTH + 2;
         int y = SERVER_ROOM_HEIGHT + 1; // x <= SERVER_ROOM_WIDTH is false, falls through
-        board.setTile(x, y, new Floor());
-        BoardGenerator.placeWall(board, x, y);
-        assertInstanceOf(Wall.class, board.getTile(x, y));
+        board.setTile(new Position(x, y), new Floor());
+        BoardGenerator.placeWall(board, new Position(x, y));
+        assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }
 
     /**
@@ -291,9 +293,9 @@ class BoardGeneratorTest {
     void placeWallStorageRoomLeftBufferYOutOfRange() {
         int x = STORAGE_LEFT_X - 1;
         int y = STORAGE_TOP_Y - 1; // y >= STORAGE_TOP_Y is false, falls through
-        board.setTile(x, y, new Floor());
-        BoardGenerator.placeWall(board, x, y);
-        assertInstanceOf(Wall.class, board.getTile(x, y));
+        board.setTile(new Position(x, y), new Floor());
+        BoardGenerator.placeWall(board, new Position(x, y));
+        assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }
 
     /**
@@ -304,9 +306,9 @@ class BoardGeneratorTest {
     void placeWallStorageRoomTopBufferXOutOfRange() {
         int x = STORAGE_LEFT_X - 1;
         int y = STORAGE_TOP_Y - 1; // x >= STORAGE_LEFT_X is false, falls through
-        board.setTile(x, y, new Floor());
-        BoardGenerator.placeWall(board, x, y);
-        assertInstanceOf(Wall.class, board.getTile(x, y));
+        board.setTile(new Position(x, y), new Floor());
+        BoardGenerator.placeWall(board, new Position(x, y));
+        assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }
 
     /**
@@ -317,9 +319,9 @@ class BoardGeneratorTest {
     void placeWallServerRoomInteriorFalseBranch() {
         int x = 5;
         int y = SERVER_ROOM_HEIGHT; // y < SERVER_ROOM_HEIGHT is false
-        TileType before = board.getTile(x, y);
-        BoardGenerator.placeWall(board, x, y);
-        assertEquals(before, board.getTile(x, y));
+        TileType before = board.getTile(new Position(x, y));
+        BoardGenerator.placeWall(board, new Position(x, y));
+        assertEquals(before, board.getTile(new Position(x, y)));
     }
 
     /**
@@ -327,9 +329,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsBorderRight() {
-        TileType before = board.getTile(WIDTH - 1, 5);
-        BoardGenerator.placeWall(board, WIDTH - 1, 5);
-        assertEquals(before, board.getTile(WIDTH - 1, 5));
+        TileType before = board.getTile(new Position(WIDTH - 1, 5));
+        BoardGenerator.placeWall(board, new Position(WIDTH - 1, 5));
+        assertEquals(before, board.getTile(new Position(WIDTH - 1, 5)));
     }
 
     /**
@@ -337,9 +339,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsBorderTop() {
-        TileType before = board.getTile(5, 0);
-        BoardGenerator.placeWall(board, 5, 0);
-        assertEquals(before, board.getTile(5, 0));
+        TileType before = board.getTile(new Position(5, 0));
+        BoardGenerator.placeWall(board, new Position(5, 0));
+        assertEquals(before, board.getTile(new Position(5, 0)));
     }
 
     /**
@@ -347,9 +349,9 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallSkipsBorderBottom() {
-        TileType before = board.getTile(5, HEIGHT - 1);
-        BoardGenerator.placeWall(board, 5, HEIGHT - 1);
-        assertEquals(before, board.getTile(5, HEIGHT - 1));
+        TileType before = board.getTile(new Position(5, HEIGHT - 1));
+        BoardGenerator.placeWall(board, new Position(5, HEIGHT - 1));
+        assertEquals(before, board.getTile(new Position(5, HEIGHT - 1)));
     }
 
     /**

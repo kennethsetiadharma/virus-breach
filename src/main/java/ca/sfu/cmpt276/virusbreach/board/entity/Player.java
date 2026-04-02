@@ -10,6 +10,8 @@ import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.cmpt276.virusbreach.math.Position;
+
 /**
  * The "hacker" character, with movement controlled by the player.
  */
@@ -25,8 +27,8 @@ public class Player extends Entity {
     private int dataCollected = 0;
     private AnimatedNode node;
 
-    public Player(Board board, int x, int y) {
-        super(board, x, y);
+    public Player(Board board, Position position) {
+        super(board, position);
     }
 
     /**
