@@ -31,16 +31,6 @@ public abstract class TileType {
     public void onStep(Board board, Position position, Entity entity) {
     }
 
-    /**
-     * Called when an entity stops stepping on a tile of this type.
-     *
-     * @param board    the board that the tile is placed on
-     * @param position the position of the tile on the board
-     * @param entity   the entity that is leaving the tile
-     */
-    public void onLeave(Board board, Position position, Entity entity) {
-    }
-
     public boolean isSolid() {
         return this.solid;
     }
