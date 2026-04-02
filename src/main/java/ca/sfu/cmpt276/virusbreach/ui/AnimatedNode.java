@@ -19,8 +19,8 @@ public class AnimatedNode<T extends Entity> extends SimpleRenderNode<T> {
     private Direction direction;
 
     public AnimatedNode(T entity, String idleSprite, int frameInterval, String... movingSprites) {
-        super(entity, ResourceManager.sprite("data.png", Color.GRAY));
-        this.idleFrame = ResourceManager.createImageView(ResourceManager.loadSprite(idleSprite));
+        super(entity, ResourceManager.sprite(idleSprite, Color.GRAY));
+        this.idleFrame = this.getChildren().getFirst();
         this.frameInterval = frameInterval;
 
         this.movingFrames = new Node[movingSprites.length];
@@ -28,12 +28,13 @@ public class AnimatedNode<T extends Entity> extends SimpleRenderNode<T> {
             Image frame = ResourceManager.loadSprite(movingSprites[i]);
             this.movingFrames[i] = frame != null ? ResourceManager.createImageView(frame) : this.idleFrame;
         }
-
-        this.getChildren().add(this.idleFrame);
     }
 
     @Override
     public void synchronize() {
+        if (this.object == null) {
+            return;
+        }
         super.synchronize();
 
         animate(this.object.getPosition(), this.object.getPrevPosition(), this.object.getBoard().getTimePlayed());
