@@ -184,7 +184,7 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onEntityAdded(Entity entity) {
-        Platform.runLater(() -> this.entities.getChildren().add(RenderNodeRegistry.createRenderNodeFor(entity)));
+        runImmediatelyIfOnFx(() -> this.entities.getChildren().add(RenderNodeRegistry.createRenderNodeFor(entity)));
     }
 
     /**
@@ -196,12 +196,12 @@ public class GameMenu extends Menu implements BoardObserver {
     @Override
     public void onEntityRemoved(Entity entity) {
         if (entity instanceof Data) {
-            Platform.runLater(() -> this.dataCollectedCount++);
+            runImmediatelyIfOnFx(() -> this.dataCollectedCount++);
         }
         if (entity instanceof FreezeToken) {
-            Platform.runLater(hud::showFreezeBanner);
+            runImmediatelyIfOnFx(hud::showFreezeBanner);
         }
-        Platform.runLater(() -> this.entities.getChildren().removeIf(n -> {
+        runImmediatelyIfOnFx(() -> this.entities.getChildren().removeIf(n -> {
             return n instanceof RenderNode<?> rn && rn.getObject() == entity;
         }));
     }
@@ -303,7 +303,7 @@ public class GameMenu extends Menu implements BoardObserver {
     /**
      * Getter for camera node.
      * 
-     * @return the camera ndoe
+     * @return the camera node
      */
     Group getCameraNode() {
         return this.camera;
@@ -335,5 +335,13 @@ public class GameMenu extends Menu implements BoardObserver {
         }
         double minTranslate = viewportSize - contentSize;
         return Math.clamp(translate, minTranslate, 0.0);
+    }
+
+    private static void runImmediatelyIfOnFx(Runnable todo) {
+        if (Platform.isFxApplicationThread()) {
+            todo.run();
+        } else {
+            Platform.runLater(todo);
+        }
     }
 }
