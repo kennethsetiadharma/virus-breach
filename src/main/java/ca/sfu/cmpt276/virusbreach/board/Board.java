@@ -155,14 +155,7 @@ public class Board {
             if (this.freezeTimer > 0) this.freezeTimer--;
             this.iterateEntities(Entity::tick);
 
-            // random source code (bonus) reward spawning
-            if (this.random.nextInt(0, 100) <= 3) {
-                int sx = this.random.nextInt(0, this.width());
-                int sy = this.random.nextInt(0, this.height());
-                if (!this.getTile(new Position(sx, sy)).isSolid() && this.getEntitiesAt(new Position(sx, sy)).isEmpty()) {
-                    this.addEntity(new SourceCode(this, new Position(sx, sy), this.random.nextInt(40, 100)));
-                }
-            }
+            this.spawnSourceCode();
 
             this.entityRemovalLock.lock();
             this.entities.removeIf(Entity::isRemoved);
@@ -187,13 +180,25 @@ public class Board {
     }
 
     /**
+     * Randomly spawns a source code (bonus) entity on the board
+     */
+    void spawnSourceCode() {
+        if (this.random.nextInt(0, 100) <= 3) {
+            int sx = this.random.nextInt(0, this.width());
+            int sy = this.random.nextInt(0, this.height());
+            if (!this.getTile(new Position(sx, sy)).isSolid() && this.getEntitiesAt(new Position(sx, sy)).isEmpty()) {
+                this.addEntity(new SourceCode(this, new Position(sx, sy), this.random.nextInt(40, 100)));
+            }
+        }
+    }
+
+    /**
      * Handles callbacks when an entity moves across the board.
      *
      * @param entity the entity that moved
      */
     public void handleEntityMoved(Entity entity) {
         this.getTile(entity.getPosition()).onStep(this, entity.getPosition(), entity);
-        this.getTile(entity.getPrevPosition()).onLeave(this, entity.getPrevPosition(), entity);
 
         this.iterateEntities(e -> {
             if (e != entity) {
