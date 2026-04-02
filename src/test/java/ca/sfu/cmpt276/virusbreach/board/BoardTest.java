@@ -205,11 +205,6 @@ class BoardTest implements BoardObserver {
                 if (super.isRemoved()) throw new UnsupportedOperationException("Testing exception, ignore");
                 return false;
             }
-
-            @Override
-            protected Node createRenderNode() {
-                return null;
-            }
         };
         board.addEntity(entity);
         board.removeEntity(entity);

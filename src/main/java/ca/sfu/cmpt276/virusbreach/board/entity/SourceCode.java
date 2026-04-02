@@ -41,9 +41,4 @@ public class SourceCode extends Collectable {
             this.board.removeEntity(this);
         }
     }
-
-    @Override
-    public Node createRenderNode() {
-        return ResourceManager.sprite("sourcecode.png", Color.GREEN);
-    }
 }

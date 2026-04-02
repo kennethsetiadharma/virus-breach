@@ -40,12 +40,4 @@ public class DecryptionKey extends Entity {
             this.board.removeEntity(this);
         }
     }
-
-    /**
-     * {@return a gold-coloured sprite node for this key}
-     */
-    @Override
-    protected Node createRenderNode() {
-        return ResourceManager.sprite("decryption_key.png", Color.GOLD);
-    }
 }

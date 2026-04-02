@@ -39,12 +39,4 @@ public class FreezeToken extends Entity {
             this.board.removeEntity(this);
         }
     }
-
-    /**
-     * {@return a sprite node representing this token}
-     */
-    @Override
-    protected Node createRenderNode() {
-        return ResourceManager.sprite("freeze_token.png", Color.CORNFLOWERBLUE);
-    }
 }

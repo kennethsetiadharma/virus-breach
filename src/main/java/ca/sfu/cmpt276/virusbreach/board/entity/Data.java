@@ -23,9 +23,4 @@ public class Data extends Collectable {
         }
         super.onCollideWith(entity);
     }
-
-    @Override
-    public Node createRenderNode() {
-        return ResourceManager.sprite("data.png", Color.GRAY);
-    }
 }

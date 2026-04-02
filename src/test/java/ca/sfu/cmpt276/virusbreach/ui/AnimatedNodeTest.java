@@ -1,5 +1,8 @@
 package ca.sfu.cmpt276.virusbreach.ui;
 
+import ca.sfu.cmpt276.virusbreach.board.Board;
+import ca.sfu.cmpt276.virusbreach.board.TestHelper;
+import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import javafx.scene.Node;
 import org.junit.jupiter.api.Test;
@@ -14,9 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 class AnimatedNodeTest {
     @Test
     void idleFrameWhenIdle() {
-        AnimatedNode node = new AnimatedNode("player.png", 2, "player_moving1.png", "player_moving2.png");
+        AnimatedNode<Player> node = new AnimatedNode<>(null, "player.png", 2, "player_moving1.png", "player_moving2.png");
         Node idle = node.getChildrenUnmodifiable().getFirst();
 
+        node.synchronize();
         node.animate(new Position(2, 2), new Position(2, 2), 5);
 
         assertSame(idle, node.getChildrenUnmodifiable().getFirst());
@@ -25,7 +29,7 @@ class AnimatedNodeTest {
 
     @Test
     void usesMovingFrameAndFlips() {
-        AnimatedNode node = new AnimatedNode("player.png", 2, "player_moving1.png", "player_moving2.png");
+        AnimatedNode<Player> node = new AnimatedNode<>(null, "player.png", 2, "player_moving1.png", "player_moving2.png");
         Node idle = node.getChildrenUnmodifiable().getFirst();
 
         node.animate(new Position(1, 2), new Position(2, 2), 2);
@@ -37,7 +41,7 @@ class AnimatedNodeTest {
 
     @Test
     void idleFallbackNoMovingFrames() {
-        AnimatedNode node = new AnimatedNode("player.png", 2);
+        AnimatedNode<Player> node = new AnimatedNode<>(null, "player.png", 2);
         Node idle = node.getChildrenUnmodifiable().getFirst();
 
         node.animate(new Position(2, 2), new Position(1, 2), 4);
@@ -48,7 +52,7 @@ class AnimatedNodeTest {
 
     @Test
     void idleFallbackMissingMovingFrames() {
-        AnimatedNode node = new AnimatedNode("player.png", 2, "missing_frame.png", "player_moving2.png");
+        AnimatedNode<Player> node = new AnimatedNode<>(null, "player.png", 2, "missing_frame.png", "player_moving2.png");
         Node idle = node.getChildrenUnmodifiable().getFirst();
 
         node.animate(new Position(2, 2), new Position(1, 2), 0);

@@ -233,6 +233,8 @@ class GameMenuTest {
             this.stage.getScene().setRoot(this.menu);
         });
 
+        int count = collectNodes(this.menu).size();
+
         this.menu.onEntityRemoved(data);
         WaitForAsyncUtils.waitForFxEvents();
         this.menu.onUpdate();
@@ -245,7 +247,7 @@ class GameMenuTest {
             .count();
 
         assertEquals(1, fullIcons);
-        assertFalse(collectNodes(this.menu).contains(data.getRenderNode()));
+        assertEquals(count - 1, collectNodes(this.menu).size());
     }
 
     @Test
@@ -261,6 +263,8 @@ class GameMenuTest {
             this.stage.getScene().setRoot(this.menu);
         });
 
+        int count = collectNodes(this.menu).size();
+
         this.menu.onEntityRemoved(freezeToken);
         WaitForAsyncUtils.waitForFxEvents();
 
@@ -274,7 +278,7 @@ class GameMenuTest {
             .getOpacity();
 
         assertTrue(notifOpacity > 0.0);
-        assertFalse(collectNodes(this.menu).contains(freezeToken.getRenderNode()));
+        assertEquals(count - 1, collectNodes(this.menu).size());
     }
 
     @Test

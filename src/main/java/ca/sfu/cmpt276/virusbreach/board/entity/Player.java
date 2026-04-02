@@ -61,17 +61,6 @@ public class Player extends Entity {
         }
     }
 
-    @Override
-    protected Node createRenderNode() {
-        return this.node = new AnimatedNode("player.png", 2, "player_moving1.png", "player_moving2.png");
-    }
-
-    @Override
-    public void syncToView() {
-        super.syncToView();
-        this.node.animate(this.getPosition(), this.getPrevPosition(), this.board.getTimePlayed());
-    }
-
     /**
      * Enqueues movement in the given direction.
      * This direction will be favored over previously queued options.

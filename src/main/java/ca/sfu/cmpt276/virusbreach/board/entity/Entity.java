@@ -3,7 +3,8 @@ package ca.sfu.cmpt276.virusbreach.board.entity;
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
-import javafx.scene.Node;
+
+import javax.sound.midi.MidiEvent;
 
 /**
  * An entity is a dynamic object on board. Unlike a tile, it is stateful.
@@ -25,10 +26,6 @@ public abstract class Entity {
      * If {@code true}, the entity has been removed from the board and should not be used anymore.
      */
     private boolean removed = false;
-    /**
-     * The node that represents this entity on the screen.
-     */
-    protected Node renderNode;
 
     public Entity(Board board, Position position) {
         this.board = board;
@@ -42,11 +39,6 @@ public abstract class Entity {
     public void tick() {
         this.prevPosition = this.position;
     }
-
-    /**
-     * {@return a new JavaFX node to visually represent this entity on the board}
-     */
-    protected abstract Node createRenderNode();
 
     /**
      * Called when this entity is located on the same tile as another entity
@@ -82,15 +74,6 @@ public abstract class Entity {
         this.board.handleEntityMoved(this);
     }
 
-    /**
-     * Synchronizes this entity's current state to its associated render node.
-     */
-    public void syncToView() {
-        Node renderNode = this.getRenderNode();
-        renderNode.setTranslateX(Position.fromGrid(this.getPosition().x()));
-        renderNode.setTranslateY(Position.fromGrid(this.getPosition().y()));
-    }
-
     public Position getPosition() {
         return position;
     }
@@ -99,11 +82,7 @@ public abstract class Entity {
         return prevPosition;
     }
 
-    /**
-     * {@return the JavaFX node that visually represents this entity on the board}
-     */
-    public final Node getRenderNode() {
-        if (this.renderNode == null) this.renderNode = this.createRenderNode();
-        return this.renderNode;
+    public Board getBoard() {
+        return board;
     }
 }

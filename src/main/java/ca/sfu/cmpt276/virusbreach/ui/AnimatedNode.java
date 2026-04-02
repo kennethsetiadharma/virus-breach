@@ -1,23 +1,25 @@
 package ca.sfu.cmpt276.virusbreach.ui;
 
+import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 /**
  * A render node for an entity that has different sprites for idle and moving
  * Animation frame is determined by the entity's movement.
  * The sprite will also flip left/right based on the direction that it is facing.
  */
-public class AnimatedNode extends Parent {
+public class AnimatedNode<T extends Entity> extends SimpleRenderNode<T> {
     private final Node idleFrame;
     private final int frameInterval;
     private final Node[] movingFrames;
     private Direction direction;
 
-    public AnimatedNode(String idleSprite, int frameInterval, String... movingSprites) {
+    public AnimatedNode(T entity, String idleSprite, int frameInterval, String... movingSprites) {
+        super(entity, ResourceManager.sprite("data.png", Color.GRAY));
         this.idleFrame = ResourceManager.createImageView(ResourceManager.loadSprite(idleSprite));
         this.frameInterval = frameInterval;
 
@@ -28,6 +30,13 @@ public class AnimatedNode extends Parent {
         }
 
         this.getChildren().add(this.idleFrame);
+    }
+
+    @Override
+    public void synchronize() {
+        super.synchronize();
+
+        animate(this.object.getPosition(), this.object.getPrevPosition(), this.object.getBoard().getTimePlayed());
     }
 
     public void animate(Position pos, Position prevPos, int ticks) {

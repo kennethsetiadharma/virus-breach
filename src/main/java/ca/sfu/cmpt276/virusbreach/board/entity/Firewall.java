@@ -61,9 +61,4 @@ public class Firewall extends Collectable {
         }
         super.onCollideWith(entity);
     }
-
-    @Override
-    public Node createRenderNode() {
-        return ResourceManager.sprite("firewall.png", Color.ORANGE);
-    }
 }

@@ -11,9 +11,7 @@ import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
-import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
-import ca.sfu.cmpt276.virusbreach.ui.Hud;
-import ca.sfu.cmpt276.virusbreach.ui.TutorialOverlay;
+import ca.sfu.cmpt276.virusbreach.ui.*;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.util.Duration;
@@ -186,7 +184,7 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onEntityAdded(Entity entity) {
-        Platform.runLater(() -> this.entities.getChildren().add(entity.getRenderNode()));
+        Platform.runLater(() -> this.entities.getChildren().add(RenderNodeRegistry.createRenderNodeFor(entity)));
     }
 
     /**
@@ -203,7 +201,9 @@ public class GameMenu extends Menu implements BoardObserver {
         if (entity instanceof FreezeToken) {
             Platform.runLater(hud::showFreezeBanner);
         }
-        Platform.runLater(() -> this.entities.getChildren().remove(entity.getRenderNode()));
+        Platform.runLater(() -> this.entities.getChildren().removeIf(n -> {
+            return n instanceof RenderNode<?> rn && rn.getObject() == entity;
+        }));
     }
 
     /**
@@ -258,7 +258,11 @@ public class GameMenu extends Menu implements BoardObserver {
     public void onUpdate() {
         BoardObserver.super.onUpdate();
         Platform.runLater(() -> {
-            this.board.iterateEntities(Entity::syncToView);
+            for (Node child : this.entities.getChildren()) {
+                if (child instanceof RenderNode<?> node) {
+                    node.synchronize();
+                }
+            }
             Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
             if (entity instanceof Player player) this.updateCamera(player);
             this.hud.update(board, dataCollectedCount);

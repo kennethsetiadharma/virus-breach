@@ -24,7 +24,6 @@ public class Antivirus extends Entity implements BoardObserver {
 
     private final boolean[][] solidState;
     private int movementCounter = MOVEMENT_TICKS;
-    private AnimatedNode node;
 
     public Antivirus(Board board, Position position) {
         super(board, position);
@@ -156,16 +155,5 @@ public class Antivirus extends Entity implements BoardObserver {
     public void onRemove() {
         super.onRemove();
         this.board.detach(this);
-    }
-
-    @Override
-    protected Node createRenderNode() {
-        return this.node = new AnimatedNode("antivirus.png", 4, "antivirus_moving1.png", "antivirus_moving2.png");
-    }
-
-    @Override
-    public void syncToView() {
-        super.syncToView();
-        this.node.animate(this.getPosition(), this.getPrevPosition(), this.board.getTimePlayed());
     }
 }
