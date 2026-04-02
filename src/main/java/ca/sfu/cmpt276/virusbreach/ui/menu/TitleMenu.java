@@ -19,8 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import java.io.InputStream;
-
 /**
  * A menu for the title screen of the game.
  */
@@ -32,9 +30,10 @@ public class TitleMenu extends Menu {
         "/background/title_4.png"
     };
 
+    private final Background[] backgroundFrames;
     private int backgroundFrameIndex = 0;
     private final Timeline backgroundAnimation;
-    
+
     /**
      * Creates a new title menu.
      *
@@ -42,7 +41,11 @@ public class TitleMenu extends Menu {
      */
     public TitleMenu(VirusBreach game) {
         super(game);
-        this.setBackground(loadBackground(BACKGROUND_FRAMES[this.backgroundFrameIndex]));
+        this.backgroundFrames = new Background[BACKGROUND_FRAMES.length];
+        for (int i = 0; i < BACKGROUND_FRAMES.length; i++) {
+            this.backgroundFrames[i] = buildBackground(ResourceManager.fetch(BACKGROUND_FRAMES[i]));
+        }
+        this.setBackground(this.backgroundFrames[this.backgroundFrameIndex]);
         this.backgroundAnimation = new Timeline(new KeyFrame(
             Duration.millis(300),
             event -> advanceBackgroundFrame()
@@ -103,50 +106,35 @@ public class TitleMenu extends Menu {
         this.game.startNewGame();
     }
 
-    
+
     private void advanceBackgroundFrame() {
         this.backgroundFrameIndex = (this.backgroundFrameIndex + 1) % BACKGROUND_FRAMES.length;
-        this.setBackground(loadBackground(BACKGROUND_FRAMES[this.backgroundFrameIndex]));
+        this.setBackground(this.backgroundFrames[this.backgroundFrameIndex]);
     }
 
     /**
-     * Loads background from asset path.
-     * Handles asset to stream and calls {@link #buildBackground(InputStream)}.
-     * 
-     * @param asset the asset path
+     * Builds background from an image.
+     * Returns a black background if the stream is {@code null}.
+     *
+     * @param baseImage the background image
      * @return the built background
      */
-    private Background loadBackground(String asset) {
-        return buildBackground(VirusBreach.class.getResourceAsStream(asset));
-    }
-
-    /**
-     * Builds background from input stream.
-     * Returns a black background if the stream is null or an exception thrown.
-     * 
-     * @param stream the input stream
-     * @return the built background
-     */
-    static Background buildBackground(InputStream stream) {
-        try (InputStream ignored = stream) {
-            if (stream == null) {
-                return blackBackground();
-            }
-
-            BackgroundImage image = new BackgroundImage(
-                new Image(stream),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(100, 100, true, true, true, false)
-            );
-            return new Background(
-                new BackgroundFill[]{new BackgroundFill(Color.BLACK, null, null)},
-                new BackgroundImage[]{image}
-            );
-        } catch (Exception ignored) {
+    static Background buildBackground(Image baseImage) {
+        if (baseImage == null) {
             return blackBackground();
         }
+
+        BackgroundImage image = new BackgroundImage(
+            baseImage,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.CENTER,
+            new BackgroundSize(100, 100, true, true, true, false)
+        );
+        return new Background(
+            new BackgroundFill[]{new BackgroundFill(Color.BLACK, null, null)},
+            new BackgroundImage[]{image}
+        );
     }
 
     /**
