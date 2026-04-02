@@ -60,7 +60,6 @@ public class Antivirus extends Entity implements BoardObserver {
     /**
      * Called every game update cycle.
      * If there is a player on the board, the entity will move 1 step towards the player every {@link #MOVEMENT_TICKS} ticks.
-     * Internally, it uses the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* search algorithm</a> to navigate to the player.
      */
     @Override
     public void tick() {
@@ -75,46 +74,75 @@ public class Antivirus extends Entity implements BoardObserver {
 
                 if (this.getPosition().equals(target)) return;
 
-                Map<Position, Position> sources = new HashMap<>();
-                Map<Position, Integer> cost = new HashMap<>();
-                Map<Position, Integer> bestTo = new HashMap<>();
-                PriorityQueue<Position> pending = new PriorityQueue<>(Comparator.comparing(p -> bestTo.getOrDefault(p, Integer.MAX_VALUE)));
-                Set<Position> visited = new HashSet<>();
-
-                pending.add(this.getPosition());
-                cost.put(this.getPosition(), 0);
-                bestTo.put(this.getPosition(), this.getPosition().manhattanDistance(target));
-
-                Position current = null;
-                while (!pending.isEmpty()) {
-                    current = pending.poll();
-                    visited.add(current);
-
-                    if (current.equals(target)) {
-                        break;
-                    }
-
-                    for (Direction direction : Direction.values()) {
-                        Position adj = current.relative(direction);
-                        if (!this.board.contains(adj) || this.solidState[adj.y()][adj.x()] || visited.contains(adj)) continue;
-                        int n = cost.get(current) + 1;
-                        if (n < cost.getOrDefault(adj, Integer.MAX_VALUE)) {
-                            cost.put(adj, n);
-                            bestTo.put(adj, n + adj.manhattanDistance(target));
-                            sources.put(adj, current);
-                            pending.add(adj);
-                        }
-                    }
-                }
-                if (target.equals(current)) {
-                    while (!sources.get(current).equals(this.getPosition())) {
-                        current = sources.get(current);
-                    }
-
-                    this.move(Direction.fromVector(new Position(current.x() - this.getPosition().x(), current.y() - this.getPosition().y())));
+                Direction direction = pathfindTowards(target);
+                if (direction != null) {
+                    this.move(direction);
                 }
             }
         }
+    }
+
+    /**
+     * Pathfind towards the given position
+     * Internally, it uses the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* search algorithm</a> to navigate to the point.
+     *
+     * @param target the position to move towards
+     * @return the direction of the next step to move in to get closer to the target position
+     */
+    private Direction pathfindTowards(Position target) {
+        Map<Position, Position> sources = new HashMap<>();
+        Map<Position, Integer> cost = new HashMap<>();
+        Map<Position, Integer> bestTo = new HashMap<>();
+        PriorityQueue<Position> pending = new PriorityQueue<>(Comparator.comparing(p -> bestTo.getOrDefault(p, Integer.MAX_VALUE)));
+        Set<Position> visited = new HashSet<>();
+
+        pending.add(this.getPosition());
+        cost.put(this.getPosition(), 0);
+        bestTo.put(this.getPosition(), this.getPosition().manhattanDistance(target));
+
+        Position current = null;
+        while (!pending.isEmpty()) {
+            current = pending.poll();
+            visited.add(current);
+
+            if (current.equals(target)) {
+                break;
+            }
+
+            for (Direction direction : Direction.values()) {
+                Position adj = current.relative(direction);
+                if (!this.board.contains(adj) || this.solidState[adj.y()][adj.x()] || visited.contains(adj)) continue;
+                int n = cost.get(current) + 1;
+                if (n < cost.getOrDefault(adj, Integer.MAX_VALUE)) {
+                    cost.put(adj, n);
+                    bestTo.put(adj, n + adj.manhattanDistance(target));
+                    sources.put(adj, current);
+                    pending.add(adj);
+                }
+            }
+        }
+
+        if (target.equals(current)) {
+            current = backtrackUntil(sources, current, this.getPosition());
+
+            return Direction.fromVector(new Position(current.x() - this.getPosition().x(), current.y() - this.getPosition().y()));
+        }
+        return null;
+    }
+
+    /**
+     * Follow the source map until the position right before the target.
+     *
+     * @param sources map from position to previous position to be followed
+     * @param target the position to stop at
+     * @param from the starting position
+     * @return the position right before the target
+     */
+    private static Position backtrackUntil(Map<Position, Position> sources, Position target, Position from) {
+        while (!sources.get(target).equals(from)) {
+            target = sources.get(target);
+        }
+        return target;
     }
 
     @Override
