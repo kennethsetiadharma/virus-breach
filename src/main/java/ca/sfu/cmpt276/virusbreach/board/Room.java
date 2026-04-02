@@ -10,8 +10,8 @@ public abstract class Room {
     protected Position entrance;
     
     public Room(Position position, int width, int height, Position entrance) {
-        this.x = x;
-        this.y = y;
+        this.x = position.x();
+        this.y = position.y();
         this.width = width;
         this.height = height;
         this.entrance = entrance;
