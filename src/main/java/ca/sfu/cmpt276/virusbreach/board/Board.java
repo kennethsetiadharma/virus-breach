@@ -8,8 +8,13 @@ import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import javafx.application.Platform;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -40,8 +45,8 @@ public class Board {
     /**
      * The tiles in the board, indexed as tiles[y][x].
      *
-     * @see #getTile(int, int)
-     * @see #setTile(int, int, TileType)
+     * @see #getTile(Position)
+     * @see #setTile(Position, TileType)
      */
     private final TileType[][] tiles;
 
@@ -111,8 +116,7 @@ public class Board {
     /**
      * Changes the type of the tile at the given position, notifying observers.
      *
-     * @param x    the x-coordinate of the tile being changed
-     * @param y    the y-coordinate of the tile being changed
+     * @param position the position of the tile being changed
      * @param tile the type of the tile being placed
      */
     public void setTile(Position position, TileType tile) {
@@ -169,11 +173,7 @@ public class Board {
             RuntimeException exception = new RuntimeException(throwable);
             // don't kill javafx on tests
             if (!(Boolean.getBoolean("testfx.headless") || Boolean.getBoolean("java.awt.headless"))) {
-                try {
-                    Platform.runLater(Platform::exit);
-                } catch (IllegalStateException ignore) {
-                    // not running in JavaFX (e.g. tests)
-                }
+                Platform.runLater(Platform::exit);
             }
             throw exception;
         }
@@ -213,8 +213,7 @@ public class Board {
     /**
      * Returns all entities that exist at the given position.
      *
-     * @param x the x-coordinate of the entities
-     * @param y the y-coordinate of the entities
+     * @param position the position of the entities
      * @return all entities that exist at the given position
      */
     public Collection<Entity> getEntitiesAt(Position position) {

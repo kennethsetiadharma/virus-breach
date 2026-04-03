@@ -14,8 +14,7 @@ public class DecryptionKey extends Entity {
 
     /**
      * @param board         the board this entity belongs to
-     * @param x             the x-coordinate to spawn at
-     * @param y             the y-coordinate to spawn at
+     * @param position the position to spawn at
      * @param doorToUnlock  the tile position of the Server Room door to open on pickup
      */
     public DecryptionKey(Board board, Position position, Position doorToUnlock) {

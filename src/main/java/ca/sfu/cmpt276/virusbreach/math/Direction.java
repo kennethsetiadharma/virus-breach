@@ -28,17 +28,16 @@ public enum Direction {
     /**
      * Determines the direction of movement, based on the offset vector provided.
      *
-     * TODO; change
      * @param x x-coordinate of the vector
      * @param y x-coordinate of the vector
      * @return the direction of movement that the vector represents
      * @throws IllegalArgumentException if the vector does not move in exactly one of the cardinal directions
      */
-    public static Direction fromVector(Position position) {
-        if ((position.x() == 0 && position.y() == 0) || (position.x() != 0 && position.y() != 0)) throw new IllegalArgumentException("Invalid vector");
-        if (position.y() < 0) return Direction.UP;
-        if (position.y() > 0) return Direction.DOWN;
-        if (position.x() < 0) return Direction.LEFT;
+    public static Direction fromVector(int x, int y) {
+        if ((x == 0 && y == 0) || (x != 0 && y != 0)) throw new IllegalArgumentException("Invalid vector");
+        if (y < 0) return Direction.UP;
+        if (y > 0) return Direction.DOWN;
+        if (x < 0) return Direction.LEFT;
         return Direction.RIGHT;
     }
 

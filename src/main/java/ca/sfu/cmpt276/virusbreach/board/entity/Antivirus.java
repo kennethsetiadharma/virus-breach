@@ -117,7 +117,7 @@ public class Antivirus extends Entity implements BoardObserver {
         if (target.equals(current)) {
             current = backtrackUntil(sources, current, this.getPosition());
 
-            return Direction.fromVector(new Position(current.x() - this.getPosition().x(), current.y() - this.getPosition().y()));
+            return Direction.fromVector(current.x() - this.getPosition().x(), current.y() - this.getPosition().y());
         }
         return null;
     }

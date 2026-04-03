@@ -19,9 +19,7 @@ import org.testfx.framework.junit5.Stop;
 import org.testfx.util.WaitForAsyncUtils;
 
 import static ca.sfu.cmpt276.virusbreach.BoardGenerator.TOTAL_DATA;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 class HudTest {

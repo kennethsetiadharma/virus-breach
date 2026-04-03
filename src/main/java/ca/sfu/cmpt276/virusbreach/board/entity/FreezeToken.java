@@ -14,8 +14,7 @@ public class FreezeToken extends Entity {
 
     /**
      * @param board the board this entity belongs to
-     * @param x     the x-coordinate to spawn at
-     * @param y     the y-coordinate to spawn at
+     * @param position the position to spawn at
      */
     public FreezeToken(Board board, Position position) {
         super(board, position);

@@ -13,8 +13,7 @@ public class StorageRoom extends Room {
     private final Position serverRoomDoor;
 
     /**
-     * @param x              the x-coordinate of the room's left wall
-     * @param y              the y-coordinate of the room's top wall
+     * @param position the position of the room's left wall
      * @param width          the room width in tiles
      * @param height         the room height in tiles
      * @param entrance       the position of the room's doorway

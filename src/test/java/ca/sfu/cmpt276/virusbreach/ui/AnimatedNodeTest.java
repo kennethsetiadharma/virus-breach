@@ -1,7 +1,5 @@
 package ca.sfu.cmpt276.virusbreach.ui;
 
-import ca.sfu.cmpt276.virusbreach.board.Board;
-import ca.sfu.cmpt276.virusbreach.board.TestHelper;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import javafx.scene.Node;
@@ -9,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 class AnimatedNodeTest {

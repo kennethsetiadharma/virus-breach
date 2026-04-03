@@ -22,9 +22,4 @@ public abstract class Room {
     protected abstract void spawnEntities(Board board);
     
     protected abstract void generateInternalLayout(Board board);
-    
-    public int getX() { return x; }
-    public int getY() { return y; }
-    public int getWidth() { return width; }
-    public int getHeight() { return height; }
 }

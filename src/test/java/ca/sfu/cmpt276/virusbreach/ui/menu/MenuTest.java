@@ -14,9 +14,7 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 import org.testfx.util.WaitForAsyncUtils;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 class MenuTest {
@@ -101,11 +99,13 @@ class MenuTest {
 
         @Override
         public void onKeyPressed(KeyEvent event) {
+            super.onKeyPressed(event);
             this.pressedCount++;
         }
 
         @Override
         public void onKeyReleased(KeyEvent event) {
+            super.onKeyReleased(event);
             this.releasedCount++;
         }
     }

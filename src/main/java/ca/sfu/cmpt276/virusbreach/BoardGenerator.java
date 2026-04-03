@@ -4,11 +4,7 @@ import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.ServerRoom;
 import ca.sfu.cmpt276.virusbreach.board.StorageRoom;
 import ca.sfu.cmpt276.virusbreach.board.entity.*;
-import ca.sfu.cmpt276.virusbreach.board.tile.Entrance;
-import ca.sfu.cmpt276.virusbreach.board.tile.Exit;
-import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
-import ca.sfu.cmpt276.virusbreach.board.tile.LockedDoor;
-import ca.sfu.cmpt276.virusbreach.board.tile.Wall;
+import ca.sfu.cmpt276.virusbreach.board.tile.*;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 
 /**

@@ -3,18 +3,17 @@ package ca.sfu.cmpt276.virusbreach.ui.menu;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.BoardObserver;
+import ca.sfu.cmpt276.virusbreach.board.entity.Data;
+import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
+import ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken;
+import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.board.tile.OpenDoor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
-import ca.sfu.cmpt276.virusbreach.board.entity.Data;
-import ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken;
-import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
-import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.*;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.util.Duration;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
@@ -23,6 +22,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
+import javafx.util.Duration;
 
 /**
  * Main game menu that displays the board and entities.
@@ -124,6 +124,7 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onKeyPressed(KeyEvent event) {
+        super.onKeyPressed(event);
         if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
             togglePause();
             return;
@@ -165,6 +166,7 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onKeyReleased(KeyEvent event) {
+        super.onKeyReleased(event);
         Entity entity = this.board.getFirstEntityMatching(e -> e instanceof Player);
         if (entity instanceof Player player) {
             switch (event.getCode()) {
@@ -210,8 +212,7 @@ public class GameMenu extends Menu implements BoardObserver {
      * Called when a tile on the board changes.
      * Replaces the old tile node with a new one at the same position.
      *
-     * @param x    the x-coordinate of the changed tile
-     * @param y    the y-coordinate of the changed tile
+     * @param position the position of the changed tile
      * @param tile the new tile type
      */
     @Override
@@ -321,8 +322,7 @@ public class GameMenu extends Menu implements BoardObserver {
     /**
      * Getter for a tile node at given x,y.
      * 
-     * @param x x-coordinate of the tile
-     * @param y y-coordinate of the tile
+     * @param position the position of the tile
      * @return the tile node
      */
     Node getTileNode(Position position) {

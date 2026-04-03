@@ -7,7 +7,6 @@ import ca.sfu.cmpt276.virusbreach.board.entity.SourceCode;
 import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
 import ca.sfu.cmpt276.virusbreach.math.Position;
-import javafx.scene.Node;
 import org.junit.jupiter.api.Test;
 
 import java.io.OutputStream;

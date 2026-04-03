@@ -5,18 +5,12 @@ import ca.sfu.cmpt276.virusbreach.board.entity.Antivirus;
 import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.Firewall;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
-import ca.sfu.cmpt276.virusbreach.board.tile.Entrance;
-import ca.sfu.cmpt276.virusbreach.board.tile.Exit;
-import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
-import ca.sfu.cmpt276.virusbreach.board.tile.LockedDoor;
-import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
-import ca.sfu.cmpt276.virusbreach.board.tile.Wall;
+import ca.sfu.cmpt276.virusbreach.board.tile.*;
+import ca.sfu.cmpt276.virusbreach.math.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import ca.sfu.cmpt276.virusbreach.math.Position;
 
 class BoardGeneratorTest {
     private static final int WIDTH  = 46;

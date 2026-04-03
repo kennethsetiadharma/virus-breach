@@ -2,7 +2,7 @@ package ca.sfu.cmpt276.virusbreach.math;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 class DirectionTest {
     /**
@@ -10,7 +10,7 @@ class DirectionTest {
      */
     @Test
     void zeroVector() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> Direction.fromVector(new Position(0, 0)));
+        assertThrowsExactly(IllegalArgumentException.class, () -> Direction.fromVector(0, 0));
     }
 
     /**
@@ -21,7 +21,7 @@ class DirectionTest {
         for (Direction d1 : Direction.values()) {
             for (Direction d2 : Direction.values()) {
                 if ((d1.getX() == 0) != (d2.getX() == 0)) {
-                    assertThrowsExactly(IllegalArgumentException.class, () -> Direction.fromVector(new Position(d1.getX() + d2.getX(), d1.getY() + d2.getY())));
+                    assertThrowsExactly(IllegalArgumentException.class, () -> Direction.fromVector(d1.getX() + d2.getX(), d1.getY() + d2.getY()));
                 }
             }
         }

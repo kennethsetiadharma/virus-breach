@@ -48,6 +48,10 @@ public class RenderNodeRegistry {
         register(SourceCode.class, e -> new SimpleRenderNode<>(e, ResourceManager.sprite("sourcecode.png", Color.GREEN)));
     }
 
+    RenderNodeRegistry() {
+        throw new UnsupportedOperationException("This class should not be initialized");
+    }
+
     /**
      * Creates a render node for a specific type of object
      * @param <T> the type
