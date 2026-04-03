@@ -4,8 +4,6 @@ import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 
-import javax.sound.midi.MidiEvent;
-
 /**
  * An entity is a dynamic object on board. Unlike a tile, it is stateful.
  */

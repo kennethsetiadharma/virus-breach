@@ -4,9 +4,6 @@ import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.tile.OpenDoor;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
-import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
 
 /**
  * A key item found in the Storage Room.

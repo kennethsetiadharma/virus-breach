@@ -4,9 +4,6 @@ import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
-import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Collections;

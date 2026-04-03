@@ -5,16 +5,9 @@ import ca.sfu.cmpt276.virusbreach.board.BoardObserver;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
-import ca.sfu.cmpt276.virusbreach.ui.AnimatedNode;
 import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
-import javafx.scene.Node;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * "Moving enemy" character that chases the player and instantly kills them on collision.

@@ -1,12 +1,8 @@
 package ca.sfu.cmpt276.virusbreach.board.entity;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
-import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
-import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-
 import ca.sfu.cmpt276.virusbreach.math.Position;
+import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
 
 /**
  * Represents the "normal reward", providing score to the player when collected.

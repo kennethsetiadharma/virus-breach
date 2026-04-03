@@ -2,15 +2,11 @@ package ca.sfu.cmpt276.virusbreach.board.entity;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
-import ca.sfu.cmpt276.virusbreach.ui.AnimatedNode;
+import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.menu.GameMenu;
-import javafx.scene.Node;
-import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import ca.sfu.cmpt276.virusbreach.math.Position;
 
 /**
  * The "hacker" character, with movement controlled by the player.
@@ -25,7 +21,6 @@ public class Player extends Entity {
      * The amount of data that the player has collected from the board.
      */
     private int dataCollected = 0;
-    private AnimatedNode node;
 
     public Player(Board board, Position position) {
         super(board, position);
@@ -66,7 +61,7 @@ public class Player extends Entity {
      * This direction will be favored over previously queued options.
      *
      * @param direction the direction to move in
-     * @see GameMenu#onKeyPressed(KeyEvent)
+     * @see GameMenu#onKeyPressed(javafx.scene.input.KeyEvent)
      */
     public void startMoving(Direction direction) {
         if (!this.pendingMovement.contains(direction)) this.pendingMovement.add(direction);
@@ -76,7 +71,7 @@ public class Player extends Entity {
      * Stops movement in the given direction.
      *
      * @param direction the direction to stop moving in
-     * @see GameMenu#onKeyReleased(KeyEvent)
+     * @see GameMenu#onKeyReleased(javafx.scene.input.KeyEvent)
      */
     public void stopMoving(Direction direction) {
         this.pendingMovement.remove(direction);
