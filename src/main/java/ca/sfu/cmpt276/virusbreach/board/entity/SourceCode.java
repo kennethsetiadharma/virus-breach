@@ -16,6 +16,12 @@ public class SourceCode extends Collectable {
      */
     private int ttl;
 
+    /**
+     * Constructs a new source code (bonus reward) on the board at the given position.
+     *
+     * @param board the board to spawn on
+     * @param position the location to spawn at
+     */
     public SourceCode(Board board, Position position, int ttl) {
         super(board, position, 250);
         this.ttl = ttl;

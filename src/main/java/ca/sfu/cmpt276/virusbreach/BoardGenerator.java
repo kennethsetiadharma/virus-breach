@@ -27,6 +27,10 @@ public class BoardGenerator {
      */
     public static final int TOTAL_DATA = 6;
 
+    BoardGenerator() {
+        throw new UnsupportedOperationException("Class cannot be constructed");
+    }
+
     /**
      * Generates all tiles, rooms, and entities on the given board.
      * This includes the outer perimeter, server and storage rooms,
@@ -214,8 +218,17 @@ public class BoardGenerator {
             board.setTile(position, Wall.INSTANCE);
     }
 
+    /**
+     * Utility interface (for ease of using ::new) to construct an entity.
+     */
     @FunctionalInterface
     public interface EntitySupplier {
+        /**
+         * Constructs a new entity on the board at the given position.
+         *
+         * @param board the board to spawn on
+         * @param position the location to spawn at
+         */
         Entity create(Board board, Position position);
     }
 }

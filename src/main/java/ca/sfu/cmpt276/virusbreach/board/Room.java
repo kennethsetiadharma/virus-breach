@@ -2,6 +2,10 @@ package ca.sfu.cmpt276.virusbreach.board;
 
 import ca.sfu.cmpt276.virusbreach.math.Position;
 
+/**
+ * A distinct area to be generated on the board,
+ * potentially containing unique resources.
+ */
 public abstract class Room {
     protected int x;
     protected int y;

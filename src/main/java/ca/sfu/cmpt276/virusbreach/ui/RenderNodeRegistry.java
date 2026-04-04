@@ -29,6 +29,7 @@ public class RenderNodeRegistry {
 
     /**
      * Creates a render node for the given object
+     *
      * @param object the object to be rendered
      * @param <T> the type of object being rendered
      * @return a new render node
@@ -54,12 +55,14 @@ public class RenderNodeRegistry {
 
     /**
      * Creates a render node for a specific type of object
+     *
      * @param <T> the type
      */
     @FunctionalInterface
     public interface RenderNodeFactory<T> {
         /**
          * Creates a render node for the given object
+         *
          * @param object the object to be rendered
          * @return a new render node
          */

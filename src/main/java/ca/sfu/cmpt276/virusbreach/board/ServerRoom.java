@@ -13,6 +13,8 @@ import ca.sfu.cmpt276.virusbreach.math.Position;
  */
 public class ServerRoom extends Room {
     /**
+     * Creates a room that will generate a freeze token buff.
+     *
      * @param position the position of the room's left wall
      * @param width    the room width in tiles
      * @param height   the room height in tiles

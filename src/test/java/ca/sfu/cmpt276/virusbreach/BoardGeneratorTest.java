@@ -30,6 +30,14 @@ class BoardGeneratorTest {
     }
 
     /**
+     * Ensure that BoardGenerator cannot be constructed.
+     */
+    @Test
+    void cannotConstruct() {
+        assertThrows(UnsupportedOperationException.class, BoardGenerator::new);
+    }
+
+    /**
      * Board dimensions are set correctly after generation.
      */
     @Test
@@ -346,14 +354,6 @@ class BoardGeneratorTest {
         TileType before = board.getTile(new Position(5, HEIGHT - 1));
         BoardGenerator.placeWall(board, new Position(5, HEIGHT - 1));
         assertEquals(before, board.getTile(new Position(5, HEIGHT - 1)));
-    }
-
-    /**
-     * BoardGenerator can be instantiated (covers the default constructor).
-     */
-    @Test
-    void constructorExists() {
-        assertNotNull(new BoardGenerator());
     }
 
     private boolean isPerimeterTile(TileType tile) {

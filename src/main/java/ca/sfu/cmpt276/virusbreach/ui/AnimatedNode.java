@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
  * A render node for an entity that has different sprites for idle and moving
  * Animation frame is determined by the entity's movement.
  * The sprite will also flip left/right based on the direction that it is facing.
+ *
+ * @param <T> the entity type to render
  */
 public class AnimatedNode<T extends Entity> extends SimpleRenderNode<T> {
     private final Node idleFrame;
@@ -18,6 +20,14 @@ public class AnimatedNode<T extends Entity> extends SimpleRenderNode<T> {
     private final Node[] movingFrames;
     private Direction direction;
 
+    /**
+     * Creates a new animated node with the specified sprites.
+     *
+     * @param entity the entity to render
+     * @param idleSprite the sprite to use when idle
+     * @param frameInterval the number of in-game ticks to wait before switching to a new frame
+     * @param movingSprites the sequence of sprites to use when the entity is moving
+     */
     public AnimatedNode(T entity, String idleSprite, int frameInterval, String... movingSprites) {
         super(entity, ResourceManager.sprite(idleSprite, Color.GRAY));
         this.idleFrame = this.getChildren().getFirst();
@@ -40,6 +50,13 @@ public class AnimatedNode<T extends Entity> extends SimpleRenderNode<T> {
         animate(this.object.getPosition(), this.object.getPrevPosition(), this.object.getBoard().getTimePlayed());
     }
 
+    /**
+     * Updates the rendered sprite based on the entity's movement.
+     *
+     * @param pos the entity's current position
+     * @param prevPos the entity's previous position
+     * @param ticks the number of in-game ticks that have passed
+     */
     public void animate(Position pos, Position prevPos, int ticks) {
         updateFacing(pos, prevPos);
 

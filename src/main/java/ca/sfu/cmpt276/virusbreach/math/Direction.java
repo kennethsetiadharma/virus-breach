@@ -5,9 +5,21 @@ package ca.sfu.cmpt276.virusbreach.math;
  * Note that negative y is upwards on the board.
  */
 public enum Direction {
+    /**
+     * Negative-Y offset, vertically upwards on the screen.
+     */
     UP(0, -1),
+    /**
+     * Positive-Y offset, vertically downwards on the screen.
+     */
     DOWN(0, 1),
+    /**
+     * Negative-X offset, horizontally leftward on the screen.
+     */
     LEFT(-1, 0),
+    /**
+     * Positive-X offset, horizontally rightward on the screen.
+     */
     RIGHT(1, 0);
 
     /**
@@ -20,6 +32,12 @@ public enum Direction {
      */
     private final int y;
 
+    /**
+     * Creates a direction with the given offsets.
+     *
+     * @param x x-offset to use
+     * @param y y-offset to use
+     */
     Direction(int x, int y) {
         this.x = x;
         this.y = y;
@@ -41,10 +59,16 @@ public enum Direction {
         return Direction.RIGHT;
     }
 
+    /**
+     * {@return the x offset}
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * {@return the y offset}
+     */
     public int getY() {
         return y;
     }

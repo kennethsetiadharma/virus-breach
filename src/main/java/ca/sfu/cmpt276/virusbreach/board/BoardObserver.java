@@ -5,7 +5,7 @@ import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 
 /**
- * Observer participant in the observer pattern for a board
+ * Observer participant in the observer pattern for a board.
  */
 public interface BoardObserver {
     /**
@@ -47,7 +47,7 @@ public interface BoardObserver {
     }
 
     /**
-     * Called when a tile is updated on the board
+     * Called when a tile is updated on the board.
      *
      * @param position the position of the tile that was changed
      * @param tile the new tile that was placed at the given position

@@ -70,7 +70,7 @@ class MenuTest {
         assertNotNull(icon.getImage());
         assertEquals(28.0, icon.getFitWidth());
         assertEquals(28.0, icon.getFitHeight());
-        assertEquals(true, icon.isPreserveRatio());
+        assertTrue(icon.isPreserveRatio());
     }
 
     @Stop

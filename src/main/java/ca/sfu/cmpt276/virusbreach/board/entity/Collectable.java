@@ -13,6 +13,12 @@ public abstract class Collectable extends Entity {
      */
     final int value;
 
+    /**
+     * Constructs a new collectable entity on the board at the given position.
+     *
+     * @param board the board to spawn on
+     * @param position the location to spawn at
+     */
     public Collectable(Board board, Position position, int value) {
         super(board, position);
         this.value = value;

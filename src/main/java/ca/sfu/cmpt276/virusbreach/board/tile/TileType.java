@@ -13,7 +13,7 @@ import javafx.scene.Node;
  */
 public abstract class TileType {
     /**
-     * If {@code true}, then the tile cannot be traversed onto
+     * If {@code true}, then the tile cannot be traversed onto.
      */
     private final boolean solid;
 
@@ -31,6 +31,9 @@ public abstract class TileType {
     public void onStep(Board board, Position position, Entity entity) {
     }
 
+    /**
+     * {@return whether entities can move through this tile}
+     */
     public boolean isSolid() {
         return this.solid;
     }

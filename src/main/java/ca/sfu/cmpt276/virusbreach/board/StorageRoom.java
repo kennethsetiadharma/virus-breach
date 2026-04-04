@@ -13,6 +13,8 @@ public class StorageRoom extends Room {
     private final Position serverRoomDoor;
 
     /**
+     * Creates a room that will generate a decryption key.
+     *
      * @param position the position of the room's left wall
      * @param width          the room width in tiles
      * @param height         the room height in tiles

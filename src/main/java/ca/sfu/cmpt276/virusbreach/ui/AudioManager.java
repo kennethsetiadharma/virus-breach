@@ -26,6 +26,10 @@ public class AudioManager {
     private static GameOptions options;
     private static boolean initialized = false;
 
+    AudioManager() {
+        throw new UnsupportedOperationException("AudioManager should not be constructed.");
+    }
+
     /**
      * Apply the volume options and preload audio.
      * To only run once at the very start. 

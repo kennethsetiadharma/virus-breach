@@ -22,6 +22,10 @@ public class ResourceManager {
     private static final Map<String, Image> IMAGE_CACHE = new HashMap<>();
     private static Font font = null;
 
+    ResourceManager() {
+        throw new UnsupportedOperationException("This class cannot be constructed");
+    }
+
     /**
      * Creates a sprite {@code Node} for the specified asset
      * Returns a coloured rectangle if the asset is not found

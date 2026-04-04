@@ -196,6 +196,7 @@ class BoardTest implements BoardObserver {
      */
     @Test
     void failException() {
+        Board.testMode = true;
         Board board = TestHelper.createEnclosedBoard(3, 3);
 
         Entity entity = new Entity(board, new Position(1, 1)) {

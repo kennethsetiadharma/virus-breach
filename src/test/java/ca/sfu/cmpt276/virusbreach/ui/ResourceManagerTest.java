@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceManagerTest {
     @Test
-    void constructorNotNull() {
-        assertNotNull(new ResourceManager());
+    void cannotConstruct() {
+        assertThrows(UnsupportedOperationException.class, ResourceManager::new);
     }
 
     @Test

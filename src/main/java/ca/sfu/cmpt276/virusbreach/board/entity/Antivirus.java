@@ -18,6 +18,12 @@ public class Antivirus extends Entity implements BoardObserver {
     private final boolean[][] solidState;
     private int movementCounter = MOVEMENT_TICKS;
 
+    /**
+     * Constructs a new antivirus on the board at the given position.
+     *
+     * @param board the board to spawn on
+     * @param position the location to spawn at
+     */
     public Antivirus(Board board, Position position) {
         super(board, position);
 

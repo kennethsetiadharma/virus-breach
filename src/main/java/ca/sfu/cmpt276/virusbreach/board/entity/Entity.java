@@ -25,6 +25,12 @@ public abstract class Entity {
      */
     private boolean removed = false;
 
+    /**
+     * Constructs a new entity on the board at the given position.
+     *
+     * @param board the board to spawn on
+     * @param position the location to spawn at
+     */
     public Entity(Board board, Position position) {
         this.board = board;
         this.position = position;
@@ -72,14 +78,23 @@ public abstract class Entity {
         this.board.handleEntityMoved(this);
     }
 
+    /**
+     * {@return the entity's current location on the board}
+     */
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * {@return the entity's location on the board in the previous tick}
+     */
     public Position getPrevPosition() {
         return prevPosition;
     }
 
+    /**
+     * {@return the board the entity exists on}
+     */
     public Board getBoard() {
         return board;
     }

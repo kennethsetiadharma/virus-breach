@@ -31,6 +31,11 @@ import java.util.function.Predicate;
  */
 public class Board {
     /**
+     * When enabled, exceptions do not shut down the JavaFX context, to allow future tests to run.
+     */
+    public static boolean testMode = Boolean.getBoolean("testfx.headless") || Boolean.getBoolean("java.awt.headless");
+
+    /**
      * Executor that runs the game loop on a fixed interval.
      *
      * @see #start()
@@ -75,6 +80,11 @@ public class Board {
     private volatile boolean paused = false;
     private int freezeTimer = 0;
 
+    /**
+     * Creates a board with the specified dimensions.
+     *
+     * @param tiles the tiles to use as floor/obstacles
+     */
     public Board(TileType[][] tiles) {
         if (tiles.length == 0 || tiles[0].length == 0) throw new IllegalArgumentException("board cannot be empty");
         this.tiles = tiles;
@@ -83,6 +93,12 @@ public class Board {
         this.entityRemovalLock = entityLock.writeLock();
     }
 
+    /**
+     * Locates the first entity that matches the predicate.
+     *
+     * @param predicate the function that determines if an entity is acceptable
+     * @return the first entity that matches the predicate
+     */
     public Entity getFirstEntityMatching(Predicate<Entity> predicate) {
         return this.iterateEntitiesYield(e -> predicate.test(e) ? e : null);
     }
@@ -144,6 +160,11 @@ public class Board {
         this.executor.scheduleAtFixedRate(this::tick, VirusBreach.UPDATE_INTERVAL, VirusBreach.UPDATE_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * Pauses the game, halting all updates.
+     *
+     * @param paused whether the game should be paused
+     */
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
@@ -172,7 +193,7 @@ public class Board {
             throwable.printStackTrace();
             RuntimeException exception = new RuntimeException(throwable);
             // don't kill javafx on tests
-            if (!(Boolean.getBoolean("testfx.headless") || Boolean.getBoolean("java.awt.headless"))) {
+            if (!testMode) {
                 Platform.runLater(Platform::exit);
             }
             throw exception;
@@ -244,26 +265,49 @@ public class Board {
         return this.tiles.length;
     }
 
+    /**
+     * {@return a shared random number generator}
+     */
     public Random getRandom() {
         return random;
     }
 
+    /**
+     * Returns the tile at the given position.
+     *
+     * @param position the location of the tile to get
+     * @return the tile at the given position
+     */
     public TileType getTile(Position position) {
         return this.tiles[position.y()][position.x()];
     }
 
+    /**
+     * {@return the number of ticks that have occured since the game start}
+     */
     public int getTimePlayed() {
         return timePlayed;
     }
 
+    /**
+     * {@return the number of ticks that firewalls will remain frozen for}
+     */
     public int getFreezeTimer() {
         return freezeTimer;
     }
 
+    /**
+     * Freezes firewalls and prevents them from spreading for the specified number of in-game ticks.
+     *
+     * @param ticks how long to freeze firewalls for, in in-game ticks
+     */
     public void freezeFirewallsFor(int ticks) {
         this.freezeTimer = ticks;
     }
 
+    /**
+     * Immediately stops the game logic thread, if running.
+     */
     public void stop() {
         this.executor.close();
     }
@@ -315,6 +359,12 @@ public class Board {
         }
     }
 
+    /**
+     * Internal iterator pattern.
+     * Runs a callback on every (non-removed) entity on the board.
+     *
+     * @param consumer callback that will be called on every entity on the board
+     */
     public void iterateEntities(Consumer<Entity> consumer) {
         this.entityReadAddLock.lock();
         int size = this.entities.size();
@@ -327,6 +377,14 @@ public class Board {
         this.entityReadAddLock.unlock();
     }
 
+    /**
+     * Internal iterator pattern.
+     * Runs a callback on every (non-removed) entity on the board, UNTIL the callback returns a non-{@code null} result.
+     *
+     * @param function the callback to call
+     * @return the first non-{@code null} result from the function, otherwise {@code null}
+     * @param <T> the type to yield
+     */
     public <T> T iterateEntitiesYield(Function<Entity, T> function) {
         this.entityReadAddLock.lock();
         try {

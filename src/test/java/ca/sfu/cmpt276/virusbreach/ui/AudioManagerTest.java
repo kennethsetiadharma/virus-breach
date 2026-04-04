@@ -25,8 +25,8 @@ class AudioManagerTest {
     }
 
     @Test
-    void constructorExists() {
-        assertNotNull(new AudioManager());
+    void cannotConstruct() {
+        assertThrows(UnsupportedOperationException.class, AudioManager::new);
     }
 
     @Test

@@ -6,11 +6,13 @@ import javafx.scene.Node;
 
 /**
  * Simple render node that just has a single sprite.
+ *
  * @param <T> the type of entity being rendered
  */
 public class SimpleRenderNode<T extends Entity> extends RenderNode<T> {
     /**
      * Creates a simple render node for the given object and sprite.
+     *
      * @param object the object being rendered
      * @param node the sprite to render
      */

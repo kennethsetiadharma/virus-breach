@@ -39,6 +39,9 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * {@return the amount of data this player has collected}
+     */
     public int getDataCollected() {
         return dataCollected;
     }
