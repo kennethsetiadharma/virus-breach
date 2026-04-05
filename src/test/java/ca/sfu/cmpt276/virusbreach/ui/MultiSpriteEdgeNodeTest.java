@@ -4,6 +4,7 @@ import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.TestHelper;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;
+import ca.sfu.cmpt276.virusbreach.ui.node.RenderNodeRegistry;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,7 +32,7 @@ class MultiSpriteEdgeNodeTest {
 
     private static Image imageAt(Board board, Position position) {
         board.setTile(position, TileTypes.EXIT);
-        ImageView node = (ImageView) ((Parent)RenderNodeRegistry.createRenderNodeForTile(board, position)).getChildrenUnmodifiable().getFirst();
+        ImageView node = (ImageView) ((Parent) RenderNodeRegistry.createRenderNodeForTile(board, position)).getChildrenUnmodifiable().getFirst();
         return node.getImage();
     }
 }

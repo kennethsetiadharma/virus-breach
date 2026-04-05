@@ -12,6 +12,8 @@ import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.*;
+import ca.sfu.cmpt276.virusbreach.ui.node.RenderNode;
+import ca.sfu.cmpt276.virusbreach.ui.node.RenderNodeRegistry;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.scene.Group;

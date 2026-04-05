@@ -1,4 +1,4 @@
-package ca.sfu.cmpt276.virusbreach.ui;
+package ca.sfu.cmpt276.virusbreach.ui.node;
 
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.math.Position;

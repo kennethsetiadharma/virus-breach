@@ -1,4 +1,4 @@
-package ca.sfu.cmpt276.virusbreach.ui;
+package ca.sfu.cmpt276.virusbreach.ui.node;
 
 import javafx.scene.Parent;
 

@@ -1,8 +1,9 @@
-package ca.sfu.cmpt276.virusbreach.ui;
+package ca.sfu.cmpt276.virusbreach.ui.node;
 
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
+import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
