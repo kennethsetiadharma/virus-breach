@@ -33,8 +33,15 @@ public abstract class Collectable extends Entity {
     public void onCollideWith(Entity entity) {
         super.onCollideWith(entity);
         if (entity instanceof Player player) {
+            this.onCollectedByPlayer();
             player.adjustData(this.value);
             this.board.removeEntity(this);
         }
+    }
+
+    /**
+     * Called to implement custom code, such as {@link DecryptionKey} and {@link FreezeToken}
+     */
+    protected void onCollectedByPlayer() {
     }
 }
