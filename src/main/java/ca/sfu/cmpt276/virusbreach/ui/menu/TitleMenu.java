@@ -6,6 +6,7 @@ import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -46,19 +47,8 @@ public class TitleMenu extends Menu {
         ));
         this.backgroundAnimation.setCycleCount(Timeline.INDEFINITE);
 
-        Button start = new Button("START MISSION");
-        start.setGraphic(Menu.iconView("resume.png"));
-        start.setFont(ResourceManager.loadFont(28));
-        start.setStyle(BUTTON_STYLE);
-        start.setGraphicTextGap(10);
-        start.setOnAction(this::startClicked);
-
-        Button options = new Button("OPTIONS");
-        options.setGraphic(Menu.iconView("options.png"));
-        options.setFont(ResourceManager.loadFont(28));
-        options.setStyle(BUTTON_STYLE);
-        options.setGraphicTextGap(10);
-        options.setOnAction(this::optionsClicked);
+        Button start = createMenuButton("START MISSION", "resume.png", this::startClicked);
+        Button options = createMenuButton("OPTIONS", "options.png", this::optionsClicked);
 
         VBox buttonColumn = new VBox(24, start, options);
         buttonColumn.setAlignment(Pos.CENTER);
@@ -100,6 +90,15 @@ public class TitleMenu extends Menu {
         this.game.startNewGame();
     }
 
+    private Button createMenuButton(String text, String iconAsset, EventHandler<ActionEvent> action) {
+        Button button = new Button(text);
+        button.setGraphic(Menu.iconView(iconAsset));
+        button.setFont(ResourceManager.loadFont(28));
+        button.setStyle(BUTTON_STYLE);
+        button.setGraphicTextGap(10);
+        button.setOnAction(action);
+        return button;
+    }
 
     private void advanceBackgroundFrame() {
         this.backgroundFrameIndex = (this.backgroundFrameIndex + 1) % BACKGROUND_FRAMES.length;
