@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.virusbreach.ui;
 
 import ca.sfu.cmpt276.virusbreach.BoardGenerator;
+import ca.sfu.cmpt276.virusbreach.GameTime;
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.ui.menu.Menu;
@@ -179,9 +180,7 @@ public class Hud extends AnchorPane {
      * @param dataCollected how many Data packets the player has collected so far
      */
     public void update(Board board, int dataCollected) {
-        // Timer: 10 ticks per second (100ms per tick)
-        int totalSeconds = board.getTimePlayed() / 10;
-        this.timerLabel.setText(String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60));
+        this.timerLabel.setText(GameTime.ticksToClock(board.getTimePlayed()));
 
         // Score
         var player = (Player)board.getFirstEntityMatching(e -> e instanceof Player);

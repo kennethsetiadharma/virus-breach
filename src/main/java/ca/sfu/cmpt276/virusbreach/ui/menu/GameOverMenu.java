@@ -1,5 +1,6 @@
 package ca.sfu.cmpt276.virusbreach.ui.menu;
 
+import ca.sfu.cmpt276.virusbreach.GameTime;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
 import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
@@ -57,10 +58,7 @@ public class GameOverMenu extends Menu {
         var timerIcon = Menu.iconView("timer.png");
         timerIcon.setFitWidth(22);
         timerIcon.setFitHeight(22);
-        int totalSeconds = timePlayed / 10;
-        int minutes = totalSeconds / 60;
-        int seconds = totalSeconds % 60;
-        Label timerLabel = new Label(String.format("%02d:%02d", minutes, seconds));
+        Label timerLabel = new Label(GameTime.ticksToClock(timePlayed));
         timerLabel.setTextFill(Color.WHITE);
         timerLabel.setFont(ResourceManager.loadFont(22));
         HBox timerRow = new HBox(10, timerIcon, timerLabel);
