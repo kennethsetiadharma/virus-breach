@@ -48,7 +48,7 @@ class ResourceManagerTest {
 
     @Test
     void loadFontReturnsRequestedSize() {
-        Font font = ResourceManager.loadFont(22);
+        Font font = ResourceManager.gameFont(22);
 
         assertNotNull(font);
         assertEquals(22, font.getSize(), 0.01);
@@ -64,37 +64,21 @@ class ResourceManagerTest {
     }
 
     @Test
-    void readImageNullThrownStream() {
-        assertNull(ResourceManager.readImage(new ThrowOnCloseStream()));
+    void readImageNullInvalidSource() {
+        assertNull(ResourceManager.fetchImage("non-existent uri"));
     }
 
     @Test
-    void fallbackFontThrownStream() {
-        Font font = ResourceManager.readFont(new ThrowOnCloseStream(), 18);
+    void fallbackFontInvalidSource() {
+        String font = ResourceManager.fetchFont("non-existent uri");
 
-        assertNotNull(font);
-        assertEquals(18, font.getSize(), 0.01);
+        assertEquals(ResourceManager.FALLBACK_FONT_FAMILY, font);
     }
 
     @Test
     void fallbackFontNullStream() {
-        Font font = ResourceManager.readFont(null, 16);
+        String font = ResourceManager.fetchFont(null);
 
-        assertNotNull(font);
-        assertEquals(16, font.getSize(), 0.01);
-    }
-
-    private static class ThrowOnCloseStream extends InputStream {
-        private final ByteArrayInputStream buf = new ByteArrayInputStream(new byte[0]);
-
-        @Override
-        public int read() {
-            return buf.read();
-        }
-
-        @Override
-        public void close() throws IOException {
-            throw new IOException("intended exception");
-        }
+        assertEquals(ResourceManager.FALLBACK_FONT_FAMILY, font);
     }
 }

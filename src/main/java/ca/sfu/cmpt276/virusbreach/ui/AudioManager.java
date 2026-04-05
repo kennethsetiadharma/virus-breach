@@ -22,7 +22,6 @@ public class AudioManager {
         "success.wav"
     };
 
-    private static final Map<String, AudioClip> clips = new HashMap<>();
     private static GameOptions options;
     private static boolean initialized = false;
 
@@ -41,23 +40,16 @@ public class AudioManager {
      */
     public static void init(GameOptions options) {
         AudioManager.options = options;
-        if (initialized) {
-            return;
-        }
+
+        if (AudioManager.initialized) return;
 
         for (String asset : PRELOADED_ASSETS) {
-            getClip(asset);
-        }
-        
-        // play silent clip (reduces lag on first real clip play)
-        AudioClip clip = clips.get(PRELOADED_ASSETS[0]);
-        if (clip == null) {
-            return;
+            AudioClip clip = ResourceManager.fetchAudio(asset);
+            if (clip == null) return;
+            clip.play(Double.MIN_NORMAL); // play to force-load audio
         }
 
-        clip.play(0.0001);
-
-        initialized = true;
+        AudioManager.initialized = true;
     }
 
     /**
@@ -68,29 +60,8 @@ public class AudioManager {
     public static void play(String asset) {
         if (!initialized) return;
 
-        AudioClip clip = getClip(asset);
-        if (clip == null) {
-            return;
-        }
-
-        clip.play(options == null ? 1.0 : options.getVolume());
-    }
-
-    /**
-     * Fetches audio clip from map, or loads it to the map
-     * 
-     * @param asset audio clip asset path
-     * @return the audio clip, or null if not found
-     */
-    public static AudioClip getClip(String asset) {
-        if (clips.containsKey(asset)) {
-            return clips.get(asset);
-        }
-
-        URL resource = VirusBreach.class.getResource("/sounds/" + asset);
-        AudioClip clip = resource == null ? null : new AudioClip(resource.toExternalForm());
-        clips.put(asset, clip);
-        return clip;
+        AudioClip clip = ResourceManager.fetchAudio(asset);
+        if (clip != null) clip.play(options == null ? 0.5 : options.getVolume());
     }
 
     /**
@@ -100,15 +71,6 @@ public class AudioManager {
      */
     static String[] getPreloadedAssets() {
         return PRELOADED_ASSETS;
-    }
-
-    /**
-     * Getter for clips map
-     * 
-     * @return audio clips map
-     */
-    static Map<String, AudioClip> getClips() {
-        return clips;
     }
 
     /**

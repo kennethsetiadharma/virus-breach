@@ -4,23 +4,30 @@ import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import static ca.sfu.cmpt276.virusbreach.math.Position.UNIT_SIZE;
 
 /**
- * Manages sprite images
- * Contains methods to load and create {@code ImageViews} for sprites
+ * Manages the loading of assets, data, and other non-code resources from the game package.
+ * Engages in caching of loaded resources to reduce overhead and wasted memory from duplicated objects.
  */
 public class ResourceManager {
+    /**
+     * Font family to use in case the custom game font fails to load.
+     */
+    public static final String FALLBACK_FONT_FAMILY = "Courier New";
+
     private static final Map<String, Image> IMAGE_CACHE = new HashMap<>();
-    private static Font font = null;
+    private static final Map<String, AudioClip> AUDIO_CACHE = new HashMap<>();
+    private static String fontName = null;
 
     ResourceManager() {
         throw new UnsupportedOperationException("This class cannot be constructed");
@@ -50,15 +57,25 @@ public class ResourceManager {
      * @param asset the asset path
      * @return the fetched Image or null if not found
      */
-    public static Image fetch(String asset) {
-        if (IMAGE_CACHE.containsKey(asset)) {
-            return IMAGE_CACHE.get(asset);
-        }
-        Image image = readImage(VirusBreach.class.getResourceAsStream(asset));
-        if (image != null) {
-            IMAGE_CACHE.put(asset, image);
-        }
-        return image;
+    public static Image fetchImage(String asset) {
+        return IMAGE_CACHE.computeIfAbsent(asset, path -> {
+            String uri = getResourceURI(path);
+            return uri == null ? null : new Image(uri, false);
+        });
+    }
+
+    /**
+     * Fetches an audio clip from the specified asset path.
+     * Audio clips are cached after the first load so the file is only read once.
+     *
+     * @param asset the path to the audio clip
+     * @return the fetched Image or null if not found
+     */
+    public static AudioClip fetchAudio(String asset) {
+        return AUDIO_CACHE.computeIfAbsent("/sounds/" + asset, path -> {
+            String uri = getResourceURI(path);
+            return uri == null ? null : new AudioClip(uri);
+        });
     }
 
     /**
@@ -82,7 +99,7 @@ public class ResourceManager {
      * @return the loaded Image
      */
     public static Image loadIcon(String asset) {
-        return fetch("/icons/" + asset);
+        return fetchImage("/icons/" + asset);
     }
 
     /**
@@ -92,42 +109,35 @@ public class ResourceManager {
      * @return the loaded Image
      */
     public static Image loadSprite(String asset) {
-        return fetch("/sprites/" + asset);
+        return fetchImage("/sprites/" + asset);
     }
 
     /**
-     * Loads the game font at the specified size.
+     * Returns the game font at the specified size.
      *
      * @param size the font size
-     * @return the loaded Font
+     * @return the game font
      */
-    public static Font loadFont(double size) {
-        if (font == null) {
-            font = readFont(VirusBreach.class.getResourceAsStream("/fonts/VCR_OSD_MONO_1.001.ttf"), size);
+    public static Font gameFont(double size) {
+        if (fontName == null) {
+            fontName = fetchFont(getResourceURI("/fonts/VCR_OSD_MONO_1.001.ttf"));
         }
-        return new Font(font.getName(), size);
+        return new Font(fontName, size);
     }
 
-    static Image readImage(InputStream stream) {
-        try (InputStream ignored = stream) {
-            if (stream == null) {
-                return null;
+    static String fetchFont(String uri) {
+        String name = FALLBACK_FONT_FAMILY;
+        if (uri != null) {
+            Font font = Font.loadFont(uri, 0.0);
+            if (font != null) {
+                name = font.getName();
             }
-            return new Image(stream);
-        } catch (Exception e) {
-            return null;
         }
+        return name;
     }
 
-    static Font readFont(InputStream stream, double size) {
-        try (InputStream ignored = stream) {
-            if (stream == null) {
-                return Font.font("Courier New", size);
-            }
-            Font loaded = Font.loadFont(stream, size);
-            return loaded == null ? Font.font("Courier New", size) : loaded;
-        } catch (Exception ignored) {
-            return Font.font("Courier New", size);
-        }
+    private static String getResourceURI(String assetPath) {
+        URL resource = VirusBreach.class.getResource(assetPath);
+        return resource == null ? null : resource.toExternalForm();
     }
 }

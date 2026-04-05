@@ -47,17 +47,17 @@ public class WinMenu extends Menu {
         // Title
         Label title = new Label("INFILTRATED");
         title.setTextFill(Color.LIME);
-        title.setFont(ResourceManager.loadFont(42));
+        title.setFont(ResourceManager.gameFont(42));
 
         // Subtitle
         Label subtitle = new Label("YOU'VE ACQUIRED");
         subtitle.setTextFill(Color.WHITE);
-        subtitle.setFont(ResourceManager.loadFont(16));
+        subtitle.setFont(ResourceManager.gameFont(16));
 
         // Score — animates from 0 up to final value
         Label score = new Label("0 GB");
         score.setTextFill(Color.LIME);
-        score.setFont(ResourceManager.loadFont(48));
+        score.setFont(ResourceManager.gameFont(48));
 
         Timeline trickle = new Timeline();
         int frames = 60;
@@ -77,21 +77,21 @@ public class WinMenu extends Menu {
         timerIcon.setFitHeight(22);
         Label timerLabel = new Label(GameTime.ticksToClock(timePlayed));
         timerLabel.setTextFill(Color.WHITE);
-        timerLabel.setFont(ResourceManager.loadFont(22));
+        timerLabel.setFont(ResourceManager.gameFont(22));
         HBox timerRow = new HBox(10, timerIcon, timerLabel);
         timerRow.setAlignment(Pos.CENTER);
 
         // Buttons
         Button btnQuit = new Button("QUIT");
         btnQuit.setGraphic(Menu.iconView("home.png"));
-        btnQuit.setFont(ResourceManager.loadFont(18));
+        btnQuit.setFont(ResourceManager.gameFont(18));
         btnQuit.setStyle(BUTTON_STYLE);
         btnQuit.setGraphicTextGap(8);
         btnQuit.setOnAction(e -> { AudioManager.play("click.wav"); game.openMenu(new TitleMenu(game)); });
 
         Button btnRetry = new Button("RETRY");
         btnRetry.setGraphic(Menu.iconView("retry.png"));
-        btnRetry.setFont(ResourceManager.loadFont(18));
+        btnRetry.setFont(ResourceManager.gameFont(18));
         btnRetry.setStyle(BUTTON_STYLE);
         btnRetry.setGraphicTextGap(8);
         btnRetry.setOnAction(e -> { AudioManager.play("click.wav"); game.startNewGame(); });

@@ -31,7 +31,7 @@ public class TutorialOverlay extends Pane {
 
         // Title
         Text title = new Text("HOW TO PLAY");
-        title.setFont(ResourceManager.loadFont(28));
+        title.setFont(ResourceManager.gameFont(28));
         title.setFill(Color.WHITE);
 
         // Tutorial rows
@@ -49,7 +49,7 @@ public class TutorialOverlay extends Pane {
         // Dismiss button
         Button btnStart = new Button("GOT IT");
         btnStart.setGraphic(Menu.iconView("resume.png"));
-        btnStart.setFont(ResourceManager.loadFont(18));
+        btnStart.setFont(ResourceManager.gameFont(18));
         btnStart.setStyle(Menu.BUTTON_STYLE);
         btnStart.setGraphicTextGap(8);
         btnStart.setOnAction(e -> onDismiss.run());
@@ -75,7 +75,7 @@ public class TutorialOverlay extends Pane {
         icon.setPreserveRatio(true);
 
         Text label = new Text(description);
-        label.setFont(ResourceManager.loadFont(14));
+        label.setFont(ResourceManager.gameFont(14));
         label.setFill(Color.WHITE);
         label.setWrappingWidth(380);
 

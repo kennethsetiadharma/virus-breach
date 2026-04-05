@@ -43,12 +43,12 @@ public class GameOverMenu extends Menu {
         // Title
         Label title = new Label("QUARANTINED");
         title.setTextFill(Color.RED);
-        title.setFont(ResourceManager.loadFont(42));
+        title.setFont(ResourceManager.gameFont(42));
 
         // Subtitle
         Label subtitle = new Label("YOU'VE BEEN CAUGHT BY AN ANTIVIRUS");
         subtitle.setTextFill(Color.WHITE);
-        subtitle.setFont(ResourceManager.loadFont(14));
+        subtitle.setFont(ResourceManager.gameFont(14));
         subtitle.setWrapText(true);
         subtitle.setMaxWidth(360);
         subtitle.setAlignment(javafx.geometry.Pos.CENTER);
@@ -60,21 +60,21 @@ public class GameOverMenu extends Menu {
         timerIcon.setFitHeight(22);
         Label timerLabel = new Label(GameTime.ticksToClock(timePlayed));
         timerLabel.setTextFill(Color.WHITE);
-        timerLabel.setFont(ResourceManager.loadFont(22));
+        timerLabel.setFont(ResourceManager.gameFont(22));
         HBox timerRow = new HBox(10, timerIcon, timerLabel);
         timerRow.setAlignment(Pos.CENTER);
 
         // Buttons
         Button btnQuit = new Button("QUIT");
         btnQuit.setGraphic(Menu.iconView("home.png"));
-        btnQuit.setFont(ResourceManager.loadFont(18));
+        btnQuit.setFont(ResourceManager.gameFont(18));
         btnQuit.setStyle(BUTTON_STYLE);
         btnQuit.setGraphicTextGap(8);
         btnQuit.setOnAction(e -> { AudioManager.play("click.wav"); game.openMenu(new TitleMenu(game)); });
 
         Button btnRetry = new Button("RETRY");
         btnRetry.setGraphic(Menu.iconView("retry.png"));
-        btnRetry.setFont(ResourceManager.loadFont(18));
+        btnRetry.setFont(ResourceManager.gameFont(18));
         btnRetry.setStyle(BUTTON_STYLE);
         btnRetry.setGraphicTextGap(8);
         btnRetry.setOnAction(e -> { AudioManager.play("click.wav"); game.startNewGame(); });

@@ -38,7 +38,7 @@ public class TitleMenu extends Menu {
         super(game);
         this.backgroundFrames = new Background[BACKGROUND_FRAMES.length];
         for (int i = 0; i < BACKGROUND_FRAMES.length; i++) {
-            this.backgroundFrames[i] = buildBackground(ResourceManager.fetch(BACKGROUND_FRAMES[i]));
+            this.backgroundFrames[i] = buildBackground(ResourceManager.fetchImage(BACKGROUND_FRAMES[i]));
         }
         this.setBackground(this.backgroundFrames[this.backgroundFrameIndex]);
         this.backgroundAnimation = new Timeline(new KeyFrame(
@@ -93,7 +93,7 @@ public class TitleMenu extends Menu {
     private Button createMenuButton(String text, String iconAsset, EventHandler<ActionEvent> action) {
         Button button = new Button(text);
         button.setGraphic(Menu.iconView(iconAsset));
-        button.setFont(ResourceManager.loadFont(28));
+        button.setFont(ResourceManager.gameFont(28));
         button.setStyle(BUTTON_STYLE);
         button.setGraphicTextGap(10);
         button.setOnAction(action);

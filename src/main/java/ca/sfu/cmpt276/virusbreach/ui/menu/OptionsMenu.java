@@ -34,18 +34,18 @@ public class OptionsMenu extends Menu {
 
         Button back = new Button("BACK");
         back.setGraphic(Menu.iconView("exit.png"));
-        back.setFont(ResourceManager.loadFont(22));
+        back.setFont(ResourceManager.gameFont(22));
         back.setStyle(BUTTON_STYLE);
         back.setGraphicTextGap(10);
         back.setOnAction(this::backPressed);
 
         Label title = new Label("OPTIONS");
         title.setTextFill(Color.WHITE);
-        title.setFont(ResourceManager.loadFont(40));
+        title.setFont(ResourceManager.gameFont(40));
 
         Label volumeLabel = new Label();
         volumeLabel.setTextFill(Color.WHITE);
-        volumeLabel.setFont(ResourceManager.loadFont(22));
+        volumeLabel.setFont(ResourceManager.gameFont(22));
 
         Slider volumeSlider = new Slider(0, 100, this.options.getVolume() * 100.0);
         volumeSlider.setShowTickLabels(true);
@@ -61,7 +61,7 @@ public class OptionsMenu extends Menu {
 
         Label soundCredits = new Label("Audio credits: Minecraft, Valorant, Among Us");
         soundCredits.setTextFill(Color.WHITE);
-        soundCredits.setFont(ResourceManager.loadFont(14));
+        soundCredits.setFont(ResourceManager.gameFont(14));
 
         VBox layout = new VBox(20, title, volumeLabel, volumeSlider, soundCredits, back);
         layout.setAlignment(Pos.CENTER);

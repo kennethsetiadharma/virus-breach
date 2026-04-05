@@ -58,42 +58,29 @@ class AudioManagerTest {
     void playReturnsForMissingClip() {
         AudioManager.setInitialized(true);
         AudioManager.setOptions(new GameOptions());
-        AudioManager.getClips().put("missing.wav", null);
 
-        assertDoesNotThrow(() -> AudioManager.play("missing.wav"));
+        assertDoesNotThrow(() -> AudioManager.play("missing_test_sound.wav"));
     }
 
     @Test
     void playsDefaultVolumeForNullOptions() {
-        AudioClip clip = AudioManager.getClip("click.wav");
         AudioManager.setInitialized(true);
         AudioManager.setOptions(null);
 
-        assertNotNull(clip);
         assertDoesNotThrow(() -> AudioManager.play("click.wav"));
     }
 
     @Test
     void playConfiguredVolume() {
-        AudioClip clip = AudioManager.getClip("click.wav");
         GameOptions options = new GameOptions();
         options.setVolume(0.4);
         AudioManager.setInitialized(true);
         AudioManager.setOptions(options);
 
-        assertNotNull(clip);
         assertDoesNotThrow(() -> AudioManager.play("click.wav"));
     }
 
-    @Test
-    void cacheMissingClip() {
-        assertNull(AudioManager.getClip("missing_test_sound.wav"));
-        assertTrue(AudioManager.getClips().containsKey("missing_test_sound.wav"));
-        assertNull(AudioManager.getClip("missing_test_sound.wav"));
-    }
-
     private static void resetState() {
-        AudioManager.getClips().clear();
         AudioManager.setOptions(null);
         AudioManager.setInitialized(false);
     }

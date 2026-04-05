@@ -57,9 +57,9 @@ public class Hud extends AnchorPane {
      */
     public Hud(Runnable onPause, Runnable onDamage) {
         this.onDamage = onDamage;
-        var font = ResourceManager.loadFont(20);
-        var fontLarge = ResourceManager.loadFont(28);
-        this.popupFont = ResourceManager.loadFont(22);
+        var font = ResourceManager.gameFont(20);
+        var fontLarge = ResourceManager.gameFont(28);
+        this.popupFont = ResourceManager.gameFont(22);
 
         this.dataEmptyImage = ResourceManager.loadIcon("data.png");
         this.dataFullImage = ResourceManager.loadIcon("data_completed.png");
@@ -143,7 +143,7 @@ public class Hud extends AnchorPane {
 
     private HBox buildBanner(String text, String iconAsset, String borderColor, double topAnchor, boolean isSprite) {
         Text bannerText = new Text(text);
-        bannerText.setFont(ResourceManager.loadFont(20));
+        bannerText.setFont(ResourceManager.gameFont(20));
         bannerText.setFill(Color.web(borderColor));
 
         ImageView icon = new ImageView(isSprite ? ResourceManager.loadSprite(iconAsset) : ResourceManager.loadIcon(iconAsset));
