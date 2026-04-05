@@ -44,7 +44,6 @@ public class StorageRoom extends Room {
      *
      * @param board the board to spawn entities on
      */
-    @Override
     protected void spawnEntities(Board board) {
         board.addEntity(new DecryptionKey(board, new Position(this.x + this.width - 1, this.y + 1), serverRoomDoor));
     }
@@ -52,8 +51,9 @@ public class StorageRoom extends Room {
     /**
      * Places a cross-shaped wall cluster centered in the Storage Room interior.
      * The cross gives the player cover to dodge the Antivirus enemy.
+     *
+     * @param board the board to generate on
      */
-    @Override
     protected void generateInternalLayout(Board board) {
         int cx = this.x + this.width / 2;  // horizontal centre of room interior
         int cy = this.y + this.height / 2; // vertical centre of room interior

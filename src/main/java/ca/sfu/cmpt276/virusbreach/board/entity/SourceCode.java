@@ -21,6 +21,7 @@ public class SourceCode extends Collectable {
      *
      * @param board the board to spawn on
      * @param position the location to spawn at
+     * @param ttl the amount of time to stay on the board before despawning, in ticks
      */
     public SourceCode(Board board, Position position, int ttl) {
         super(board, position, 250);

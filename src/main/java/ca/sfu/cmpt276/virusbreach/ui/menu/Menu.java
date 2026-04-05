@@ -11,8 +11,14 @@ import javafx.scene.layout.Pane;
  * Handles display and player interaction with the game.
  */
 public class Menu extends Pane {
+    /**
+     * The associated game instance.
+     */
     protected final VirusBreach game;
 
+    /**
+     * Shared JavaFX CSS styling used for buttons.
+     */
     public static final String BUTTON_STYLE = """
         -fx-background-color: transparent;
         -fx-text-fill: white;
@@ -23,6 +29,11 @@ public class Menu extends Pane {
         -fx-padding: 14 24 14 24;
         """;
 
+    /**
+     * Creates a new menu attached to the given game instance.
+     *
+     * @param game the game displaying this menu
+     */
     public Menu(VirusBreach game) {
         this.game = game;
     }

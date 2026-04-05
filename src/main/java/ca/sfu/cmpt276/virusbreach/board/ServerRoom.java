@@ -42,7 +42,6 @@ public class ServerRoom extends Room {
      *
      * @param board the board to spawn entities on
      */
-    @Override
     protected void spawnEntities(Board board) {
         BoardGenerator.spawnAnywhere(board, this.x + 1, this.y + 1,
                 this.x + this.width, this.y + this.height, FreezeToken::new);
@@ -51,8 +50,9 @@ public class ServerRoom extends Room {
     /**
      * Places an L-shaped wall in each corner of the Server Room interior,
      * each arm matching the direction of its corner.
+     *
+     * @param board the board to generate on
      */
-    @Override
     protected void generateInternalLayout(Board board) {
         int left   = this.x + 2;
         int right  = this.x + this.width - 2;

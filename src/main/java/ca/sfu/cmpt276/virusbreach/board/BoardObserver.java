@@ -24,7 +24,6 @@ public interface BoardObserver {
     default void onEntityRemoved(Entity entity) {
     }
 
-
     /**
      * Called when the game has been won.
      *

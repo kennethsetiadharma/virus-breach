@@ -228,6 +228,7 @@ public class BoardGenerator {
          *
          * @param board the board to spawn on
          * @param position the location to spawn at
+         * @return the created entity
          */
         Entity create(Board board, Position position);
     }

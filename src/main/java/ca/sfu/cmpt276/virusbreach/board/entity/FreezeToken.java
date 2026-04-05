@@ -9,10 +9,14 @@ import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
  * Freezes all firewall spreading for 10 seconds when collected.
  */
 public class FreezeToken extends Entity {
-
-    public static final int FREEZE_TICKS = 100;
+    /**
+     * How long to freeze firewall spread for when collected, in ticks.
+     */
+    public static final int FREEZE_TIME = 100;
 
     /**
+     * Constructs a new freeze token on the board at the given position
+     *
      * @param board the board this entity belongs to
      * @param position the position to spawn at
      */
@@ -29,7 +33,7 @@ public class FreezeToken extends Entity {
     @Override
     public void onCollideWith(Entity entity) {
         if (entity instanceof Player) {
-            this.board.freezeFirewallsFor(FREEZE_TICKS);
+            this.board.freezeFirewallsFor(FREEZE_TIME);
             AudioManager.play("bonus.wav");
             this.board.removeEntity(this);
         }

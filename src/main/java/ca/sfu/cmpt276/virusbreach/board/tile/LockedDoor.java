@@ -11,6 +11,9 @@ import javafx.scene.paint.Color;
  * Replaced by {@link OpenDoor} when the player collects the Decryption Key.
  */
 public class LockedDoor extends TileType {
+    /**
+     * The locked door singleton.
+     */
     public static final TileType INSTANCE = new LockedDoor();
 
     /** Creates a solid locked door tile. */

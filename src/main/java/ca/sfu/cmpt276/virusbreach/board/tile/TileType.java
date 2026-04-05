@@ -17,6 +17,11 @@ public abstract class TileType {
      */
     private final boolean solid;
 
+    /**
+     * Creates a new tile type with the specified properties.
+     *
+     * @param solid whether this type of tile can be traversed onto
+     */
     public TileType(boolean solid) {
         this.solid = solid;
     }

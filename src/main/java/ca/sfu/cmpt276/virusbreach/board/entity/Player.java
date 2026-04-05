@@ -22,6 +22,12 @@ public class Player extends Entity {
      */
     private int dataCollected = 0;
 
+    /**
+     * Constructs a new player on the board at the given position.
+     *
+     * @param board the board to spawn on
+     * @param position the location to spawn at
+     */
     public Player(Board board, Position position) {
         super(board, position);
     }

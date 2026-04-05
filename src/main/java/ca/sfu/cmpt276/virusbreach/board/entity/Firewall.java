@@ -19,6 +19,12 @@ public class Firewall extends Collectable {
 
     private int spreadTimer;
 
+    /**
+     * Constructs a new firewall on the board at the given position.
+     *
+     * @param board the board to spawn on
+     * @param position the location to spawn at
+     */
     public Firewall(Board board, Position position) {
         super(board, position, -200);
         this.spreadTimer = board.getRandom().nextInt(MIN_SPREAD_TICKS, MAX_SPREAD_TICKS);

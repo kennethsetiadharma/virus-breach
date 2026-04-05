@@ -11,9 +11,12 @@ import javafx.scene.paint.Color;
  * Has no special properties.
  */
 public class Floor extends TileType {
+    /**
+     * The floor singleton.
+     */
     public static final TileType INSTANCE = new Floor();
 
-    public Floor() {
+    private Floor() {
         super(false);
     }
 

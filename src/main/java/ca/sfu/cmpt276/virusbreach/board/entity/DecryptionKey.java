@@ -13,9 +13,11 @@ public class DecryptionKey extends Entity {
     private final Position doorToUnlock;
 
     /**
-     * @param board         the board this entity belongs to
+     * Constructs a new decryption key on the board at the given position.
+     *
+     * @param board the board this entity belongs to
      * @param position the position to spawn at
-     * @param doorToUnlock  the tile position of the Server Room door to open on pickup
+     * @param doorToUnlock the tile position of the Server Room door to open on pickup
      */
     public DecryptionKey(Board board, Position position, Position doorToUnlock) {
         super(board, position);

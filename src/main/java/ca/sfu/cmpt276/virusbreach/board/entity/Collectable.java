@@ -18,6 +18,7 @@ public abstract class Collectable extends Entity {
      *
      * @param board the board to spawn on
      * @param position the location to spawn at
+     * @param value the amount of data that this collectable is worth
      */
     public Collectable(Board board, Position position, int value) {
         super(board, position);

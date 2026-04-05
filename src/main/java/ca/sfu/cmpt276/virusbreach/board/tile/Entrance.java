@@ -11,9 +11,12 @@ import javafx.scene.paint.Color;
  * There should only be one per board.
  */
 public class Entrance extends TileType {
+    /**
+     * The entrance singleton.
+     */
     public static final TileType INSTANCE = new Entrance();
 
-    public Entrance() {
+    private Entrance() {
         super(false);
     }
 

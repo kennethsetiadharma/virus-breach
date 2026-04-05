@@ -246,7 +246,7 @@ class BoardGeneratorTest {
      */
     @Test
     void placeWallOnFreeTile() {
-        board.setTile(new Position(20, 5), new Floor());
+        board.setTile(new Position(20, 5), Floor.INSTANCE);
         BoardGenerator.placeWall(board, new Position(20, 5));
         assertInstanceOf(Wall.class, board.getTile(new Position(20, 5)));
     }
@@ -269,7 +269,7 @@ class BoardGeneratorTest {
     void placeWallServerRoomRightBufferYOutOfRange() {
         int x = SERVER_ROOM_WIDTH + 1;
         int y = SERVER_ROOM_HEIGHT + 1; // y <= SERVER_ROOM_HEIGHT is false, falls through
-        board.setTile(new Position(x, y), new Floor());
+        board.setTile(new Position(x, y), Floor.INSTANCE);
         BoardGenerator.placeWall(board, new Position(x, y));
         assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }
@@ -282,7 +282,7 @@ class BoardGeneratorTest {
     void placeWallServerRoomBottomBufferXOutOfRange() {
         int x = SERVER_ROOM_WIDTH + 2;
         int y = SERVER_ROOM_HEIGHT + 1; // x <= SERVER_ROOM_WIDTH is false, falls through
-        board.setTile(new Position(x, y), new Floor());
+        board.setTile(new Position(x, y), Floor.INSTANCE);
         BoardGenerator.placeWall(board, new Position(x, y));
         assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }
@@ -295,7 +295,7 @@ class BoardGeneratorTest {
     void placeWallStorageRoomLeftBufferYOutOfRange() {
         int x = STORAGE_LEFT_X - 1;
         int y = STORAGE_TOP_Y - 1; // y >= STORAGE_TOP_Y is false, falls through
-        board.setTile(new Position(x, y), new Floor());
+        board.setTile(new Position(x, y), Floor.INSTANCE);
         BoardGenerator.placeWall(board, new Position(x, y));
         assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }
@@ -308,7 +308,7 @@ class BoardGeneratorTest {
     void placeWallStorageRoomTopBufferXOutOfRange() {
         int x = STORAGE_LEFT_X - 1;
         int y = STORAGE_TOP_Y - 1; // x >= STORAGE_LEFT_X is false, falls through
-        board.setTile(new Position(x, y), new Floor());
+        board.setTile(new Position(x, y), Floor.INSTANCE);
         BoardGenerator.placeWall(board, new Position(x, y));
         assertInstanceOf(Wall.class, board.getTile(new Position(x, y)));
     }

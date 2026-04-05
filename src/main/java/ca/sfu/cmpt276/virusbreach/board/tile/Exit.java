@@ -13,9 +13,12 @@ import javafx.scene.paint.Color;
  * If the player has collected all data, then they can win the game by stepping on this tile.
  */
 public class Exit extends TileType {
+    /**
+     * The exit singleton.
+     */
     public static final TileType INSTANCE = new Exit();
 
-    public Exit() {
+    private Exit() {
         super(false);
     }
 

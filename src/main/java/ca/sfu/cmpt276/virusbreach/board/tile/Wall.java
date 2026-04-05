@@ -11,9 +11,12 @@ import javafx.scene.paint.Color;
  * Divides rooms and encloses the board.
  */
 public class Wall extends TileType {
+    /**
+     * The wall singleton instance.
+     */
     public static final TileType INSTANCE = new Wall();
 
-    public Wall() {
+    private Wall() {
         super(true);
     }
 
