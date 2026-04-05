@@ -40,6 +40,19 @@ public class AnimatedNode<T extends Entity> extends SimpleRenderNode<T> {
         }
     }
 
+    /**
+     * Creates a render node factory for an animated node with the specified sprites.
+     *
+     * @param idleSprite the sprite to use when idle
+     * @param frameInterval the number of in-game ticks to wait before switching to a new frame
+     * @param movingSprites the sequence of sprites to use when the entity is moving
+     * @return a factory to render the specified type of entity
+     * @param <T> the type of entity being rendered
+     */
+    public static <T extends Entity> RenderNodeRegistry.RenderNodeFactory<T> factory(String idleSprite, int frameInterval, String... movingSprites) {
+        return e -> new AnimatedNode<>(e, idleSprite, frameInterval, movingSprites);
+    }
+
     @Override
     public void synchronize() {
         if (this.object == null) {

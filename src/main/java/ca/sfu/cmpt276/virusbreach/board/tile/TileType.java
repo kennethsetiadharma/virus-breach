@@ -3,7 +3,6 @@ package ca.sfu.cmpt276.virusbreach.board.tile;
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.math.Position;
-import javafx.scene.Node;
 
 /**
  * Represents the floor and obstacles on the board.
@@ -11,7 +10,7 @@ import javafx.scene.Node;
  *
  * @see Board
  */
-public abstract class TileType {
+public class TileType {
     /**
      * If {@code true}, then the tile cannot be traversed onto.
      */
@@ -42,13 +41,4 @@ public abstract class TileType {
     public boolean isSolid() {
         return this.solid;
     }
-
-    /**
-     * Creates a render node for display.
-     *
-     * @param board    the board that the tile is placed on
-     * @param position the position of the tile on the board
-     * @return a {@link Node} that represents this tile, for display.
-     */
-    public abstract Node createNode(Board board, Position position);
 }

@@ -1,7 +1,7 @@
 package ca.sfu.cmpt276.virusbreach.board.entity;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
-import ca.sfu.cmpt276.virusbreach.board.tile.OpenDoor;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
 
@@ -30,7 +30,7 @@ public class DecryptionKey extends Collectable {
      */
     @Override
     protected void onCollectedByPlayer() {
-        this.board.setTile(this.doorToUnlock, OpenDoor.INSTANCE);
+        this.board.setTile(this.doorToUnlock, TileTypes.OPEN_DOOR);
         AudioManager.play("bonus.wav");
     }
 }

@@ -7,8 +7,8 @@ import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
-import ca.sfu.cmpt276.virusbreach.board.tile.OpenDoor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.*;
@@ -63,10 +63,7 @@ public class GameMenu extends Menu implements BoardObserver {
         this.tileNodes = new Node[board.height()][board.width()];
         for (int x = 0; x < board.width(); x++) {
             for (int y = 0; y < board.height(); y++) {
-                Node node = board.getTile(new Position(x, y)).createNode(board, new Position(x, y));
-                node.setTranslateX(Position.fromGrid(x));
-                node.setTranslateY(Position.fromGrid(y));
-                node.setTranslateZ(-1.0);
+                Node node = RenderNodeRegistry.createRenderNodeForTile(board, new Position(x, y));
                 this.tileNodes[y][x] = node;
                 this.entities.getChildren().add(node);
             }
@@ -217,15 +214,12 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onTileChanged(Position position, TileType tile) {
-        if (tile == OpenDoor.INSTANCE) {
+        if (tile == TileTypes.OPEN_DOOR) {
             Platform.runLater(hud::showServerRoomBanner);
         }
         Platform.runLater(() -> {
             Node oldNode = this.tileNodes[position.y()][position.x()];
-            Node newNode = tile.createNode(this.board, position);
-            newNode.setTranslateX(Position.fromGrid(position.x()));
-            newNode.setTranslateY(Position.fromGrid(position.y()));
-            newNode.setTranslateZ(-1.0);
+            Node newNode = RenderNodeRegistry.createRenderNodeForTile(this.board, position);
             this.tileNodes[position.y()][position.x()] = newNode;
             int index = this.entities.getChildren().indexOf(oldNode);
             this.entities.getChildren().set(index, newNode);

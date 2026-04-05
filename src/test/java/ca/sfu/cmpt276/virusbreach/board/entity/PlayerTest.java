@@ -2,9 +2,8 @@ package ca.sfu.cmpt276.virusbreach.board.entity;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.TestHelper;
-import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
-import ca.sfu.cmpt276.virusbreach.board.tile.Wall;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import org.junit.jupiter.api.Test;
@@ -96,10 +95,10 @@ class PlayerTest {
         Board board = TestHelper.createEnclosedBoard(5, 5);
         Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
-        board.setTile(new Position(1, 2), Wall.INSTANCE);
-        board.setTile(new Position(2, 3), Wall.INSTANCE);
-        board.setTile(new Position(3, 2), Wall.INSTANCE);
-        board.setTile(new Position(2, 1), Wall.INSTANCE);
+        board.setTile(new Position(1, 2), TileTypes.WALL);
+        board.setTile(new Position(2, 3), TileTypes.WALL);
+        board.setTile(new Position(3, 2), TileTypes.WALL);
+        board.setTile(new Position(2, 1), TileTypes.WALL);
 
         for (Direction direction : Direction.values()) {
             player.startMoving(direction);
@@ -115,7 +114,7 @@ class PlayerTest {
      */
     @Test
     void cannotMoveOutOfBounds() {
-        Board board = new Board(new TileType[][]{{Floor.INSTANCE}});
+        Board board = new Board(new TileType[][]{{TileTypes.FLOOR}});
         Player player = new Player(board, new Position(0, 0));
         board.addEntity(player);
 

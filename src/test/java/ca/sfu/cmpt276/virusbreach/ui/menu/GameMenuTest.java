@@ -6,8 +6,7 @@ import ca.sfu.cmpt276.virusbreach.board.TestHelper;
 import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
-import ca.sfu.cmpt276.virusbreach.board.tile.OpenDoor;
-import ca.sfu.cmpt276.virusbreach.board.tile.Wall;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
 import javafx.scene.Group;
@@ -143,7 +142,7 @@ class GameMenuTest {
         setUpGame(5, 5, 2, 2);
         Node before = this.menu.getTileNode(new Position(1, 1));
 
-        this.menu.onTileChanged(new Position(1, 1), Wall.INSTANCE);
+        this.menu.onTileChanged(new Position(1, 1), TileTypes.WALL);
 
         WaitForAsyncUtils.waitForFxEvents();
         Node after = this.menu.getTileNode(new Position(1, 1));
@@ -155,7 +154,7 @@ class GameMenuTest {
     void tileChangeOpenServerRoom() {
         setUpGame(5, 5, 2, 2);
 
-        this.menu.onTileChanged(new Position(1, 1), OpenDoor.INSTANCE);
+        this.menu.onTileChanged(new Position(1, 1), TileTypes.OPEN_DOOR);
 
         WaitForAsyncUtils.waitForFxEvents();
 

@@ -1,7 +1,7 @@
 package ca.sfu.cmpt276.virusbreach.board;
 
 import ca.sfu.cmpt276.virusbreach.board.entity.DecryptionKey;
-import ca.sfu.cmpt276.virusbreach.board.tile.Wall;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 
 /**
@@ -60,11 +60,11 @@ public class StorageRoom extends Room {
 
         // Horizontal arm (length 2 on each side)
         for (int dx = -2; dx <= 2; dx++) {
-            board.setTile(new Position(cx + dx, cy), Wall.INSTANCE);
+            board.setTile(new Position(cx + dx, cy), TileTypes.WALL);
         }
         // Vertical arm (length 2 above and below, centre already placed)
         for (int dy = -2; dy <= 2; dy++) {
-            board.setTile(new Position(cx, cy + dy), Wall.INSTANCE);
+            board.setTile(new Position(cx, cy + dy), TileTypes.WALL);
         }
     }
 }

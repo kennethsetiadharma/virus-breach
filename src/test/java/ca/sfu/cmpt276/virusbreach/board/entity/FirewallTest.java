@@ -3,8 +3,8 @@ package ca.sfu.cmpt276.virusbreach.board.entity;
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.BoardObserver;
 import ca.sfu.cmpt276.virusbreach.board.TestHelper;
-import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import org.junit.jupiter.api.Test;
@@ -164,7 +164,7 @@ class FirewallTest extends CollectableTest implements BoardObserver{
      */
     @Test
     void cannotSpreadOOB() {
-        Board board = new Board(new TileType[][] {{Floor.INSTANCE}});
+        Board board = new Board(new TileType[][] {{TileTypes.FLOOR}});
         Firewall firewall = new Firewall(board, new Position(0,0));
         board.addEntity(firewall);
 

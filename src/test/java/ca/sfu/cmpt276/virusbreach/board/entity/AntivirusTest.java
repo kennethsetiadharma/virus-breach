@@ -2,9 +2,8 @@ package ca.sfu.cmpt276.virusbreach.board.entity;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.TestHelper;
-import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
-import ca.sfu.cmpt276.virusbreach.board.tile.Wall;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Direction;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import org.junit.jupiter.api.Test;
@@ -101,7 +100,7 @@ class AntivirusTest {
         Antivirus antivirus = new Antivirus(board, new Position(3, 2));
 
         board.addEntity(antivirus);
-        board.setTile(new Position(2, 2), Wall.INSTANCE);
+        board.setTile(new Position(2, 2), TileTypes.WALL);
         board.addEntity(new Player(board, new Position(1, 2)));
 
         for (int i = 0; i < Antivirus.MOVEMENT_TICKS * 4; i++) {
@@ -121,10 +120,10 @@ class AntivirusTest {
         Antivirus antivirus = new Antivirus(board, new Position(3, 3));
 
         board.addEntity(antivirus);
-        board.setTile(new Position(1, 1), Floor.INSTANCE);
-        board.setTile(new Position(1, 2), Wall.INSTANCE);
-        board.setTile(new Position(2, 2), Wall.INSTANCE);
-        board.setTile(new Position(2, 1), Wall.INSTANCE);
+        board.setTile(new Position(1, 1), TileTypes.FLOOR);
+        board.setTile(new Position(1, 2), TileTypes.WALL);
+        board.setTile(new Position(2, 2), TileTypes.WALL);
+        board.setTile(new Position(2, 1), TileTypes.WALL);
         board.addEntity(new Player(board, new Position(1, 1)));
 
         // should not move
@@ -141,7 +140,7 @@ class AntivirusTest {
      */
     @Test
     void noPathOOB() {
-        Board board = new Board(new TileType[][]{{Floor.INSTANCE, Wall.INSTANCE, Floor.INSTANCE}});
+        Board board = new Board(new TileType[][]{{TileTypes.FLOOR, TileTypes.WALL, TileTypes.FLOOR}});
         Antivirus antivirus = new Antivirus(board, new Position(0, 0));
 
         board.addEntity(antivirus);
@@ -212,12 +211,12 @@ class AntivirusTest {
         //W        W
         //WWWWWWWWWW
         for (int i = 2; i < 8; i++) {
-            board.setTile(new Position(i, 2), Wall.INSTANCE);
-            board.setTile(new Position(i, 7), Wall.INSTANCE);
-            board.setTile(new Position(2, i), Wall.INSTANCE);
-            board.setTile(new Position(7, i), Wall.INSTANCE);
+            board.setTile(new Position(i, 2), TileTypes.WALL);
+            board.setTile(new Position(i, 7), TileTypes.WALL);
+            board.setTile(new Position(2, i), TileTypes.WALL);
+            board.setTile(new Position(7, i), TileTypes.WALL);
         }
-        board.setTile(new Position(2, 1), Wall.INSTANCE);
+        board.setTile(new Position(2, 1), TileTypes.WALL);
 
         board.addEntity(antivirus);
         board.addEntity(player);
@@ -249,8 +248,8 @@ class AntivirusTest {
         //W       AW
         //WWWWWWWWWW
         for (int i = 2; i < 8; i++) {
-            board.setTile(new Position(i, 2), Wall.INSTANCE);
-            board.setTile(new Position(2, i), Wall.INSTANCE);
+            board.setTile(new Position(i, 2), TileTypes.WALL);
+            board.setTile(new Position(2, i), TileTypes.WALL);
         }
 
         board.addEntity(antivirus);
@@ -269,10 +268,10 @@ class AntivirusTest {
         Antivirus antivirus = new Antivirus(board, new Position(2, 2));
         board.addEntity(antivirus);
 
-        board.setTile(new Position(1, 1), Wall.INSTANCE);
+        board.setTile(new Position(1, 1), TileTypes.WALL);
         assertTrue(antivirus.getSolidState()[1][1]);
 
-        board.setTile(new Position(1, 1), Floor.INSTANCE);
+        board.setTile(new Position(1, 1), TileTypes.FLOOR);
         assertFalse(antivirus.getSolidState()[1][1]);
 
         board.removeEntity(antivirus);

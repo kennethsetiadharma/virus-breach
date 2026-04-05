@@ -2,14 +2,14 @@ package ca.sfu.cmpt276.virusbreach.board;
 
 import ca.sfu.cmpt276.virusbreach.BoardGenerator;
 import ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken;
-import ca.sfu.cmpt276.virusbreach.board.tile.Wall;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 
 /**
  * The Server Room, located in the top-left corner of the board.
- * Access is locked behind the {@link ca.sfu.cmpt276.virusbreach.board.tile.LockedDoor}
- * until the player collects the {@link ca.sfu.cmpt276.virusbreach.board.entity.DecryptionKey}
- * from the Storage Room. Contains the {@link ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken} buff.
+ * Access is locked behind the {@link TileTypes#LOCKED_DOOR Locked Door}.
+ * until the player collects the {@link ca.sfu.cmpt276.virusbreach.board.entity.DecryptionKey Decryption Key}
+ * from the Storage Room. Contains the {@link ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken Freeze Token} buff.
  */
 public class ServerRoom extends Room {
     /**
@@ -61,25 +61,25 @@ public class ServerRoom extends Room {
         int arm    = 3; // tiles per arm including the corner tile
 
         // Top-left: arms go right and down
-        for (int i = 0; i < arm; i++) board.setTile(new Position(left + i, top),     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(new Position(left,     top + i), Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(left + i, top),     TileTypes.WALL);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(left,     top + i), TileTypes.WALL);
 
         // Top-right: arms go left and down
-        for (int i = 0; i < arm; i++) board.setTile(new Position(right - i, top),     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(new Position(right,     top + i), Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(right - i, top),     TileTypes.WALL);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(right,     top + i), TileTypes.WALL);
 
         // Bottom-left: arms go right and up
-        for (int i = 0; i < arm; i++) board.setTile(new Position(left + i, bottom),     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(new Position(left,     bottom - i), Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(left + i, bottom),     TileTypes.WALL);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(left,     bottom - i), TileTypes.WALL);
 
         // Bottom-right: arms go left and up
-        for (int i = 0; i < arm; i++) board.setTile(new Position(right - i, bottom),     Wall.INSTANCE);
-        for (int i = 1; i < arm; i++) board.setTile(new Position(right,     bottom - i), Wall.INSTANCE);
+        for (int i = 0; i < arm; i++) board.setTile(new Position(right - i, bottom),     TileTypes.WALL);
+        for (int i = 1; i < arm; i++) board.setTile(new Position(right,     bottom - i), TileTypes.WALL);
 
         // Small cross centered in the room (arm length 1)
         int cx = this.x + this.width / 2;
         int cy = this.y + this.height / 2;
-        for (int dx = -1; dx <= 1; dx++) board.setTile(new Position(cx + dx, cy),      Wall.INSTANCE);
-        for (int dy = -1; dy <= 1; dy++) board.setTile(new Position(cx,      cy + dy), Wall.INSTANCE);
+        for (int dx = -1; dx <= 1; dx++) board.setTile(new Position(cx + dx, cy),      TileTypes.WALL);
+        for (int dy = -1; dy <= 1; dy++) board.setTile(new Position(cx,      cy + dy), TileTypes.WALL);
     }
 }

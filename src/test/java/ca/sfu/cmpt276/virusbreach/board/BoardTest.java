@@ -4,8 +4,8 @@ import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
 import ca.sfu.cmpt276.virusbreach.board.entity.SourceCode;
-import ca.sfu.cmpt276.virusbreach.board.tile.Floor;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
+import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import org.junit.jupiter.api.Test;
 
@@ -136,7 +136,7 @@ class BoardTest implements BoardObserver {
         assertThrows(IllegalArgumentException.class, () -> new Board(new TileType[0][0]));
         assertThrows(IllegalArgumentException.class, () -> new Board(new TileType[1][0]));
         assertThrows(IllegalArgumentException.class, () -> new Board(new TileType[0][1]));
-        assertDoesNotThrow(() -> new Board(new TileType[][] {{Floor.INSTANCE}}));
+        assertDoesNotThrow(() -> new Board(new TileType[][] {{TileTypes.FLOOR}}));
     }
 
     /**
