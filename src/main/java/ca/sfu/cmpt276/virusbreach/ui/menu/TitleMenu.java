@@ -90,6 +90,14 @@ public class TitleMenu extends Menu {
         this.game.startNewGame();
     }
 
+    /**
+     * Create a menu button with set styling
+     * 
+     * @param text button text
+     * @param iconAsset icon on the button
+     * @param action action on click
+     * @return created button
+     */
     private Button createMenuButton(String text, String iconAsset, EventHandler<ActionEvent> action) {
         Button button = new Button(text);
         button.setGraphic(Menu.iconView(iconAsset));
@@ -100,6 +108,9 @@ public class TitleMenu extends Menu {
         return button;
     }
 
+    /**
+     * Advance to the next background frame 
+     */
     private void advanceBackgroundFrame() {
         this.backgroundFrameIndex = (this.backgroundFrameIndex + 1) % BACKGROUND_FRAMES.length;
         this.setBackground(this.backgroundFrames[this.backgroundFrameIndex]);
