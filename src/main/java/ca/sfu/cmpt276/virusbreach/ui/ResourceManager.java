@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.MediaException;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -60,7 +61,10 @@ public class ResourceManager {
     public static Image fetchImage(String asset) {
         return IMAGE_CACHE.computeIfAbsent(asset, path -> {
             String uri = getResourceURI(path);
-            return uri == null ? null : new Image(uri, false);
+            if (uri == null) return null;
+            Image image = new Image(uri, false);
+            if (image.isError()) return null;
+            return image;
         });
     }
 
@@ -74,7 +78,12 @@ public class ResourceManager {
     public static AudioClip fetchAudio(String asset) {
         return AUDIO_CACHE.computeIfAbsent("/sounds/" + asset, path -> {
             String uri = getResourceURI(path);
-            return uri == null ? null : new AudioClip(uri);
+            if (uri == null) return null;
+            try {
+                return new AudioClip(uri);
+            } catch (MediaException ignore) {
+                return null;
+            }
         });
     }
 

@@ -3,13 +3,10 @@ package ca.sfu.cmpt276.virusbreach.ui;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static ca.sfu.cmpt276.virusbreach.math.Position.UNIT_SIZE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,6 +65,18 @@ class ResourceManagerTest {
         assertNull(ResourceManager.fetchImage("non-existent uri"));
     }
 
+    /**
+     * Ensure that attempting to load a non-image file as an image does not crash the game.
+     */
+    @Test
+    void readImageFromNonImage() {
+        Image image;
+
+        image = assertDoesNotThrow(() -> ResourceManager.fetchImage("/sounds/bonus.wav"));
+
+        assertNull(image);
+    }
+
     @Test
     void fallbackFontInvalidSource() {
         String font = ResourceManager.fetchFont("non-existent uri");
@@ -80,5 +89,29 @@ class ResourceManagerTest {
         String font = ResourceManager.fetchFont(null);
 
         assertEquals(ResourceManager.FALLBACK_FONT_FAMILY, font);
+    }
+
+    /**
+     * Ensure that attempting to load a non-font file as a font does not crash the game.
+     */
+    @Test
+    void fallbackInvalidFont() {
+        String font;
+
+        font = assertDoesNotThrow(() -> ResourceManager.fetchFont("/sprites/player.png"));
+
+        assertEquals(ResourceManager.FALLBACK_FONT_FAMILY, font);
+    }
+
+    /**
+     * Ensure that attempting to load a non-audio file as audio does not crash the game.
+     */
+    @Test
+    void fallbackInvalidAudioStream() {
+        AudioClip clip;
+
+        clip = assertDoesNotThrow(() -> ResourceManager.fetchAudio("../sprites/player.png"));
+
+        assertNull(clip);
     }
 }

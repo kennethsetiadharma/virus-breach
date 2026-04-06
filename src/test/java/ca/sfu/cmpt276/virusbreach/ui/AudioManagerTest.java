@@ -1,7 +1,6 @@
 package ca.sfu.cmpt276.virusbreach.ui;
 
 import ca.sfu.cmpt276.virusbreach.GameOptions;
-import javafx.scene.media.AudioClip;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

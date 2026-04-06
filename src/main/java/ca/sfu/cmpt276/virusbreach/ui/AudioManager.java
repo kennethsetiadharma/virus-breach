@@ -1,12 +1,7 @@
 package ca.sfu.cmpt276.virusbreach.ui;
 
 import ca.sfu.cmpt276.virusbreach.GameOptions;
-import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import javafx.scene.media.AudioClip;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Manages game audio playback. 
