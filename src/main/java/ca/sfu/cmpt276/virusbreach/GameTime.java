@@ -24,4 +24,8 @@ public final class GameTime {
         int totalSeconds = ticksToSeconds(ticks);
         return String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60);
     }
+
+    GameTime() {
+        throw new UnsupportedOperationException("This class should not be instantiated.");
+    }
 }

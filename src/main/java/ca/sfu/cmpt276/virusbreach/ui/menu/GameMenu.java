@@ -202,9 +202,7 @@ public class GameMenu extends Menu implements BoardObserver {
         if (entity instanceof FreezeToken) {
             runImmediatelyIfOnFx(hud::showFreezeBanner);
         }
-        runImmediatelyIfOnFx(() -> this.entities.getChildren().removeIf(n -> {
-            return n instanceof RenderNode<?> rn && rn.getObject() == entity;
-        }));
+        runImmediatelyIfOnFx(() -> this.entities.getChildren().removeIf(n -> n instanceof RenderNode<?> rn && rn.getObject() == entity));
     }
 
     /**

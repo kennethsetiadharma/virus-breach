@@ -50,8 +50,8 @@ public class Firewall extends Collectable {
 
         for (Direction dir : dirs) {
             Position adj = this.getPosition().relative(dir);
-            if (board.contains(adj) && !board.getTile(adj).isSolid() && board.getEntitiesAt(new Position(adj.x(), adj.y())).isEmpty()) {
-                board.addEntity(new Firewall(board, new Position(adj.x(), adj.y())));
+            if (board.contains(adj) && !board.getTile(adj).isSolid() && board.getEntitiesAt(adj).isEmpty()) {
+                board.addEntity(new Firewall(board, adj));
                 return;
             }
         }

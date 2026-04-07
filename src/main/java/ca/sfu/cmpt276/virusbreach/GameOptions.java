@@ -29,6 +29,6 @@ public class GameOptions {
      * @param volume the volume to set
      */
     public void setVolume(double volume) {
-        this.volume = Math.max(0.0, Math.min(1.0, volume));
+        this.volume = Math.clamp(volume, 0.0, 1.0);
     }
 }

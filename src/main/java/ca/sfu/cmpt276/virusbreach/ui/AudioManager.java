@@ -60,26 +60,24 @@ public class AudioManager {
     }
 
     /**
-     * Getter for preloaded assets
-     * 
-     * @return list of preloaded asset paths
+     * Used for testing only.
+     * {@return array of audio files to be pre-loaded on game start}
      */
     static String[] getPreloadedAssets() {
         return PRELOADED_ASSETS;
     }
 
     /**
-     * Getter for options
-     * 
-     * @return game options
+     * Used for testing only.
+     * {@return the options for the currently running game instance}
      */
     static GameOptions getOptions() {
         return options;
     }
 
     /**
-     * Setter for options
-     * 
+     * Sets the active game options. Used for testing only.
+     *
      * @param options new options to set
      */
     static void setOptions(GameOptions options) {
@@ -87,17 +85,16 @@ public class AudioManager {
     }
 
     /**
-     * Getter for initialized state
-     * 
-     * @return true if audio manager is initialized, false if not
+     * Used for testing only.
+     * {@return {@code true} if audio manager is initialized, {@code false} if not}
      */
     static boolean isInitialized() {
         return initialized;
     }
 
     /**
-     * Setter for initialized state
-     * 
+     * Setter for initialized state. Used for testing only.
+     *
      * @param initialized new initialized state to set
      */
     static void setInitialized(boolean initialized) {
