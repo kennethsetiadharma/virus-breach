@@ -42,87 +42,17 @@ public class BoardGenerator {
         int width  = board.width();
         int height = board.height();
 
-        // Fill entire board with floor
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                board.setTile(new Position(x, y), TileTypes.FLOOR);
-            }
-        }
+        // Fill the board and place outer walls
+        placeOuterWalls(board, width, height);
 
-        // Outer perimeter walls
-        for (int x = 1; x < width - 1; x++) {
-            board.setTile(new Position(x, 0), TileTypes.WALL);
-            board.setTile(new Position(x, height - 1), TileTypes.WALL);
-        }
-        for (int y = 1; y < height - 1; y++) {
-            board.setTile(new Position(0, y), TileTypes.WALL);
-            board.setTile(new Position(width - 1, y), TileTypes.WALL);
-        }
+        // Create server and storage rooms with their walls and doors
+        placeRooms(board, width, height);
 
-        // Corner walls
-        board.setTile(new Position(0, 0), TileTypes.WALL);
-        board.setTile(new Position(0, height - 1), TileTypes.WALL);
-        board.setTile(new Position(width - 1, height - 1), TileTypes.WALL);
-        board.setTile(new Position(width - 1, 0), TileTypes.WALL);
-
-        // Server room — top-left corner, bounded by the outer perimeter on the top and left.
-        // Right boundary wall: vertical at x = SERVER_ROOM_WIDTH, with a doorway at mid-height.
-        int doorY = SERVER_ROOM_HEIGHT / 2;
-        for (int y = 1; y <= SERVER_ROOM_HEIGHT; y++) {
-            board.setTile(new Position(SERVER_ROOM_WIDTH, y), y == doorY ? TileTypes.LOCKED_DOOR : TileTypes.WALL);
-        }
-        // Bottom boundary wall: horizontal at y = SERVER_ROOM_HEIGHT.
-        for (int x = 1; x <= SERVER_ROOM_WIDTH; x++) {
-            board.setTile(new Position(x, SERVER_ROOM_HEIGHT), TileTypes.WALL);
-        }
-
-        // Storage room — bottom-right corner, bounded by the outer perimeter on the right and bottom.
-        // Walls are placed before entity spawning so entities cannot occupy wall positions.
-        int storageLeftX = width  - 1 - STORAGE_FROM_RIGHT;  // x = width-12
-        int storageTopY  = height - 1 - STORAGE_FROM_BOTTOM; // y = height-9
-        int storageDoorY = storageTopY + STORAGE_FROM_BOTTOM / 2; // mid-height of the left wall
-
-        // Left wall
-        for (int y = storageTopY; y <= height - 2; y++) {
-            if (y == storageDoorY) continue; // doorway gap
-            board.setTile(new Position(storageLeftX, y), TileTypes.WALL);
-        }
-        // Top wall
-        for (int x = storageLeftX; x <= width - 2; x++) {
-            board.setTile(new Position(x, storageTopY), TileTypes.WALL);
-        }
-
-        // Player entrance: random position along the bottom perimeter, excluding the storage room's x range
-        int playerX = board.getRandom().nextInt(1, storageLeftX);
-        board.setTile(new Position(playerX, height - 1), TileTypes.ENTRANCE);
-        board.addEntity(new Player(board, new Position(playerX, height - 1)));
-
-        // Exit: top perimeter, outside the server room's top edge
-        board.setTile(new Position(board.getRandom().nextInt(SERVER_ROOM_WIDTH + 1, width - 1), 0), TileTypes.EXIT);
-
-        // Furnish rooms before entity spawning so their internal walls exist when spawnAnywhere runs
-        // This prevents entities from spawning inside the rooms' internal wall layouts, which would trap 
-        // them and make them inaccessible to the player.
-        ServerRoom serverRoom = new ServerRoom(new Position(0, 0), SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT,
-                new Position(SERVER_ROOM_WIDTH, doorY));
-        serverRoom.furnishRoom(board);
-
-        StorageRoom storageRoom = new StorageRoom(new Position(storageLeftX, storageTopY),
-                STORAGE_FROM_RIGHT, STORAGE_FROM_BOTTOM, new Position(storageLeftX, storageDoorY),
-                new Position(SERVER_ROOM_WIDTH, doorY));
-        storageRoom.furnishRoom(board);
-
-        // Internal maze walls across the whole board, skipping the server room interior
+        // Add random maze walls throughout the interior
         generateWalls(board, width, height);
 
-        // Spawn entities across the whole board interior
-        for (int i = 0; i < 6; i++) {
-            spawnAnywhere(board, 1, 1, width - 1, height - 1, Data::new);
-        }
-        for (int i = 0; i < 10; i++) {
-            spawnAnywhere(board, 1, 1, width - 1, height - 1, Firewall::new);
-        }
-        spawnAnywhere(board, 1, 1, width - 1, height - 1, Antivirus::new);
+        // Spawn all entities (data, firewalls, antivirus)
+        spawnAllEntities(board, width, height);
     }
 
     /**
@@ -216,6 +146,101 @@ public class BoardGenerator {
 
         if (!board.getTile(position).isSolid())
             board.setTile(position, TileTypes.WALL);
+    }
+
+    /**
+     * Fills the entire board with floor tiles and places outer perimeter walls.
+     */
+    private static void placeOuterWalls(Board board, int width, int height) {
+        // Fill entire board with floor
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                board.setTile(new Position(x, y), TileTypes.FLOOR);
+            }
+        }
+
+        // Outer perimeter walls
+        for (int x = 1; x < width - 1; x++) {
+            board.setTile(new Position(x, 0), TileTypes.WALL);
+            board.setTile(new Position(x, height - 1), TileTypes.WALL);
+        }
+        for (int y = 1; y < height - 1; y++) {
+            board.setTile(new Position(0, y), TileTypes.WALL);
+            board.setTile(new Position(width - 1, y), TileTypes.WALL);
+        }
+
+        // Corner walls
+        board.setTile(new Position(0, 0), TileTypes.WALL);
+        board.setTile(new Position(0, height - 1), TileTypes.WALL);
+        board.setTile(new Position(width - 1, height - 1), TileTypes.WALL);
+        board.setTile(new Position(width - 1, 0), TileTypes.WALL);
+    }
+
+    /**
+     * Creates server room and storage room with their walls, doors, and furnishings.
+     * Also places player entrance and exit.
+     */
+    private static void placeRooms(Board board, int width, int height) {
+        // Server room — top-left corner, bounded by the outer perimeter on the top and left.
+        // Right boundary wall: vertical at x = SERVER_ROOM_WIDTH, with a doorway at mid-height.
+        int doorY = SERVER_ROOM_HEIGHT / 2;
+        for (int y = 1; y <= SERVER_ROOM_HEIGHT; y++) {
+            board.setTile(new Position(SERVER_ROOM_WIDTH, y), y == doorY ? TileTypes.LOCKED_DOOR : TileTypes.WALL);
+        }
+        // Bottom boundary wall: horizontal at y = SERVER_ROOM_HEIGHT.
+        for (int x = 1; x <= SERVER_ROOM_WIDTH; x++) {
+            board.setTile(new Position(x, SERVER_ROOM_HEIGHT), TileTypes.WALL);
+        }
+
+        // Storage room — bottom-right corner, bounded by the outer perimeter on the right and bottom.
+        // Walls are placed before entity spawning so entities cannot occupy wall positions.
+        int storageLeftX = width  - 1 - STORAGE_FROM_RIGHT;  // x = width-12
+        int storageTopY  = height - 1 - STORAGE_FROM_BOTTOM; // y = height-9
+        int storageDoorY = storageTopY + STORAGE_FROM_BOTTOM / 2; // mid-height of the left wall
+
+        // Left wall
+        for (int y = storageTopY; y <= height - 2; y++) {
+            if (y == storageDoorY) continue; // doorway gap
+            board.setTile(new Position(storageLeftX, y), TileTypes.WALL);
+        }
+        // Top wall
+        for (int x = storageLeftX; x <= width - 2; x++) {
+            board.setTile(new Position(x, storageTopY), TileTypes.WALL);
+        }
+
+        // Player entrance: random position along the bottom perimeter, excluding the storage room's x range
+        int playerX = board.getRandom().nextInt(1, storageLeftX);
+        board.setTile(new Position(playerX, height - 1), TileTypes.ENTRANCE);
+        board.addEntity(new Player(board, new Position(playerX, height - 1)));
+
+        // Exit: top perimeter, outside the server room's top edge
+        board.setTile(new Position(board.getRandom().nextInt(SERVER_ROOM_WIDTH + 1, width - 1), 0), TileTypes.EXIT);
+
+        // Furnish rooms before entity spawning so their internal walls exist when spawnAnywhere runs
+        // This prevents entities from spawning inside the rooms' internal wall layouts, which would trap 
+        // them and make them inaccessible to the player.
+        ServerRoom serverRoom = new ServerRoom(new Position(0, 0), SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT,
+                new Position(SERVER_ROOM_WIDTH, doorY));
+        serverRoom.furnishRoom(board);
+
+        StorageRoom storageRoom = new StorageRoom(new Position(storageLeftX, storageTopY),
+                STORAGE_FROM_RIGHT, STORAGE_FROM_BOTTOM, new Position(storageLeftX, storageDoorY),
+                new Position(SERVER_ROOM_WIDTH, doorY));
+        storageRoom.furnishRoom(board);
+    }
+
+    /**
+     * Spawns all game entities (data, firewalls, antivirus) randomly across the board.
+     */
+    private static void spawnAllEntities(Board board, int width, int height) {
+        // Spawn entities across the whole board interior
+        for (int i = 0; i < 6; i++) {
+            spawnAnywhere(board, 1, 1, width - 1, height - 1, Data::new);
+        }
+        for (int i = 0; i < 10; i++) {
+            spawnAnywhere(board, 1, 1, width - 1, height - 1, Firewall::new);
+        }
+        spawnAnywhere(board, 1, 1, width - 1, height - 1, Antivirus::new);
     }
 
     /**
