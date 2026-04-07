@@ -13,6 +13,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.5.0</version>
         <configuration>
           <archive>
             <manifest>
@@ -54,7 +55,7 @@
         <version>3.5.5</version>
         <configuration>
           <argLine>
-            ${argLine} -Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw --enable-native-access=ALL-UNNAMED
+            ${argLine} -Djava.awt.headless=true -Dtestfx.robot=glass -Dglass.platform=Headless -Dprism.order=sw --enable-native-access=ALL-UNNAMED
           </argLine>
         </configuration>
       </plugin>
@@ -112,28 +113,32 @@
       <version>4.0.18</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.testfx</groupId>
-      <artifactId>openjfx-monocle</artifactId>
-      <version>21.0.2</version>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>26</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>26</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>21.0.10</version>
+      <version>26</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-media</artifactId>
-      <version>21.0.10</version>
+      <version>26</version>
     </dependency>
   </dependencies>
 
   <properties>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
+    <maven.compiler.source>25</maven.compiler.source>
+    <maven.compiler.target>25</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

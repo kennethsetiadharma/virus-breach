@@ -33,7 +33,7 @@ public class Board {
     /**
      * When enabled, exceptions do not shut down the JavaFX context, to allow future tests to run.
      */
-    public static boolean testMode = Boolean.getBoolean("testfx.headless") || Boolean.getBoolean("java.awt.headless");
+    public static boolean testMode = Boolean.getBoolean("java.awt.headless");
 
     /**
      * Executor that runs the game loop on a fixed interval.
