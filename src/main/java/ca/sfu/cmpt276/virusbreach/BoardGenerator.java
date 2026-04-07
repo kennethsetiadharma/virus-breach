@@ -128,39 +128,110 @@ public class BoardGenerator {
     }
 
     /**
-     * Places a wall at (x, y) if the tile is inside the playable area,
-     * not inside a special room, not within 1 tile of a room boundary wall,
-     * not a room doorway, and not already solid.
+     * Places a wall at the given position if it's a valid location.
+     * A valid location is one that's within bounds, not in restricted areas,
+     * and not already solid.
      */
     static void placeWall(Board board, Position position) {
-        int width  = board.width();
-        int height = board.height();
-
-        if (position.x() <= 0 || position.x() >= width - 1 || position.y() <= 0 || position.y() >= height - 1) return;
-
-        // Skip server room interior and its doorway
-        if (position.x() > 0 && position.x() < SERVER_ROOM_WIDTH && position.y() > 0 && position.y() < SERVER_ROOM_HEIGHT) return;
-        if (position.x() == SERVER_ROOM_WIDTH && position.y() == SERVER_ROOM_HEIGHT / 2) return;
-
-        // 1-tile buffer outside the server room's right wall (x = SERVER_ROOM_WIDTH)
-        if (position.x() == SERVER_ROOM_WIDTH + 1 && position.y() >= 1 && position.y() <= SERVER_ROOM_HEIGHT) return;
-        // 1-tile buffer outside the server room's bottom wall (y = SERVER_ROOM_HEIGHT)
-        if (position.y() == SERVER_ROOM_HEIGHT + 1 && position.x() >= 1 && position.x() <= SERVER_ROOM_WIDTH) return;
-
-        // Skip storage room interior and its doorway
-        int storageLeftX = width  - 1 - STORAGE_FROM_RIGHT;
-        int storageTopY  = height - 1 - STORAGE_FROM_BOTTOM;
-        int storageDoorY = storageTopY + STORAGE_FROM_BOTTOM / 2;
-        if (position.x() > storageLeftX && position.x() < width - 1 && position.y() > storageTopY && position.y() < height - 1) return;
-        if (position.x() == storageLeftX && position.y() == storageDoorY) return;
-
-        // 1-tile buffer outside the storage room's left wall (x = storageLeftX)
-        if (position.x() == storageLeftX - 1 && position.y() >= storageTopY && position.y() <= height - 2) return;
-        // 1-tile buffer outside the storage room's top wall (y = storageTopY)
-        if (position.y() == storageTopY - 1 && position.x() >= storageLeftX && position.x() <= width - 2) return;
-
-        if (!board.getTile(position).isSolid())
+        if (!isValidWallPosition(board, position)) return;
+        
+        if (!board.getTile(position).isSolid()) {
             board.setTile(position, TileTypes.WALL);
+        }
+    }
+
+    /**
+     * Checks if the given position is valid for wall placement.
+     * A position is valid if it's within bounds and not in any restricted area.
+     */
+    private static boolean isValidWallPosition(Board board, Position position) {
+        int width = board.width();
+        int height = board.height();
+        
+        return isWithinBounds(position, width, height) &&
+               !isInServerRoomArea(position) &&
+               !isInStorageRoomArea(position, width, height) &&
+               !isInBufferZone(position, width, height);
+    }
+
+    /**
+     * Checks if the position is within the playable bounds (not on the outer perimeter).
+     */
+    private static boolean isWithinBounds(Position position, int width, int height) {
+        return position.x() > 0 && position.x() < width - 1 && 
+               position.y() > 0 && position.y() < height - 1;
+    }
+
+    /**
+     * Checks if the position is inside the server room interior or at its doorway.
+     */
+    private static boolean isInServerRoomArea(Position position) {
+        // Server room interior
+        if (position.x() > 0 && position.x() < SERVER_ROOM_WIDTH && 
+            position.y() > 0 && position.y() < SERVER_ROOM_HEIGHT) {
+            return true;
+        }
+        
+        // Server room doorway
+        return position.x() == SERVER_ROOM_WIDTH && position.y() == SERVER_ROOM_HEIGHT / 2;
+    }
+
+    /**
+     * Checks if the position is inside the storage room interior or at its doorway.
+     */
+    private static boolean isInStorageRoomArea(Position position, int width, int height) {
+        int storageLeftX = width - 1 - STORAGE_FROM_RIGHT;
+        int storageTopY = height - 1 - STORAGE_FROM_BOTTOM;
+        int storageDoorY = storageTopY + STORAGE_FROM_BOTTOM / 2;
+        
+        // Storage room interior
+        if (position.x() > storageLeftX && position.x() < width - 1 && 
+            position.y() > storageTopY && position.y() < height - 1) {
+            return true;
+        }
+        
+        // Storage room doorway
+        return position.x() == storageLeftX && position.y() == storageDoorY;
+    }
+
+    /**
+     * Checks if the position is in a buffer zone (1-tile spacing around room walls).
+     */
+    private static boolean isInBufferZone(Position position, int width, int height) {
+        return isInServerRoomBufferZone(position) || isInStorageRoomBufferZone(position, width, height);
+    }
+
+    /**
+     * Checks if the position is in the 1-tile buffer zone around the server room.
+     */
+    private static boolean isInServerRoomBufferZone(Position position) {
+        // Buffer outside server room's right wall
+        if (position.x() == SERVER_ROOM_WIDTH + 1 && 
+            position.y() >= 1 && position.y() <= SERVER_ROOM_HEIGHT) {
+            return true;
+        }
+        
+        // Buffer outside server room's bottom wall
+        return position.y() == SERVER_ROOM_HEIGHT + 1 && 
+               position.x() >= 1 && position.x() <= SERVER_ROOM_WIDTH;
+    }
+
+    /**
+     * Checks if the position is in the 1-tile buffer zone around the storage room.
+     */
+    private static boolean isInStorageRoomBufferZone(Position position, int width, int height) {
+        int storageLeftX = width - 1 - STORAGE_FROM_RIGHT;
+        int storageTopY = height - 1 - STORAGE_FROM_BOTTOM;
+        
+        // Buffer outside storage room's left wall
+        if (position.x() == storageLeftX - 1 && 
+            position.y() >= storageTopY && position.y() <= height - 2) {
+            return true;
+        }
+        
+        // Buffer outside storage room's top wall
+        return position.y() == storageTopY - 1 && 
+               position.x() >= storageLeftX && position.x() <= width - 2;
     }
 
     /**
