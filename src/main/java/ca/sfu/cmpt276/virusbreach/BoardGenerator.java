@@ -26,6 +26,21 @@ public class BoardGenerator {
      * How many normal (required) rewards to spawn on the board
      */
     public static final int TOTAL_DATA = 6;
+    
+    /**
+     * Number of firewall entities to spawn on the board
+     */
+    private static final int TOTAL_FIREWALLS = 10;
+    
+    /**
+     * Number of antivirus entities to spawn on the board
+     */
+    private static final int TOTAL_ANTIVIRUS = 1;
+    
+    /**
+     * Number of wall shapes to randomly scatter across the board
+     */
+    private static final int WALL_SHAPES_COUNT = 45;
 
     BoardGenerator() {
         throw new UnsupportedOperationException("Class cannot be constructed");
@@ -84,7 +99,7 @@ public class BoardGenerator {
      * or a 2×2 square.
      */
     private static void generateWalls(Board board, int width, int height) {
-        int numShapes = 45;
+        int numShapes = WALL_SHAPES_COUNT;
 
         for (int i = 0; i < numShapes; i++) {
             int x = board.getRandom().nextInt(2, width - 3);
@@ -234,13 +249,15 @@ public class BoardGenerator {
      */
     private static void spawnAllEntities(Board board, int width, int height) {
         // Spawn entities across the whole board interior
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < TOTAL_DATA; i++) {
             spawnAnywhere(board, 1, 1, width - 1, height - 1, Data::new);
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < TOTAL_FIREWALLS; i++) {
             spawnAnywhere(board, 1, 1, width - 1, height - 1, Firewall::new);
         }
-        spawnAnywhere(board, 1, 1, width - 1, height - 1, Antivirus::new);
+        for (int i = 0; i < TOTAL_ANTIVIRUS; i++) {
+            spawnAnywhere(board, 1, 1, width - 1, height - 1, Antivirus::new);
+        }
     }
 
     /**
