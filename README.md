@@ -48,3 +48,11 @@ Generate a JaCoCo HTML coverage report:
 mvn clean test jacoco:report -Dmaven.test.failure.ignore=true
 open target/site/jacoco/index.html
 ```
+
+## Documentation
+
+Generate a JavaDoc documentation:
+```shell
+mvn javadoc:javadoc
+open target/reports/apidocs/index.html
+```
