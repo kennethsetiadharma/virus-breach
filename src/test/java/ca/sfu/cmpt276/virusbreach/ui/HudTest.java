@@ -18,7 +18,7 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 import org.testfx.util.WaitForAsyncUtils;
 
-import static ca.sfu.cmpt276.virusbreach.BoardGenerator.TOTAL_DATA;
+import static ca.sfu.cmpt276.virusbreach.board.BoardGenerator.TOTAL_DATA;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
@@ -62,7 +62,7 @@ class HudTest {
         Player player = new Player(board, new Position(2, 2));
         board.addEntity(player);
 
-        WaitForAsyncUtils.waitForAsyncFx(1000, () -> this.hud.update(board, ca.sfu.cmpt276.virusbreach.BoardGenerator.TOTAL_DATA));
+        WaitForAsyncUtils.waitForAsyncFx(1000, () -> this.hud.update(board, ca.sfu.cmpt276.virusbreach.board.BoardGenerator.TOTAL_DATA));
 
         assertFalse(findText("EXIT UNLOCKED").isEmpty());
     }

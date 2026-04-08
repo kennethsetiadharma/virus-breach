@@ -1,6 +1,5 @@
-package ca.sfu.cmpt276.virusbreach;
+package ca.sfu.cmpt276.virusbreach.board;
 
-import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.entity.Antivirus;
 import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.Firewall;
