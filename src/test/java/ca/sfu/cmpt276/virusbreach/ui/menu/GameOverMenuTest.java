@@ -32,7 +32,7 @@ class GameOverMenuTest {
 
     @Test
     void gameOverTexts(FxRobot robot) {
-        assertInstanceOf(GameOverMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(GameOverMenu.class, this.game.getActiveMenu());
         verifyThat("QUARANTINED", hasText("QUARANTINED"));
         verifyThat("YOU'VE BEEN CAUGHT BY AN ANTIVIRUS", hasText("YOU'VE BEEN CAUGHT BY AN ANTIVIRUS"));
         verifyThat("01:01", hasText("01:01"));
@@ -45,7 +45,7 @@ class GameOverMenuTest {
         robot.clickOn("QUIT");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertInstanceOf(TitleMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(TitleMenu.class, this.game.getActiveMenu());
         verifyThat("START MISSION", hasText("START MISSION"));
     }
 
@@ -54,15 +54,13 @@ class GameOverMenuTest {
         robot.clickOn("RETRY");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertInstanceOf(GameMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(GameMenu.class, this.game.getActiveMenu());
     }
 
     @Stop
     void close() {
         WaitForAsyncUtils.clearExceptions();
-        if (this.stage.getScene() != null && this.stage.getScene().getRoot() instanceof Menu menu) {
-            menu.onClose();
-        }
+        this.game.stop();
         this.stage.close();
     }
 }

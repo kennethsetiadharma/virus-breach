@@ -57,7 +57,7 @@ class GameMenuTest {
     void startGameShowsTutorial(FxRobot robot) {
         startGame(robot);
 
-        assertInstanceOf(GameMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(GameMenu.class, this.game.getActiveMenu());
         assertFalse(robot.lookup("HOW TO PLAY").tryQuery().isEmpty());
         verifyThat("GOT IT", hasText("GOT IT"));
     }
@@ -67,7 +67,7 @@ class GameMenuTest {
         startGame(robot);
         dismissTutorial(robot);
 
-        assertInstanceOf(GameMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(GameMenu.class, this.game.getActiveMenu());
 
         // tutorial should be gone
         assertTrue(robot.lookup("GOT IT").tryQuery().isEmpty());
@@ -104,7 +104,7 @@ class GameMenuTest {
         robot.clickOn("EXIT");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertInstanceOf(TitleMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(TitleMenu.class, this.game.getActiveMenu());
 
         // title should show
         verifyThat("START MISSION", hasText("START MISSION"));
@@ -180,7 +180,7 @@ class GameMenuTest {
         this.menu.onWin(250);
         WaitForAsyncUtils.waitForFxEvents();
 
-        assertInstanceOf(WinMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(WinMenu.class, this.game.getActiveMenu());
         verifyThat("INFILTRATED", hasText("INFILTRATED"));
     }
 
@@ -194,7 +194,7 @@ class GameMenuTest {
         this.menu.onLose();
         WaitForAsyncUtils.waitForFxEvents();
 
-        assertInstanceOf(GameOverMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(GameOverMenu.class, this.game.getActiveMenu());
         verifyThat("QUARANTINED", hasText("QUARANTINED"));
     }
 
@@ -205,6 +205,7 @@ class GameMenuTest {
         this.player.adjustData(100);
         this.menu.onUpdate();
 
+        WaitForAsyncUtils.waitForFxEvents();
         WaitForAsyncUtils.waitForFxEvents();
         this.player.adjustData(-50);
         this.menu.onUpdate();
@@ -350,7 +351,8 @@ class GameMenuTest {
 
         runOnFxThread(() -> {
             this.menu = new GameMenu(this.game, this.board);
-            this.stage.getScene().setRoot(this.menu);
+            this.game.openMenu(this.menu);
+            this.board.setPaused(false);
         });
     }
 
@@ -360,7 +362,8 @@ class GameMenuTest {
 
         runOnFxThread(() -> {
             this.menu = new GameMenu(this.game, this.board);
-            this.stage.getScene().setRoot(this.menu);
+            this.game.openMenu(this.menu);
+            this.board.setPaused(false);
         });
     }
 
@@ -383,9 +386,7 @@ class GameMenuTest {
     void close() {
         WaitForAsyncUtils.clearExceptions();
         runOnFxThread(() -> {
-            if (this.stage.getScene() != null && this.stage.getScene().getRoot() instanceof Menu menu) {
-                menu.onClose();
-            }
+            this.game.stop();
             this.stage.close();
         });
         try {

@@ -34,7 +34,7 @@ class WinMenuTest {
 
     @Test
     void winTexts(FxRobot robot) {
-        assertInstanceOf(WinMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(WinMenu.class, this.game.getActiveMenu());
         verifyThat("INFILTRATED", hasText("INFILTRATED"));
         verifyThat("YOU'VE ACQUIRED", hasText("YOU'VE ACQUIRED"));
         verifyThat("01:01", hasText("01:01"));
@@ -56,7 +56,7 @@ class WinMenuTest {
         robot.clickOn("QUIT");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertInstanceOf(TitleMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(TitleMenu.class, this.game.getActiveMenu());
         verifyThat("START MISSION", hasText("START MISSION"));
     }
 
@@ -65,15 +65,13 @@ class WinMenuTest {
         robot.clickOn("RETRY");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertInstanceOf(GameMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(GameMenu.class, this.game.getActiveMenu());
     }
 
     @Stop
     void close() {
         WaitForAsyncUtils.clearExceptions();
-        if (this.stage.getScene() != null && this.stage.getScene().getRoot() instanceof Menu menu) {
-            menu.onClose();
-        }
+        this.game.stop();
         this.stage.close();
     }
 }

@@ -39,7 +39,7 @@ class TitleMenuTest {
         robot.clickOn("OPTIONS");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertInstanceOf(OptionsMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(OptionsMenu.class, this.game.getActiveMenu());
         
         // check each button
         verifyThat("OPTIONS", hasText("OPTIONS"));
@@ -54,7 +54,7 @@ class TitleMenuTest {
         robot.clickOn("BACK");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertInstanceOf(TitleMenu.class, this.stage.getScene().getRoot());
+        assertInstanceOf(TitleMenu.class, this.game.getActiveMenu());
         
         verifyThat("START MISSION", hasText("START MISSION"));
         verifyThat("OPTIONS", hasText("OPTIONS"));
@@ -90,9 +90,7 @@ class TitleMenuTest {
     @Stop
     void close() {
         WaitForAsyncUtils.clearExceptions();
-        if (this.stage.getScene() != null && this.stage.getScene().getRoot() instanceof Menu menu) {
-            menu.onClose();
-        }
+        this.game.stop();
         this.stage.close();
     }
 }
