@@ -1,11 +1,16 @@
 package ca.sfu.cmpt276.virusbreach.ui.menu;
 
+import ca.sfu.cmpt276.virusbreach.GameTime;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * Handles display and player interaction with the game.
@@ -77,6 +82,25 @@ public class Menu extends Pane {
      * @param event the associated event data
      */
     public void onKeyReleased(KeyEvent event) {
+    }
+
+    /**
+     * Creates a timer row HBox showing the clock icon and formatted time.
+     * Shared by WinMenu and GameOverMenu to avoid duplicated code.
+     *
+     * @param timePlayed the time played in ticks
+     * @return the constructed HBox timer row
+     */
+    public static HBox makeTimerRow(int timePlayed) {
+        ImageView timerIcon = iconView("timer.png");
+        timerIcon.setFitWidth(22);
+        timerIcon.setFitHeight(22);
+        Label timerLabel = new Label(GameTime.ticksToClock(timePlayed));
+        timerLabel.setTextFill(Color.WHITE);
+        timerLabel.setFont(ResourceManager.gameFont(22));
+        HBox timerRow = new HBox(10, timerIcon, timerLabel);
+        timerRow.setAlignment(Pos.CENTER);
+        return timerRow;
     }
 
     /**

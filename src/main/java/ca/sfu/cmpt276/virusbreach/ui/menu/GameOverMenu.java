@@ -1,6 +1,5 @@
 package ca.sfu.cmpt276.virusbreach.ui.menu;
 
-import ca.sfu.cmpt276.virusbreach.GameTime;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
 import ca.sfu.cmpt276.virusbreach.ui.ResourceManager;
@@ -55,14 +54,7 @@ public class GameOverMenu extends Menu {
         subtitle.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
         // Timer row
-        var timerIcon = Menu.iconView("timer.png");
-        timerIcon.setFitWidth(22);
-        timerIcon.setFitHeight(22);
-        Label timerLabel = new Label(GameTime.ticksToClock(timePlayed));
-        timerLabel.setTextFill(Color.WHITE);
-        timerLabel.setFont(ResourceManager.gameFont(22));
-        HBox timerRow = new HBox(10, timerIcon, timerLabel);
-        timerRow.setAlignment(Pos.CENTER);
+        HBox timerRow = Menu.makeTimerRow(timePlayed);
 
         // Buttons
         Button btnQuit = new Button("QUIT");

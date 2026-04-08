@@ -72,14 +72,7 @@ public class WinMenu extends Menu {
         trickle.play();
 
         // Timer row
-        var timerIcon = Menu.iconView("timer.png");
-        timerIcon.setFitWidth(22);
-        timerIcon.setFitHeight(22);
-        Label timerLabel = new Label(GameTime.ticksToClock(timePlayed));
-        timerLabel.setTextFill(Color.WHITE);
-        timerLabel.setFont(ResourceManager.gameFont(22));
-        HBox timerRow = new HBox(10, timerIcon, timerLabel);
-        timerRow.setAlignment(Pos.CENTER);
+        HBox timerRow = Menu.makeTimerRow(timePlayed);
 
         // Buttons
         Button btnQuit = new Button("QUIT");
