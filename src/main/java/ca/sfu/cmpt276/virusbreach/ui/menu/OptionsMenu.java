@@ -55,6 +55,7 @@ public class OptionsMenu extends Menu {
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double volume = newValue.doubleValue() / 100.0;
             this.options.setVolume(volume);
+            AudioManager.setMusicVolume(volume);
             volumeLabel.setText("Volume: " + Math.round(newValue.doubleValue()) + "%");
         });
         volumeLabel.setText("Volume: " + Math.round(volumeSlider.getValue()) + "%");

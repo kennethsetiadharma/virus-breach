@@ -62,6 +62,7 @@ public class TitleMenu extends Menu {
     public void onOpen() {
         super.onOpen();
         this.backgroundAnimation.play();
+        AudioManager.playMusic("menu_music.wav");
     }
 
     @Override
