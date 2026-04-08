@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -65,9 +66,9 @@ public class Hud extends AnchorPane {
         HBox timerBox = buildTimerBox(onPause);
         VBox dataBox = buildDataBox();
 
-        this.banner = buildBanner("EXIT UNLOCKED", "exit.png", "lime", 60.0);
-        this.serverBanner = buildBanner("SERVER ROOM UNLOCKED", "lock.png", "cyan", 60.0);
-        this.freezeBanner = buildBanner("FIREWALLS FROZEN", "freeze_token.png", "#88ccff", 60.0, true);
+        this.banner = buildBanner("EXIT UNLOCKED", ResourceManager.loadIcon("exit.png"), "lime", 60.0);
+        this.serverBanner = buildBanner("SERVER ROOM UNLOCKED", ResourceManager.loadIcon("lock.png"), "cyan", 60.0);
+        this.freezeBanner = buildBanner("FIREWALLS FROZEN", ResourceManager.loadSprite("freeze_token.png"), "#88ccff", 60.0);
 
         Rectangle freezeBar = new Rectangle(120, 8, Color.web("#88ccff"));
         freezeBar.setOpacity(0);
@@ -140,16 +141,12 @@ public class Hud extends AnchorPane {
         return dataBox;
     }
 
-    private HBox buildBanner(String text, String iconAsset, String borderColor, double topAnchor) {
-        return buildBanner(text, iconAsset, borderColor, topAnchor, false);
-    }
-
-    private HBox buildBanner(String text, String iconAsset, String borderColor, double topAnchor, boolean isSprite) {
+    private HBox buildBanner(String text, Image image, String borderColor, double topAnchor) {
         Text bannerText = new Text(text);
         bannerText.setFont(ResourceManager.gameFont(20));
         bannerText.setFill(Color.web(borderColor));
 
-        ImageView icon = new ImageView(isSprite ? ResourceManager.loadSprite(iconAsset) : ResourceManager.loadIcon(iconAsset));
+        ImageView icon = new ImageView(image);
         icon.setFitWidth(28);
         icon.setFitHeight(28);
         icon.setPreserveRatio(true);
