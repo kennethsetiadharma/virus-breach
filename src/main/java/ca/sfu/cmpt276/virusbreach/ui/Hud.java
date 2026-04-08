@@ -27,8 +27,8 @@ import javafx.util.Duration;
 public class Hud extends AnchorPane {
     private static final int ICON_SIZE = 34;
 
-    private final Text timerLabel;
-    private final Text scoreLabel;
+    private Text timerLabel;
+    private Text scoreLabel;
     private final ImageView[] dataIcons;
 
     private final Image dataEmptyImage;
@@ -57,14 +57,31 @@ public class Hud extends AnchorPane {
      */
     public Hud(Runnable onPause, Runnable onDamage) {
         this.onDamage = onDamage;
-        var font = ResourceManager.gameFont(20);
-        var fontLarge = ResourceManager.gameFont(28);
         this.popupFont = ResourceManager.gameFont(22);
-
         this.dataEmptyImage = ResourceManager.loadIcon("data.png");
         this.dataFullImage = ResourceManager.loadIcon("data_completed.png");
+        this.dataIcons = new ImageView[BoardGenerator.TOTAL_DATA];
 
-        // --- Top-right: [timer icon] [MM:SS] [pause button] ---
+        HBox timerBox = buildTimerBox(onPause);
+        VBox dataBox = buildDataBox();
+
+        this.banner = buildBanner("EXIT UNLOCKED", "exit.png", "lime", 60.0);
+        this.serverBanner = buildBanner("SERVER ROOM UNLOCKED", "lock.png", "cyan", 60.0);
+        this.freezeBanner = buildBanner("FIREWALLS FROZEN", "freeze_token.png", "#88ccff", 60.0, true);
+
+        Rectangle freezeBar = new Rectangle(120, 8, Color.web("#88ccff"));
+        freezeBar.setOpacity(0);
+        freezeBar.setMouseTransparent(true);
+        AnchorPane.setBottomAnchor(freezeBar, DATA_BOX_BOTTOM + 102);
+        AnchorPane.setLeftAnchor(freezeBar, DATA_BOX_LEFT);
+        this.freezeBar = freezeBar;
+
+        this.getChildren().addAll(timerBox, dataBox, banner, serverBanner, freezeBanner, freezeBar);
+        this.setPickOnBounds(false);
+    }
+
+    private HBox buildTimerBox(Runnable onPause) {
+        var fontLarge = ResourceManager.gameFont(28);
         ImageView timerIcon = Menu.iconView("timer.png");
 
         this.timerLabel = new Text("00:00");
@@ -84,8 +101,13 @@ public class Hud extends AnchorPane {
         );
         AnchorPane.setTopAnchor(timerBox, 12.0);
         AnchorPane.setRightAnchor(timerBox, 16.0);
+        return timerBox;
+    }
 
-        // --- Bottom-left: "DATA  [score]" + row of data packet icons ---
+    private VBox buildDataBox() {
+        var font = ResourceManager.gameFont(20);
+        var fontLarge = ResourceManager.gameFont(28);
+
         Text dataLabel = new Text("DATA");
         dataLabel.setFont(font);
         dataLabel.setFill(Color.WHITE);
@@ -97,7 +119,6 @@ public class Hud extends AnchorPane {
         HBox scoreRow = new HBox(10, dataLabel, this.scoreLabel);
         scoreRow.setStyle("-fx-alignment: center-left;");
 
-        this.dataIcons = new ImageView[BoardGenerator.TOTAL_DATA];
         HBox iconRow = new HBox(4);
         for (int i = 0; i < BoardGenerator.TOTAL_DATA; i++) {
             ImageView iv = new ImageView(this.dataEmptyImage);
@@ -116,25 +137,7 @@ public class Hud extends AnchorPane {
         );
         AnchorPane.setBottomAnchor(dataBox, DATA_BOX_BOTTOM);
         AnchorPane.setLeftAnchor(dataBox, DATA_BOX_LEFT);
-
-        HBox banner = buildBanner("EXIT UNLOCKED", "exit.png", "lime", 60.0);
-        HBox serverBanner = buildBanner("SERVER ROOM UNLOCKED", "lock.png", "cyan", 60.0);
-        HBox freezeBanner = buildBanner("FIREWALLS FROZEN", "freeze_token.png", "#88ccff", 60.0, true);
-
-        // Freeze progress bar — shown bottom-left while freeze is active
-        Rectangle freezeBar = new Rectangle(120, 8, Color.web("#88ccff"));
-        freezeBar.setOpacity(0);
-        freezeBar.setMouseTransparent(true);
-        AnchorPane.setBottomAnchor(freezeBar, DATA_BOX_BOTTOM + 102);
-        AnchorPane.setLeftAnchor(freezeBar, DATA_BOX_LEFT);
-
-        this.getChildren().addAll(timerBox, dataBox, banner, serverBanner, freezeBanner, freezeBar);
-        this.setPickOnBounds(false);
-
-        this.banner = banner;
-        this.serverBanner = serverBanner;
-        this.freezeBanner = freezeBanner;
-        this.freezeBar = freezeBar;
+        return dataBox;
     }
 
     private HBox buildBanner(String text, String iconAsset, String borderColor, double topAnchor) {
