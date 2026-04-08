@@ -92,6 +92,7 @@ public class GameMenu extends Menu implements BoardObserver {
         super.onOpen();
         this.board.start();
         this.board.setPaused(true);
+        AudioManager.playMusic("game_music.wav");
         Platform.runLater(this::showTutorial);
     }
 
@@ -151,10 +152,12 @@ public class GameMenu extends Menu implements BoardObserver {
             pauseOverlay.prefHeightProperty().bind(this.heightProperty());
             this.getChildren().add(pauseOverlay);
             this.board.setPaused(true);
+            AudioManager.pauseMusic();
         } else {
             this.getChildren().remove(pauseOverlay);
             pauseOverlay = null;
             this.board.setPaused(false);
+            AudioManager.resumeMusic();
         }
     }
 
@@ -234,6 +237,7 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onWin(int dataCollected) {
+        AudioManager.stopMusic();
         AudioManager.play("success.wav");
         int timePlayed = board.getTimePlayed();
         Platform.runLater(() -> this.game.openMenu(new WinMenu(game, dataCollected, timePlayed)));
@@ -245,6 +249,7 @@ public class GameMenu extends Menu implements BoardObserver {
      */
     @Override
     public void onLose() {
+        AudioManager.stopMusic();
         int timePlayed = board.getTimePlayed();
         Platform.runLater(() -> this.game.openMenu(new GameOverMenu(game, timePlayed)));
     }

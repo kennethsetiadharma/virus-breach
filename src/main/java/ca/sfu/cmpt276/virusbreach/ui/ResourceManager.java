@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -85,6 +86,23 @@ public class ResourceManager {
                 return null;
             }
         });
+    }
+
+    /**
+     * Loads a music track as a {@link Media} object for use with {@code MediaPlayer}.
+     * The file must be in the {@code /sounds/} resource folder.
+     *
+     * @param asset the audio file name
+     * @return the loaded Media, or null if not found
+     */
+    public static Media fetchMusic(String asset) {
+        String uri = getResourceURI("/sounds/" + asset);
+        if (uri == null) return null;
+        try {
+            return new Media(uri);
+        } catch (MediaException ignore) {
+            return null;
+        }
     }
 
     /**

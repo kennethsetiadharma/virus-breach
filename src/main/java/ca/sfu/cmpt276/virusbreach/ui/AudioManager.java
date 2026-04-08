@@ -2,6 +2,8 @@ package ca.sfu.cmpt276.virusbreach.ui;
 
 import ca.sfu.cmpt276.virusbreach.GameOptions;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * Manages game audio playback. 
@@ -19,6 +21,8 @@ public class AudioManager {
 
     private static GameOptions options;
     private static boolean initialized = false;
+    private static MediaPlayer musicPlayer = null;
+    private static String currentMusicAsset = null;
 
     AudioManager() {
         throw new UnsupportedOperationException("AudioManager should not be constructed.");
@@ -48,8 +52,61 @@ public class AudioManager {
     }
 
     /**
+     * Starts looping background music. Does nothing if the same track is already playing.
+     * Stops any different track that is currently playing before starting the new one.
+     *
+     * @param asset music file name in the sounds/ folder
+     */
+    public static void playMusic(String asset) {
+        if (asset.equals(currentMusicAsset) && musicPlayer != null) return;
+        stopMusic();
+        Media media = ResourceManager.fetchMusic(asset);
+        if (media == null) return;
+        currentMusicAsset = asset;
+        musicPlayer = new MediaPlayer(media);
+        musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        musicPlayer.setVolume(options == null ? 0.5 : options.getVolume());
+        musicPlayer.play();
+    }
+
+    /**
+     * Stops the currently playing background music track.
+     */
+    public static void stopMusic() {
+        if (musicPlayer != null) {
+            musicPlayer.stop();
+            musicPlayer.dispose();
+            musicPlayer = null;
+        }
+        currentMusicAsset = null;
+    }
+
+    /**
+     * Pauses the currently playing background music.
+     */
+    public static void pauseMusic() {
+        if (musicPlayer != null) musicPlayer.pause();
+    }
+
+    /**
+     * Resumes the background music if it was paused.
+     */
+    public static void resumeMusic() {
+        if (musicPlayer != null) musicPlayer.play();
+    }
+
+    /**
+     * Updates the music volume live (called when the options slider changes).
+     *
+     * @param volume volume in range [0.0, 1.0]
+     */
+    public static void setMusicVolume(double volume) {
+        if (musicPlayer != null) musicPlayer.setVolume(volume);
+    }
+
+    /**
      * Play the specified audio clip
-     * 
+     *
      * @param asset audio clip asset path
      */
     public static void play(String asset) {
