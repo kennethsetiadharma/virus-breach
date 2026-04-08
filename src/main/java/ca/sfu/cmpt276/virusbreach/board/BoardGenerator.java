@@ -1,8 +1,5 @@
-package ca.sfu.cmpt276.virusbreach;
+package ca.sfu.cmpt276.virusbreach.board;
 
-import ca.sfu.cmpt276.virusbreach.board.Board;
-import ca.sfu.cmpt276.virusbreach.board.ServerRoom;
-import ca.sfu.cmpt276.virusbreach.board.StorageRoom;
 import ca.sfu.cmpt276.virusbreach.board.entity.*;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;
@@ -26,17 +23,17 @@ public class BoardGenerator {
      * How many normal (required) rewards to spawn on the board
      */
     public static final int TOTAL_DATA = 6;
-    
+
     /**
      * Number of firewall entities to spawn on the board
      */
     private static final int TOTAL_FIREWALLS = 10;
-    
+
     /**
      * Number of antivirus entities to spawn on the board
      */
     private static final int TOTAL_ANTIVIRUS = 1;
-    
+
     /**
      * Number of wall shapes to randomly scatter across the board
      */
@@ -108,7 +105,7 @@ public class BoardGenerator {
             switch (board.getRandom().nextInt(3)) {
                 case 0 -> // single tile
                     placeWall(board, new Position(x, y));
-                case 1 -> { // 2-tile path 
+                case 1 -> { // 2-tile path
                     if (board.getRandom().nextBoolean()) {
                         placeWall(board, new Position(x,     y));
                         placeWall(board, new Position(x + 1, y));
@@ -134,7 +131,7 @@ public class BoardGenerator {
      */
     static void placeWall(Board board, Position position) {
         if (!isValidWallPosition(board, position)) return;
-        
+
         if (!board.getTile(position).isSolid()) {
             board.setTile(position, TileTypes.WALL);
         }
@@ -147,7 +144,7 @@ public class BoardGenerator {
     private static boolean isValidWallPosition(Board board, Position position) {
         int width = board.width();
         int height = board.height();
-        
+
         return isWithinBounds(position, width, height) &&
                !isInServerRoomArea(position) &&
                !isInStorageRoomArea(position, width, height) &&
@@ -158,7 +155,7 @@ public class BoardGenerator {
      * Checks if the position is within the playable bounds (not on the outer perimeter).
      */
     private static boolean isWithinBounds(Position position, int width, int height) {
-        return position.x() > 0 && position.x() < width - 1 && 
+        return position.x() > 0 && position.x() < width - 1 &&
                position.y() > 0 && position.y() < height - 1;
     }
 
@@ -167,11 +164,11 @@ public class BoardGenerator {
      */
     private static boolean isInServerRoomArea(Position position) {
         // Server room interior
-        if (position.x() > 0 && position.x() < SERVER_ROOM_WIDTH && 
+        if (position.x() > 0 && position.x() < SERVER_ROOM_WIDTH &&
             position.y() > 0 && position.y() < SERVER_ROOM_HEIGHT) {
             return true;
         }
-        
+
         // Server room doorway
         return position.x() == SERVER_ROOM_WIDTH && position.y() == SERVER_ROOM_HEIGHT / 2;
     }
@@ -183,13 +180,13 @@ public class BoardGenerator {
         int storageLeftX = width - 1 - STORAGE_FROM_RIGHT;
         int storageTopY = height - 1 - STORAGE_FROM_BOTTOM;
         int storageDoorY = storageTopY + STORAGE_FROM_BOTTOM / 2;
-        
+
         // Storage room interior
-        if (position.x() > storageLeftX && position.x() < width - 1 && 
+        if (position.x() > storageLeftX && position.x() < width - 1 &&
             position.y() > storageTopY && position.y() < height - 1) {
             return true;
         }
-        
+
         // Storage room doorway
         return position.x() == storageLeftX && position.y() == storageDoorY;
     }
@@ -206,13 +203,13 @@ public class BoardGenerator {
      */
     private static boolean isInServerRoomBufferZone(Position position) {
         // Buffer outside server room's right wall
-        if (position.x() == SERVER_ROOM_WIDTH + 1 && 
+        if (position.x() == SERVER_ROOM_WIDTH + 1 &&
             position.y() >= 1 && position.y() <= SERVER_ROOM_HEIGHT) {
             return true;
         }
-        
+
         // Buffer outside server room's bottom wall
-        return position.y() == SERVER_ROOM_HEIGHT + 1 && 
+        return position.y() == SERVER_ROOM_HEIGHT + 1 &&
                position.x() >= 1 && position.x() <= SERVER_ROOM_WIDTH;
     }
 
@@ -222,15 +219,15 @@ public class BoardGenerator {
     private static boolean isInStorageRoomBufferZone(Position position, int width, int height) {
         int storageLeftX = width - 1 - STORAGE_FROM_RIGHT;
         int storageTopY = height - 1 - STORAGE_FROM_BOTTOM;
-        
+
         // Buffer outside storage room's left wall
-        if (position.x() == storageLeftX - 1 && 
+        if (position.x() == storageLeftX - 1 &&
             position.y() >= storageTopY && position.y() <= height - 2) {
             return true;
         }
-        
+
         // Buffer outside storage room's top wall
-        return position.y() == storageTopY - 1 && 
+        return position.y() == storageTopY - 1 &&
                position.x() >= storageLeftX && position.x() <= width - 2;
     }
 
@@ -303,7 +300,7 @@ public class BoardGenerator {
         board.setTile(new Position(board.getRandom().nextInt(SERVER_ROOM_WIDTH + 1, width - 1), 0), TileTypes.EXIT);
 
         // Furnish rooms before entity spawning so their internal walls exist when spawnAnywhere runs
-        // This prevents entities from spawning inside the rooms' internal wall layouts, which would trap 
+        // This prevents entities from spawning inside the rooms' internal wall layouts, which would trap
         // them and make them inaccessible to the player.
         ServerRoom serverRoom = new ServerRoom(new Position(0, 0), SERVER_ROOM_WIDTH, SERVER_ROOM_HEIGHT,
                 new Position(SERVER_ROOM_WIDTH, doorY));

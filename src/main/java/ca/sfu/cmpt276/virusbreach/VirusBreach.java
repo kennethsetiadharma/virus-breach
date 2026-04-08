@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.virusbreach;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
+import ca.sfu.cmpt276.virusbreach.board.BoardGenerator;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
 import ca.sfu.cmpt276.virusbreach.ui.AudioManager;
 import ca.sfu.cmpt276.virusbreach.ui.menu.GameMenu;

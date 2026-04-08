@@ -1,6 +1,5 @@
 package ca.sfu.cmpt276.virusbreach.board;
 
-import ca.sfu.cmpt276.virusbreach.BoardGenerator;
 import ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 import ca.sfu.cmpt276.virusbreach.math.Position;

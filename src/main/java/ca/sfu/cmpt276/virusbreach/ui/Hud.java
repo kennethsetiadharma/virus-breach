@@ -1,6 +1,6 @@
 package ca.sfu.cmpt276.virusbreach.ui;
 
-import ca.sfu.cmpt276.virusbreach.BoardGenerator;
+import ca.sfu.cmpt276.virusbreach.board.BoardGenerator;
 import ca.sfu.cmpt276.virusbreach.GameTime;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.board.Board;
