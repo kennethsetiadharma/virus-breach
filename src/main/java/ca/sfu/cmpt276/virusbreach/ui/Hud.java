@@ -2,7 +2,9 @@ package ca.sfu.cmpt276.virusbreach.ui;
 
 import ca.sfu.cmpt276.virusbreach.BoardGenerator;
 import ca.sfu.cmpt276.virusbreach.GameTime;
+import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.board.Board;
+import ca.sfu.cmpt276.virusbreach.board.entity.FreezeToken;
 import ca.sfu.cmpt276.virusbreach.board.entity.Player;
 import ca.sfu.cmpt276.virusbreach.ui.menu.Menu;
 import javafx.animation.*;
@@ -49,6 +51,9 @@ public class Hud extends AnchorPane {
     // Fixed pixel position of the data box for anchoring popups
     private static final double DATA_BOX_LEFT = 16.0;
     private static final double DATA_BOX_BOTTOM = 50.0;
+
+    // Freeze bar duration matches FreezeToken.FREEZE_TIME ticks × UPDATE_INTERVAL ms per tick
+    private static final int FREEZE_DURATION_MS = FreezeToken.FREEZE_TIME * (int) VirusBreach.UPDATE_INTERVAL;
 
     /**
      * Creates the HUD and builds all overlay nodes.
@@ -236,7 +241,7 @@ public class Hud extends AnchorPane {
         freezeBar.setOpacity(1);
 
         Timeline countdown = new Timeline(
-            new KeyFrame(Duration.millis(10000), new KeyValue(freezeBar.widthProperty(), 0))
+            new KeyFrame(Duration.millis(FREEZE_DURATION_MS), new KeyValue(freezeBar.widthProperty(), 0))
         );
         countdown.setOnFinished(e -> freezeBar.setOpacity(0));
         countdown.play();
