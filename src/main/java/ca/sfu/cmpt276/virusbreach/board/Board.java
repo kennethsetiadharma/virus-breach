@@ -1,5 +1,6 @@
 package ca.sfu.cmpt276.virusbreach.board;
 
+import ca.sfu.cmpt276.virusbreach.Main;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
@@ -30,11 +31,6 @@ import java.util.function.Predicate;
  * @see BoardObserver
  */
 public class Board {
-    /**
-     * When enabled, exceptions do not shut down the JavaFX context, to allow future tests to run.
-     */
-    public static boolean testMode = Boolean.getBoolean("java.awt.headless");
-
     /**
      * Executor that runs the game loop on a fixed interval.
      *
@@ -193,7 +189,7 @@ public class Board {
             throwable.printStackTrace();
             RuntimeException exception = new RuntimeException(throwable);
             // don't kill javafx on tests
-            if (!testMode) {
+            if (!Main.testMode) {
                 Platform.runLater(Platform::exit);
             }
             throw exception;

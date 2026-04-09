@@ -1,5 +1,6 @@
 package ca.sfu.cmpt276.virusbreach.board;
 
+import ca.sfu.cmpt276.virusbreach.Main;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;
@@ -196,7 +197,7 @@ class BoardTest implements BoardObserver {
      */
     @Test
     void failException() {
-        Board.testMode = true;
+        Main.testMode = true;
         Board board = TestHelper.createEnclosedBoard(3, 3);
 
         Entity entity = new Entity(board, new Position(1, 1)) {

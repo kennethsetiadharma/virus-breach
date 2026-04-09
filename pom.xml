@@ -55,7 +55,7 @@
         <version>3.5.5</version>
         <configuration>
           <argLine>
-            ${argLine} -Djava.awt.headless=true -Dtestfx.robot=glass -Dglass.platform=Headless -Dprism.order=sw --enable-native-access=ALL-UNNAMED
+            ${argLine} --enable-native-access=ALL-UNNAMED
           </argLine>
         </configuration>
       </plugin>
@@ -141,4 +141,30 @@
     <maven.compiler.target>25</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <profiles>
+    <profile>
+      <id>windows</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <argLine><!-- There is a bug in JavaFX that causes a VM crash when run headless --></argLine>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>not-windows</id>
+      <activation>
+        <os>
+          <family>!windows</family>
+        </os>
+      </activation>
+      <properties>
+        <argLine>-Djava.awt.headless=true -Dtestfx.robot=glass -Dglass.platform=Headless -Dprism.order=sw</argLine>
+      </properties>
+    </profile>
+  </profiles>
 </project>

@@ -9,6 +9,11 @@ import javafx.application.Application;
  */
 public class Main {
     /**
+     * When enabled, exceptions do not shut down the JavaFX context, to allow future tests to run.
+     */
+    public static boolean testMode = false;
+
+    /**
      * Launches the game with the specified arguments.
      *
      * @param args the commandline arguments
