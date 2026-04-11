@@ -12,10 +12,10 @@ Navigate the board, collect data, find the decryption key, and escape through th
 ## Build
 
 ```shell
-mvn package
+mvn package -Dmaven.test.skip=true
 ```
 
-This compiles the project and produces a self-contained jar at `target/virusbreach-1.0-SNAPSHOT.jar`.
+This compiles the project and produces a self-contained executable jar at `target/virusbreach-1.0-SNAPSHOT.jar`.
 
 ## Run
 
@@ -26,6 +26,7 @@ mvn javafx:run
 
 **Option 2 — Run the jar directly:**
 ```shell
+mvn package -Dmaven.test.skip=true
 java -jar target/virusbreach-1.0-SNAPSHOT.jar
 ```
 
@@ -51,7 +52,7 @@ open target/site/jacoco/index.html
 
 ## Documentation
 
-Generate a JavaDoc documentation:
+Generate Javadoc documentation:
 ```shell
 mvn javadoc:javadoc
 open target/reports/apidocs/index.html
