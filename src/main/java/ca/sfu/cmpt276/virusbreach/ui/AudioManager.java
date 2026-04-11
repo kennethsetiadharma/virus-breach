@@ -21,8 +21,8 @@ public class AudioManager {
 
     private static GameOptions options;
     private static boolean initialized = false;
-    private static MediaPlayer musicPlayer = null;
-    private static String currentMusicAsset = null;
+    static MediaPlayer musicPlayer = null;
+    static String currentMusicAsset = null;
 
     AudioManager() {
         throw new UnsupportedOperationException("AudioManager should not be constructed.");
@@ -58,7 +58,7 @@ public class AudioManager {
      * @param asset music file name in the sounds/ folder
      */
     public static void playMusic(String asset) {
-        if (asset.equals(currentMusicAsset) && musicPlayer != null) return;
+        if (asset.equals(currentMusicAsset)) return;
         stopMusic();
         Media media = ResourceManager.fetchMusic(asset);
         if (media == null) return;
@@ -101,7 +101,7 @@ public class AudioManager {
      * @param volume volume in range [0.0, 1.0]
      */
     public static void setMusicVolume(double volume) {
-        if (musicPlayer != null) musicPlayer.setVolume(volume);
+        if (musicPlayer != null) musicPlayer.setVolume(Math.clamp(volume, 0.0, 1.0));
     }
 
     /**

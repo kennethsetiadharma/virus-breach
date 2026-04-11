@@ -188,10 +188,8 @@ public class Board {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             RuntimeException exception = new RuntimeException(throwable);
-            // don't kill javafx on tests
-            if (!Main.testMode) {
-                Platform.runLater(Platform::exit);
-            }
+            // don't kill javafx on tests. see Main.testMode documentation
+            if (!Main.testMode) Platform.runLater(Platform::exit);
             throw exception;
         }
     }

@@ -1,7 +1,7 @@
 package ca.sfu.cmpt276.virusbreach.ui.node;
 
 import ca.sfu.cmpt276.virusbreach.board.Board;
-import ca.sfu.cmpt276.virusbreach.board.TestHelper;
+import ca.sfu.cmpt276.virusbreach.TestHelper;
 import ca.sfu.cmpt276.virusbreach.math.Position;
 import org.junit.jupiter.api.Test;
 

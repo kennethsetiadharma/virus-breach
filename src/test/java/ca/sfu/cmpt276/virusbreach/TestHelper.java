@@ -1,11 +1,19 @@
-package ca.sfu.cmpt276.virusbreach.board;
+package ca.sfu.cmpt276.virusbreach;
 
+import ca.sfu.cmpt276.virusbreach.board.Board;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileType;
 import ca.sfu.cmpt276.virusbreach.board.tile.TileTypes;
 
 import java.util.Arrays;
 
-public class TestHelper {
+public final class TestHelper {
+    /**
+     * Creates a board with the specified dimensions, with walls on all sides.
+     *
+     * @param width the horizontal length of the board, in tiles
+     * @param height the vertical length of the board, in tiles
+     * @return a newly created board
+     */
     public static Board createEnclosedBoard(int width, int height) {
         TileType[][] tiles = new TileType[height][width];
 

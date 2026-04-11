@@ -96,9 +96,7 @@ public class BoardGenerator {
      * or a 2×2 square.
      */
     private static void generateWalls(Board board, int width, int height) {
-        int numShapes = WALL_SHAPES_COUNT;
-
-        for (int i = 0; i < numShapes; i++) {
+        for (int i = 0; i < WALL_SHAPES_COUNT; i++) {
             int x = board.getRandom().nextInt(2, width - 3);
             int y = board.getRandom().nextInt(2, height - 3);
 
@@ -114,7 +112,7 @@ public class BoardGenerator {
                         placeWall(board, new Position(x, y + 1));
                     }
                 }
-                case 2 -> { // 2×2 square
+                default -> { // 2×2 square
                     placeWall(board, new Position(x,     y));
                     placeWall(board, new Position(x + 1, y));
                     placeWall(board, new Position(x,     y + 1));

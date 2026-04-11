@@ -1,6 +1,7 @@
 package ca.sfu.cmpt276.virusbreach.board;
 
 import ca.sfu.cmpt276.virusbreach.Main;
+import ca.sfu.cmpt276.virusbreach.TestHelper;
 import ca.sfu.cmpt276.virusbreach.VirusBreach;
 import ca.sfu.cmpt276.virusbreach.board.entity.Data;
 import ca.sfu.cmpt276.virusbreach.board.entity.Entity;

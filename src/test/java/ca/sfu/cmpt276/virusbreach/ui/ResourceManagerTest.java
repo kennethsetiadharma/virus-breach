@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.junit.jupiter.api.Test;
@@ -113,5 +114,29 @@ class ResourceManagerTest {
         clip = assertDoesNotThrow(() -> ResourceManager.fetchAudio("../sprites/player.png"));
 
         assertNull(clip);
+    }
+
+    /**
+     * Ensure that attempting to load a non-media file as media does not crash the game.
+     */
+    @Test
+    void fallbackInvalidMediaStream() {
+        Media media;
+
+        media = assertDoesNotThrow(() -> ResourceManager.fetchMusic("../sprites/player.png"));
+
+        assertNull(media);
+    }
+
+    /**
+     * Ensure that attempting to load a non-existent file as media does not crash the game.
+     */
+    @Test
+    void fallbackMissingMediaStream() {
+        Media media;
+
+        media = assertDoesNotThrow(() -> ResourceManager.fetchMusic(null));
+
+        assertNull(media);
     }
 }
