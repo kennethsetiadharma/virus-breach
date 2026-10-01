@@ -1,8 +1,36 @@
 # Virus Breach
-### CMPT 276 — Group 15
 
-A 2D tile-based hacking game built with JavaFX.
+![Virus Breach gameplay](docs/virusbreach-demo.gif)
+
+A 2D tile-based hacking game built with **Java** and **JavaFX**.
 Navigate the board, collect data, find the decryption key, and escape through the exit while avoiding firewalls and the antivirus enemy.
+
+Built by a team of 4 for **CMPT 276 (Software Engineering) at Simon Fraser University**.
+
+## Gameplay
+
+- **Goal:** collect the data, grab the decryption key, reach the exit
+- **Avoid:** firewalls (static hazards) and the antivirus (moving enemy)
+- **Controls:** [e.g. WASD / arrow keys to move, P to pause]
+
+## Features
+
+- [e.g. Tile-based movement and collision]
+- [e.g. Enemy AI that chases the player]
+- [e.g. Score and timer system]
+- Unit-tested with JUnit, coverage tracked with JaCoCo
+- Fully documented with Javadoc
+
+## Tech Stack
+
+Java 25 · JavaFX · Maven · JUnit · JaCoCo
+
+## Team
+
+- **Kenneth Setiadharma**
+- **Mu Leelawat**
+- **Brandon Landa-Ahn**
+- **Marcus Low**
 
 ## Requirements
 
